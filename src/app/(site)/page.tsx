@@ -92,7 +92,7 @@ export default async function HomePage() {
 
           <div className="relative h-[520px] overflow-hidden rounded-[2rem] border border-slate-200 shadow-lg">
             <Image
-              src="/images/placeholder.svg"
+              src="/images/placeholder-1.webp"
               alt="Travelers exploring scenic destination"
               fill
               className="object-cover"
