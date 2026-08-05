@@ -1,6 +1,9 @@
 ﻿import Link from 'next/link';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AdminDashboardPage() {
   const uow = new UnitOfWork();
   await uow.connect();

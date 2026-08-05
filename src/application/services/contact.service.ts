@@ -22,21 +22,27 @@ export class ContactService {
   async subscribe(input: unknown) {
     const data = NewsletterCreateSchema.parse(input);
     const existing = await this.unitOfWork.newsletterSubscribers.findOne({ email: data.email });
-    if (existing) {
-      return this.unitOfWork.newsletterSubscribers.updateOne(
+    const subscriber = existing
+      ? await this.unitOfWork.newsletterSubscribers.updateOne(
         { email: data.email },
         { ...data, isActive: true, subscribedAt: new Date(), unsubscribedAt: undefined }
-      );
+      )
+      : await this.unitOfWork.newsletterSubscribers.create(data);
+
+    try {
+      await this.sendNewsletterEmail(data);
+    } catch (error) {
+      logger.warn({ err: error, email: data.email }, 'Newsletter email notification failed');
     }
-    return this.unitOfWork.newsletterSubscribers.create(data);
+
+    return subscriber;
   }
 
   private async sendContactEmail(data: { fullName: string; email: string; subject: string; message: string; phone?: string }) {
     const to = process.env.CONTACT_EMAIL || process.env.SMTP_TO || 'hello@example.com';
     const from = process.env.FROM_EMAIL || 'noreply@example.com';
-    const provider = process.env.EMAIL_PROVIDER;
-
-    if (!provider) {
+    if (!process.env.SMTP_HOST) {
+      logger.info('Skipping contact email notification: SMTP_HOST is not configured');
       return;
     }
 
@@ -62,6 +68,36 @@ export class ContactService {
           <div style="margin-top: 16px; padding: 12px 16px; background: #f8fafc; border-radius: 8px;">
             ${data.message.replace(/\n/g, '<br />')}
           </div>
+        </div>
+      `,
+    });
+  }
+
+  private async sendNewsletterEmail(data: { email: string; fullName?: string; languageCode?: string }) {
+    const to = process.env.CONTACT_EMAIL || process.env.SMTP_TO || 'hello@example.com';
+    const from = process.env.FROM_EMAIL || 'noreply@example.com';
+
+    if (!process.env.SMTP_HOST) {
+      logger.info('Skipping newsletter email notification: SMTP_HOST is not configured');
+      return;
+    }
+
+    logger.info({ to, from, email: data.email }, 'Newsletter subscription email notification requested');
+
+    await sendMail({
+      to,
+      subject: 'New newsletter subscription',
+      text: [
+        `Name: ${data.fullName || 'N/A'}`,
+        `Email: ${data.email}`,
+        `Language: ${data.languageCode || 'en-US'}`,
+      ].join('\n'),
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #0f172a;">
+          <h2 style="margin-bottom: 12px;">New newsletter subscription</h2>
+          <p><strong>Name:</strong> ${data.fullName || 'N/A'}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Language:</strong> ${data.languageCode || 'en-US'}</p>
         </div>
       `,
     });
