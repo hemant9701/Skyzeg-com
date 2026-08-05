@@ -56,7 +56,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
         className="rounded-2xl w-2/3 border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]"
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="/uploads/..."
+        placeholder="/images/placeholder.svg"
       />
       <div className="flex gap-2">
         <input
