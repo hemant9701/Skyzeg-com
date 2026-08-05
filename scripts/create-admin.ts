@@ -14,7 +14,10 @@ async function main() {
     process.exit(1);
   }
 
-  await connectToDatabase();
+  const connection = await connectToDatabase();
+  if (!connection) {
+    throw new Error('MongoDB URI is missing. Set MONGODB_URI before running this script.');
+  }
   const passwordHash = await bcrypt.hash(password, 12);
   await UserModel.updateOne(
     { email: email.toLowerCase() },

@@ -79,7 +79,10 @@ async function main() {
   const languages = listLanguages(sourceData);
   const languageCodes = languages.map((language: { code: string }) => language.code);
 
-  await connectToDatabase();
+  const connection = await connectToDatabase();
+  if (!connection) {
+    throw new Error('MongoDB URI is missing. Set MONGODB_URI before running the seed script.');
+  }
 
   for (const role of Object.values(Roles)) {
     await RoleModel.updateOne({ name: role }, { $setOnInsert: { name: role, description: `${role} role` } }, { upsert: true });

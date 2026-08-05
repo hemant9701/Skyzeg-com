@@ -42,7 +42,7 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
 
   const mongoUri = resolveMongoUri();
   if (!mongoUri) {
-    throw new Error('MongoDB URI is missing. Set MONGODB_URI in Vercel Project Settings for Production, Preview, and Development, then redeploy.');
+    return null;
   }
 
   if (!cache.promise) {
