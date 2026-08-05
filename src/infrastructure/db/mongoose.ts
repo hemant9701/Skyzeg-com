@@ -2,10 +2,9 @@ import mongoose from 'mongoose';
 import { logger } from '@/infrastructure/logging/logger';
 
 function resolveMongoUri(): string {
-  if (process.env.MONGODB_URI) return process.env.MONGODB_URI;
-  if (process.env.MONGODB_HOST) return `mongodb://${process.env.MONGODB_HOST}:27017/travel_system_db`;
-  if (process.env.DOCKER_CONTAINER) return 'mongodb://mongodb:27017/travel_system_db';
-  return 'mongodb://127.0.0.1:27017/travel_system_db';
+  const uri = process.env.MONGODB_URI?.trim();
+  if (uri) return uri;
+  throw new Error('MONGODB_URI is required and must point to your MongoDB Atlas cluster');
 }
 
 const MONGODB_URI = resolveMongoUri();
