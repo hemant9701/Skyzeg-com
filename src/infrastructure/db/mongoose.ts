@@ -1,13 +1,28 @@
 import mongoose from 'mongoose';
 import { logger } from '@/infrastructure/logging/logger';
 
-function resolveMongoUri(): string {
-  const uri = process.env.MONGODB_URI?.trim();
-  if (uri) return uri;
-  throw new Error('MONGODB_URI is required and must point to your MongoDB Atlas cluster');
+function resolveMongoUri(): string | null {
+  const candidates = [process.env.MONGODB_URI, process.env.MONGO_URL, process.env.DATABASE_URL];
+
+  for (const value of candidates) {
+    const uri = value?.trim();
+    if (uri) {
+      return uri;
+    }
+  }
+
+  return null;
 }
 
-const MONGODB_URI = resolveMongoUri();
+function redactMongoUri(uri: string): string {
+  try {
+    const parsed = new URL(uri);
+    const dbName = parsed.pathname.replace(/^\//, '') || 'database';
+    return `${parsed.protocol}//${parsed.hostname}/${dbName}`;
+  } catch {
+    return 'redacted';
+  }
+}
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -25,9 +40,14 @@ if (!global.mongooseCache) global.mongooseCache = cache;
 export async function connectToDatabase(): Promise<typeof mongoose | null> {
   if (cache.conn) return cache.conn;
 
+  const mongoUri = resolveMongoUri();
+  if (!mongoUri) {
+    throw new Error('MongoDB URI is missing. Set MONGODB_URI in Vercel Project Settings for Production, Preview, and Development, then redeploy.');
+  }
+
   if (!cache.promise) {
-    logger.info({ uri: MONGODB_URI }, 'Connecting to MongoDB');
-    cache.promise = mongoose.connect(MONGODB_URI, {
+    logger.info({ uri: redactMongoUri(mongoUri) }, 'Connecting to MongoDB');
+    cache.promise = mongoose.connect(mongoUri, {
       bufferCommands: false,
       autoIndex: process.env.NODE_ENV !== 'production'
     }).catch((error) => {
