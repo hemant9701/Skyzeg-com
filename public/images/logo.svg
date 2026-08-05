@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="56" viewBox="0 0 220 56" role="img" aria-label="TravelNextMongo">
+  <rect width="56" height="56" rx="16" fill="#f15b2a"/>
+  <path d="M17 34c10-3 17-10 22-21 1 11-2 20-9 27l10 6c-9 3-19 1-25-5l-7 5 4-9c-4-6-5-13-2-21 1 8 4 14 7 18z" fill="#fff"/>
+  <text x="70" y="34" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800" fill="#141821">Travel</text>
+  <text x="146" y="34" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800" fill="#f15b2a">CMS</text>
+</svg>

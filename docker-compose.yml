@@ -1,0 +1,12 @@
+services:
+  mongodb:
+    image: mongo:8
+    container_name: travel-next-mongo-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - travel_mongodb_data:/data/db
+
+volumes:
+  travel_mongodb_data:
