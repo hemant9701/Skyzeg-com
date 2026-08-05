@@ -92,7 +92,7 @@ export default async function HomePage() {
 
           <div className="relative h-[520px] overflow-hidden rounded-[2rem] border border-slate-200 shadow-lg">
             <Image
-              src="/uploads/destinations/sri-lanka-home-1784214637436.webp"
+              src="/images/placeholder.svg"
               alt="Travelers exploring scenic destination"
               fill
               className="object-cover"

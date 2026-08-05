@@ -104,6 +104,10 @@ public/uploads/documents
 public/uploads/media
 ```
 
+On Vercel, filesystem writes are ephemeral. This project automatically stores uploads in Vercel Blob when `VERCEL=1` and `BLOB_READ_WRITE_TOKEN` is set.
+
+Set `BLOB_READ_WRITE_TOKEN` in Vercel Project Settings before using admin media upload in production.
+
 ## Main public routes
 
 ```text

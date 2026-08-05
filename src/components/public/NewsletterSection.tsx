@@ -13,7 +13,7 @@ export default async function NewsletterSection() {
         <div
           className="relative"
           style={{
-            backgroundImage: "url('/uploads/slider/myanmarbanner-1783691611896.webp')",
+            backgroundImage: "url('/images/placeholder.svg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}

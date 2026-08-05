@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { del, put } from '@vercel/blob';
 import sharp from 'sharp';
 import { UploadFolders, type UploadFolder } from '@/domain/constants/upload-folders';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
@@ -19,6 +20,7 @@ const allowedMimeTypes = new Set([
 
 const imageMimeTypes = new Set(['image/webp', 'image/png', 'image/jpeg']);
 const maxFileSize = 50 * 1024 * 1024;
+const isVercel = process.env.VERCEL === '1';
 
 export interface UploadOptions {
   folder?: UploadFolder;
@@ -36,6 +38,14 @@ export interface UploadOptions {
 export class MediaService {
   constructor(private readonly unitOfWork = new UnitOfWork()) {}
 
+  private getBlobToken(): string {
+    const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+    if (!token) {
+      throw new ValidationError('BLOB_READ_WRITE_TOKEN is required on Vercel for media uploads.');
+    }
+    return token;
+  }
+
   async upload(file: File, options: UploadOptions = {}) {
     if (!file || file.size <= 0) throw new ValidationError('No file uploaded');
     if (file.size > maxFileSize) throw new ValidationError('File size must be 50 MB or less');
@@ -48,9 +58,6 @@ export class MediaService {
     const isImage = file.type.startsWith('image/');
     const isRasterImage = imageMimeTypes.has(file.type);
     const type = file.type.startsWith('video/') ? 'video' : file.type === 'application/pdf' ? 'document' : 'image';
-
-    const uploadRoot = path.join(process.cwd(), 'public', 'uploads', folder);
-    await fs.mkdir(uploadRoot, { recursive: true });
 
     let outputBuffer: Buffer = buffer;
     let extension = originalExtension || 'bin';
@@ -93,10 +100,26 @@ export class MediaService {
     }
 
     const fileName = `${baseName}-${Date.now()}.${extension}`;
-    const storagePath = path.join(uploadRoot, fileName);
-    await fs.writeFile(storagePath, outputBuffer);
+    const relativeUrl = `/uploads/${folder}/${fileName}`;
+    let storagePath = '';
+    let url = relativeUrl;
 
-    const url = `/uploads/${folder}/${fileName}`;
+    if (isVercel) {
+      const blob = await put(`uploads/${folder}/${fileName}`, outputBuffer, {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: file.type,
+        token: this.getBlobToken()
+      });
+      storagePath = blob.url;
+      url = blob.url;
+    } else {
+      const uploadRoot = path.join(process.cwd(), 'public', 'uploads', folder);
+      await fs.mkdir(uploadRoot, { recursive: true });
+      storagePath = path.join(uploadRoot, fileName);
+      await fs.writeFile(storagePath, outputBuffer);
+    }
+
     return this.unitOfWork.mediaFiles.create({
       folder,
       originalName: file.name,
@@ -119,7 +142,11 @@ export class MediaService {
     if (!media) throw new Error('Media file not found');
     
     try {
-      await fs.unlink(media.storagePath);
+      if (media.storagePath?.startsWith('http')) {
+        await del(media.storagePath, { token: this.getBlobToken() });
+      } else {
+        await fs.unlink(media.storagePath);
+      }
     } catch {
       // File may already be deleted, continue with DB cleanup
     }
