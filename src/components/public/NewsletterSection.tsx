@@ -1,10 +1,12 @@
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
+import { getStrings } from '@/lib/ui-strings';
 import { pickTranslation } from '@/shared/utils/localize';
 import NewsletterForm from './NewsletterForm';
 
 export default async function NewsletterSection() {
   const languageCode = await getLanguageCode();
+  const ui = getStrings(languageCode);
   const settings = await new UnitOfWork().siteSettings.findOne({ key: 'main' });
   const t = pickTranslation(settings as any, languageCode) as any;
 
@@ -25,13 +27,13 @@ export default async function NewsletterSection() {
               <h2
                 className="mb-2 text-4xl font-semibold leading-tight text-white sm:text-5xl"
                 dangerouslySetInnerHTML={{
-                  __html: t?.newsletterTitle || 'Subscribe to Newsletter',
+                  __html: t?.newsletterTitle || ui.newsletterSectionTitle,
                 }}
               />
               <div
                 className="mb-6 text-base text-white"
                 dangerouslySetInnerHTML={{
-                  __html: t?.newsletterText || 'Discover destination ideas, travel promotions and planning tips directly in your inbox.',
+                  __html: t?.newsletterText || ui.newsletterSectionText,
                 }}
               />
               <NewsletterForm languageCode={languageCode} variant="image-banner" />

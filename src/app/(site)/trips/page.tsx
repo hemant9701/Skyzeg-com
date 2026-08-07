@@ -11,6 +11,10 @@ function getQueryValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+function toPlain<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 export default async function TripsPage({ searchParams }: TripsPageProps = {}) {
   const languageCode = await getLanguageCode();
   const uow = new UnitOfWork();
@@ -53,14 +57,20 @@ export default async function TripsPage({ searchParams }: TripsPageProps = {}) {
       : []
   }));
 
+  const plainTrips = toPlain(populatedTrips);
+  const plainDestinations = toPlain(destinations);
+  const plainTravelTypes = toPlain(travelTypes);
+  const plainCategories = toPlain(categories);
+  const plainInitialFilters = toPlain(initialFilters || {});
+
   return (
     <TripFilters
-      trips={populatedTrips}
+      trips={plainTrips}
       languageCode={languageCode}
-      destinations={destinations}
-      travelTypes={travelTypes}
-      categories={categories}
-      initialFilters={initialFilters}
+      destinations={plainDestinations}
+      travelTypes={plainTravelTypes}
+      categories={plainCategories}
+      initialFilters={plainInitialFilters}
     />
   );
 }

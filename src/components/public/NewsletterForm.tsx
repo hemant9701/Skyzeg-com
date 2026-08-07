@@ -16,20 +16,27 @@ export default function NewsletterForm({ languageCode, variant = 'default' }: Ne
   const ui = getStrings(languageCode);
   const isImageBanner = variant === 'image-banner';
 
-  async function submit(event: React.FormEvent) {
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setMessage('');
+    const formElement = event.currentTarget;
     const response = await fetch('/api/newsletter', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fullName, email, languageCode })
     });
     const result = await response.json().catch(() => ({}));
-    setMessage(response.ok ? ui.newsletterSuccess : result?.message || ui.newsletterSuccess);
+    if (response.ok) {
+      const emailSent = result?.data?.emailNotification?.sent !== false;
+      setMessage(emailSent ? ui.newsletterSuccess : `${ui.newsletterSuccess} ${ui.emailDeliveryWarning}`);
+    } else {
+      setMessage(result?.message || ui.newsletterSuccess);
+    }
     if (response.ok) {
       setFullName('');
       setEmail('');
+      formElement.reset();
     }
     setBusy(false);
   }
@@ -42,7 +49,7 @@ export default function NewsletterForm({ languageCode, variant = 'default' }: Ne
           type="text"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-          placeholder="Enter your name"
+          placeholder={ui.newsletterNamePlaceholder}
         />
         <input
           className={`w-full border bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E] ${isImageBanner ? 'rounded-md border-slate-900/70' : 'rounded-full border-slate-300'}`}
@@ -57,7 +64,7 @@ export default function NewsletterForm({ languageCode, variant = 'default' }: Ne
           type="submit"
           disabled={busy}
         >
-          {busy ? ui.newsletterJoining : isImageBanner ? 'Submit' : ui.newsletterJoin}
+          {busy ? ui.newsletterJoining : isImageBanner ? ui.newsletterSubmit : ui.newsletterJoin}
         </button>
       </div>
       {message && <p className={`mt-2 text-sm ${isImageBanner ? 'text-slate-700' : 'text-slate-400'}`}>{message}</p>}

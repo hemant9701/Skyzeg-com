@@ -11,7 +11,13 @@ export default function BookingManager() {
     setItems(json.data?.items || []);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      void load();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
+  }, []);
 
   return (
     <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6 text-slate-100">

@@ -22,7 +22,7 @@ export default async function CategoriesPage() {
             href="/tailor-made"
             className="mt-5 inline-flex items-center rounded-full bg-[#1C398E] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#152d73]"
           >
-            Create Tailor-Made Trip
+            {ui.tailorMadeRequestButton}
           </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

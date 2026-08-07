@@ -8,5 +8,22 @@ services:
     volumes:
       - travel_mongodb_data:/data/db
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: travel-next-app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/travel_system_db
+
 volumes:
   travel_mongodb_data:

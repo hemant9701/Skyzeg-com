@@ -32,7 +32,7 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
     event.preventDefault();
 
     if (!hasTrips) {
-      setError('No trips are available right now. Please contact us directly.');
+      setError(ui.tailorMadeNoTripsError);
       return;
     }
 
@@ -40,7 +40,8 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
     setError('');
     setStatus('');
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const baseTrip = String(form.get('trip') || defaultTripId);
     const preferredDestination = String(form.get('preferredDestination') || '').trim();
     const durationDays = String(form.get('durationDays') || '').trim();
@@ -79,8 +80,11 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
     const result = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      setStatus(`${ui.bookingSuccess} ${result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : ''}`);
-      event.currentTarget.reset();
+      const reference = result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : '';
+      const emailSent = result?.data?.emailNotification?.sent !== false;
+      const warning = emailSent ? '' : ` ${ui.emailDeliveryWarning}`;
+      setStatus(`${ui.bookingSuccess} ${reference}${warning}`.trim());
+      formElement.reset();
     } else {
       setError(result?.message || ui.bookingError);
     }
@@ -90,27 +94,27 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
 
   return (
     <form className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={submit}>
-      <h3 className="mb-2 text-2xl font-bold text-[#1C398E]">Tailor-Made Trip Booking</h3>
-      <p className="mb-6 text-sm text-slate-600">Share your travel idea and our team will personalize the route, stay options, and pace for your group.</p>
+      <h3 className="mb-2 text-2xl font-bold text-[#1C398E]">{ui.tailorMadeTitle}</h3>
+      <p className="mb-6 text-sm text-slate-600">{ui.tailorMadeSubtitle}</p>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {!hasTrips && <div className="md:col-span-2 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">No active trips available right now.</div>}
+        {!hasTrips && <div className="md:col-span-2 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{ui.tailorMadeNoTrips}</div>}
 
         <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingLeadName}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="leadName" required minLength={2} /></div>
         <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingEmail}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" type="email" name="leadEmail" required /></div>
         <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingPhone}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="leadPhone" /></div>
         <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingTravelDate}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" type="date" name="travelDate" /></div>
         <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingTravellers}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" type="number" name="travellersCount" min={1} max={50} defaultValue={2} /></div>
-        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">Preferred destination</label><select className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="preferredDestination" defaultValue="" required disabled={!hasDestinations}><option value="">Select destination</option>{destinations.map((destination) => <option value={destination.title} key={destination.id}>{destination.title}</option>)}</select>{!hasDestinations && <p className="text-sm text-rose-600">No destinations available right now.</p>}</div>
-        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">Preferred duration (days)</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" type="number" min={1} max={60} name="durationDays" placeholder="e.g. 10" /></div>
-        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">Budget range</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="budgetRange" placeholder="e.g. USD 1500 - 2500 per person" /></div>
-        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">Accommodation style</label><select className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="accommodationStyle" defaultValue=""><option value="">Choose</option><option value="Budget">Budget</option><option value="Comfort">Comfort</option><option value="Luxury">Luxury</option><option value="Mixed">Mixed</option></select></div>
-        <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-[#334155]">Preferred activities</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="activities" placeholder="Trekking, culture, wildlife, photography, food" /></div>
-        <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingSpecialRequests}</label><textarea className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="specialRequests" rows={5} placeholder="Share pace, accessibility needs, group details, and must-see experiences." /></div>
+        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.tailorMadePreferredDestination}</label><select className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="preferredDestination" defaultValue="" required disabled={!hasDestinations}><option value="">{ui.tailorMadeSelectDestination}</option>{destinations.map((destination) => <option value={destination.title} key={destination.id}>{destination.title}</option>)}</select>{!hasDestinations && <p className="text-sm text-rose-600">{ui.tailorMadeNoDestinations}</p>}</div>
+        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.tailorMadePreferredDuration}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" type="number" min={1} max={60} name="durationDays" placeholder="e.g. 10" /></div>
+        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.tailorMadeBudgetRange}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="budgetRange" placeholder="e.g. USD 1500 - 2500 per person" /></div>
+        <div className="space-y-2"><label className="block text-sm font-medium text-[#334155]">{ui.tailorMadeAccommodationStyle}</label><select className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="accommodationStyle" defaultValue=""><option value="">{ui.tailorMadeAccommodationChoose}</option><option value="Budget">{ui.tailorMadeAccommodationBudget}</option><option value="Comfort">{ui.tailorMadeAccommodationComfort}</option><option value="Luxury">{ui.tailorMadeAccommodationLuxury}</option><option value="Mixed">{ui.tailorMadeAccommodationMixed}</option></select></div>
+        <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-[#334155]">{ui.tailorMadeActivities}</label><input className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="activities" placeholder={ui.tailorMadeActivitiesPlaceholder} /></div>
+        <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-[#334155]">{ui.bookingSpecialRequests}</label><textarea className="w-full rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]" name="specialRequests" rows={5} placeholder={ui.tailorMadeNotesPlaceholder} /></div>
 
         <div className="md:col-span-2">
           <button className="rounded-full bg-[#1C398E] px-5 py-2.5 font-semibold text-white transition hover:bg-[#152d73] disabled:opacity-60" disabled={busy || !hasTrips}>
-            {busy ? ui.bookingSubmitting : 'Request Tailor-Made Plan'}
+            {busy ? ui.bookingSubmitting : ui.tailorMadeRequestButton}
           </button>
         </div>
 

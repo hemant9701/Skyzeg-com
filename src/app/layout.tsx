@@ -27,5 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={plusJakartaSans.variable}><body>{children}</body></html>;
+  return (
+    <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <body suppressHydrationWarning>{children}</body>
+    </html>
+  );
 }

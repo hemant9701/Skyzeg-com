@@ -4,6 +4,10 @@ import { getLanguageCode } from '@/lib/language';
 import { pickTranslation } from '@/shared/utils/localize';
 import MegaMenuHeader from './MegaMenuHeader';
 
+function toPlain<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 export default async function Header() {
   const languageCode = await getLanguageCode();
   const unitOfWork = new UnitOfWork();
@@ -19,31 +23,33 @@ export default async function Header() {
   const settingTranslation = pickTranslation(settings as any, languageCode) as any;
   const logoUrl = settings?.logoUrl || '/images/logo.svg';
   const menuItems = (menu?.items || [])
-    .filter((item: any) => item.isVisible !== false)
     .sort((a: any, b: any) => a.sortOrder - b.sortOrder)
     .map((item: any) => ({
-      _id: item._id,
+      _id: String(item._id),
+      parentId: item.parentId ? String(item.parentId) : '',
       url: item.url,
       target: item.target || '_self',
+      isVisible: item.isVisible !== false,
+      sortOrder: Number(item.sortOrder || 0),
       label: pickTranslation(item as any, languageCode)?.label || item.url
     }));
 
   const processedDestinations = (destinations || []).map((d: any) => ({
-    _id: d._id,
+    _id: String(d._id),
     slug: d.slug,
     title: pickTranslation(d as any, languageCode)?.title || d.title,
     name: pickTranslation(d as any, languageCode)?.title || d.name
   }));
 
   const processedTravelTypes = (travelTypes || []).map((t: any) => ({
-    _id: t._id,
+    _id: String(t._id),
     slug: t.slug,
     title: pickTranslation(t as any, languageCode)?.title || t.title,
     name: pickTranslation(t as any, languageCode)?.title || t.name
   }));
 
   const processedCategories = (categories || []).map((c: any) => ({
-    _id: c._id,
+    _id: String(c._id),
     slug: c.slug,
     title: pickTranslation(c as any, languageCode)?.title || c.title,
     name:  pickTranslation(c as any, languageCode)?.title || c.name
@@ -53,12 +59,12 @@ export default async function Header() {
     <MegaMenuHeader
       logoUrl={logoUrl}
       siteName={settingTranslation?.siteName || 'TravelNext'}
-      menuItems={menuItems}
-      languages={languages}
+      menuItems={toPlain(menuItems)}
+      languages={toPlain(languages)}
       activeLanguage={languageCode}
-      destinations={processedDestinations}
-      travelTypes={processedTravelTypes}
-      categories={processedCategories}
+      destinations={toPlain(processedDestinations)}
+      travelTypes={toPlain(processedTravelTypes)}
+      categories={toPlain(processedCategories)}
     />
   );
 }

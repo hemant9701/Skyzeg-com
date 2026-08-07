@@ -3,6 +3,7 @@ import { getRegistryItem } from '@/application/services/module-registry';
 import { AdminRoles } from '@/domain/constants/roles';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
+import { ValidationError } from '@/shared/errors/app-error';
 import { created, ok, withApiErrorHandling } from '@/shared/http/api-response';
 
 interface Context { params: Promise<{ collection: string }> }
@@ -10,6 +11,9 @@ interface Context { params: Promise<{ collection: string }> }
 export const GET = withApiErrorHandling(async (request: NextRequest, context: Context) => {
   await requireApiUser(request, AdminRoles);
   const { collection } = await context.params;
+  if (collection === 'users') {
+    throw new ValidationError('Use /api/admin/users for user management');
+  }
   const item = getRegistryItem(collection);
   const uow = new UnitOfWork();
   const page = Number(request.nextUrl.searchParams.get('page') || 1);
@@ -32,6 +36,9 @@ export const GET = withApiErrorHandling(async (request: NextRequest, context: Co
 export const POST = withApiErrorHandling(async (request: NextRequest, context: Context) => {
   const user = await requireApiUser(request, AdminRoles);
   const { collection } = await context.params;
+  if (collection === 'users') {
+    throw new ValidationError('Use /api/admin/users for user management');
+  }
   const item = getRegistryItem(collection);
   const data = item.validator.parse(await request.json());
   const uow = new UnitOfWork();

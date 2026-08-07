@@ -79,7 +79,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
                 type="button"
                 className={`h-2.5 w-2.5 rounded-full transition ${index === activeIndex ? 'bg-[#F1F5F9]' : 'bg-white/60'}`}
                 onClick={() => setActiveIndex(index)}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={`${ui.carouselGoToSlide} ${index + 1}`}
               />
             ))}
           </div>
@@ -88,7 +88,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
             type="button"
             className="absolute right-16 top-[90%] hidden -translate-y-1/2 rounded-full bg-white/20 p-3 text-white backdrop-blur md:inline-flex"
             onClick={() => setActiveIndex((value) => (value - 1 + slidesList.length) % slidesList.length)}
-            aria-label="Previous slide"
+            aria-label={ui.carouselPreviousSlide}
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
@@ -96,7 +96,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
             type="button"
             className="absolute right-4 top-[90%] hidden -translate-y-1/2 rounded-full bg-white/20 p-3 text-white backdrop-blur md:inline-flex"
             onClick={() => setActiveIndex((value) => (value + 1) % slidesList.length)}
-            aria-label="Next slide"
+            aria-label={ui.carouselNextSlide}
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>

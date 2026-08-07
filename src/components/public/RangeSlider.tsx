@@ -9,6 +9,8 @@ interface RangeSliderProps {
   step?: number;
   label?: string;
   format?: (value: number) => string;
+  fromLabel?: string;
+  toLabel?: string;
 }
 
 export default function RangeSlider({
@@ -19,7 +21,9 @@ export default function RangeSlider({
   onChange,
   step = 1,
   label,
-  format = (v) => String(v)
+  format = (v) => String(v),
+  fromLabel = 'From',
+  toLabel = 'To'
 }: RangeSliderProps) {
   return (
     <div className="w-full space-y-4">
@@ -28,12 +32,12 @@ export default function RangeSlider({
       {/* Display values */}
       <div className="flex items-center justify-between rounded-lg bg-blue-50 px-4 py-3 border border-blue-100">
         <div className="text-center">
-          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">From</p>
+          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{fromLabel}</p>
           <p className="text-lg font-bold text-[#1C398E]">{format(minValue)}</p>
         </div>
         <div className="h-8 w-px bg-blue-200" />
         <div className="text-center">
-          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">To</p>
+          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{toLabel}</p>
           <p className="text-lg font-bold text-[#1C398E]">{format(maxValue)}</p>
         </div>
       </div>

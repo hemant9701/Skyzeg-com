@@ -2,15 +2,18 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown, Menu, X, MapPin, Plane, BookOpen, Compass, Mail, Home, Tag } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { getStrings } from '@/lib/ui-strings';
 
 interface MenuItem {
   _id?: string;
+  parentId?: string;
   url: string;
   target?: string;
+  isVisible?: boolean;
+  sortOrder?: number;
   label?: string;
 }
 
@@ -62,6 +65,9 @@ export default function MegaMenuHeader({
   const [hovered, setHovered]             = useState<string | null>(null);
   const [isScrolled, setIsScrolled]       = useState(false);
   const ui = getStrings(activeLanguage);
+  const normalizedItems = (menuItems || [])
+    .filter((item) => item.isVisible !== false)
+    .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
 
   useEffect(() => {
     const onScroll = () => {
@@ -87,10 +93,62 @@ export default function MegaMenuHeader({
     label: navLabelByUrl[item.url] ?? item.label,
   }));
 
-  const items = menuItems.length > 0 ? menuItems : resolvedDefaults;
+  const topLevelMenuItems = normalizedItems.filter((item) => !item.parentId);
+  const items = topLevelMenuItems.length > 0 ? topLevelMenuItems : resolvedDefaults;
 
   /** Build mega-panel columns purely from live prop data */
-  const getColumns = useCallback((url: string): MegaColumn[] | null => {
+  function getColumns(url: string): MegaColumn[] | null {
+    const activeItem = normalizedItems.find((item) => item.url === url && !item.parentId);
+    if (activeItem?._id) {
+      const children = normalizedItems.filter((item) => String(item.parentId || '') === String(activeItem._id));
+      if (children.length > 0) {
+        const childIds = new Set(children.map((item) => String(item._id || '')));
+        const grandchildren = normalizedItems.filter((item) => childIds.has(String(item.parentId || '')));
+
+        if (grandchildren.length > 0) {
+          const columns: MegaColumn[] = children
+            .map((child) => {
+              const links = grandchildren
+                .filter((item) => String(item.parentId || '') === String(child._id || ''))
+                .map((item) => ({
+                  _id: item._id,
+                  url: item.url,
+                  label: item.label || item.url
+                }));
+              if (links.length === 0) return null;
+              return {
+                title: child.label || child.url,
+                items: links
+              };
+            })
+            .filter(Boolean) as MegaColumn[];
+
+          const flatChildren = children
+            .filter((child) => !grandchildren.some((item) => String(item.parentId || '') === String(child._id || '')))
+            .map((child) => ({ _id: child._id, url: child.url, label: child.label || child.url }));
+
+          if (flatChildren.length > 0) {
+            columns.push({ title: ui.megaQuickLinks, items: flatChildren });
+          }
+
+          if (columns.length > 0) {
+            return columns;
+          }
+        }
+
+        return [
+          {
+            title: activeItem.label || activeItem.url,
+            items: children.map((item) => ({
+              _id: item._id,
+              url: item.url,
+              label: item.label || item.url
+            }))
+          }
+        ];
+      }
+    }
+
     switch (url) {
       case '/destinations': {
         if (!destinations.length) return null;
@@ -197,7 +255,7 @@ export default function MegaMenuHeader({
       default:
         return null;
     }
-  }, [categories, destinations, travelTypes, ui.megaAdventure, ui.megaAllBlogPosts, ui.megaAllDestinations, ui.megaAllTours, ui.megaAllTravelCategories, ui.megaAllTravelTypes, ui.megaAllTripsTours, ui.megaArticles, ui.megaBookATrip, ui.megaBrowseTours, ui.megaBrowseToursLink, ui.megaCulture, ui.megaDestinationReviews, ui.megaDestinations, ui.megaExplore, ui.megaFeaturedTours, ui.megaFoodDining, ui.megaFourteenDayTours, ui.megaMoreDestinations, ui.megaPhotography, ui.megaPopularDestinations, ui.megaQuickLinks, ui.megaSevenDayTours, ui.megaTopics, ui.megaTravelCategories, ui.megaTravelGuides, ui.megaTravelStyles, ui.megaTravelTips, ui.megaTravelTypes, ui.megaTripCategories]);
+  }
 
   const hoveredColumns = hovered ? getColumns(hovered) : null;
 

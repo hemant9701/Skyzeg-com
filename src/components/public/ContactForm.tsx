@@ -16,14 +16,16 @@ export default function ContactForm({ languageCode = 'en-US' }: { languageCode?:
     setError('');
     setStatus('');
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const result = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      setStatus(ui.contactSuccess);
-      event.currentTarget.reset();
+      const emailSent = result?.data?.emailNotification?.sent !== false;
+      setStatus(emailSent ? ui.contactSuccess : `${ui.contactSuccess} ${ui.emailDeliveryWarning}`);
+      formElement.reset();
     } else {
       setError(result?.message || ui.contactError);
     }

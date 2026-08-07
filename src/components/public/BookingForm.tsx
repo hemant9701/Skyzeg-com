@@ -15,14 +15,18 @@ export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' 
     setError('');
     setStatus('');
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = { ...Object.fromEntries(form.entries()), trip: tripId };
     const response = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const result = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      setStatus(`${ui.bookingSuccess} ${result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : ''}`);
-      event.currentTarget.reset();
+      const reference = result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : '';
+      const emailSent = result?.data?.emailNotification?.sent !== false;
+      const warning = emailSent ? '' : ` ${ui.emailDeliveryWarning}`;
+      setStatus(`${ui.bookingSuccess} ${reference}${warning}`.trim());
+      formElement.reset();
     } else {
       setError(result?.message || ui.bookingError);
     }

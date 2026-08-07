@@ -200,7 +200,7 @@ export default async function TripDetailsPage({ params }: Props) {
             {/* Quick info */}
             <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5">
               <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#1C398E]">
-                Trip Info
+                {ui.tripsTripInfo}
               </h4>
               <dl className="space-y-2 text-sm">
                 {trip.durationDays && (

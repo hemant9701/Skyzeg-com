@@ -50,6 +50,14 @@ Admin:
 http://localhost:3000/admin/login
 ```
 
+## Run In Docker
+
+```bash
+docker-compose up --build
+```
+
+The compose file starts both the Next.js app container on `http://localhost:3000` and the MongoDB container on `mongodb://localhost:27017`.
+
 Default admin:
 
 ```text

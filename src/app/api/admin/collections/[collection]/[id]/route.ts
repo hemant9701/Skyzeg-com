@@ -3,7 +3,7 @@ import { getRegistryItem } from '@/application/services/module-registry';
 import { AdminRoles } from '@/domain/constants/roles';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
-import { NotFoundError } from '@/shared/errors/app-error';
+import { NotFoundError, ValidationError } from '@/shared/errors/app-error';
 import { noContent, ok, withApiErrorHandling } from '@/shared/http/api-response';
 
 interface Context { params: Promise<{ collection: string; id: string }> }
@@ -11,6 +11,9 @@ interface Context { params: Promise<{ collection: string; id: string }> }
 export const GET = withApiErrorHandling(async (request: NextRequest, context: Context) => {
   await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  if (collection === 'users') {
+    throw new ValidationError('Use /api/admin/users for user management');
+  }
   const item = getRegistryItem(collection);
   const found = await item.repo(new UnitOfWork()).findById(id);
   if (!found) throw new NotFoundError(`${item.entityName} not found`);
@@ -20,6 +23,9 @@ export const GET = withApiErrorHandling(async (request: NextRequest, context: Co
 export const PUT = withApiErrorHandling(async (request: NextRequest, context: Context) => {
   const user = await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  if (collection === 'users') {
+    throw new ValidationError('Use /api/admin/users for user management');
+  }
   const item = getRegistryItem(collection);
   const data = item.validator.parse(await request.json());
   const uow = new UnitOfWork();
@@ -33,6 +39,9 @@ export const PUT = withApiErrorHandling(async (request: NextRequest, context: Co
 export const DELETE = withApiErrorHandling(async (request: NextRequest, context: Context) => {
   const user = await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  if (collection === 'users') {
+    throw new ValidationError('Use /api/admin/users for user management');
+  }
   const item = getRegistryItem(collection);
   const uow = new UnitOfWork();
   const before = await item.repo(uow).findById(id);

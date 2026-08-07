@@ -22,6 +22,7 @@ export class BookingService {
       ipAddress: meta?.ipAddress,
       userAgent: meta?.userAgent
     });
+    let emailSent = true;
 
     try {
       await this.sendBookingEmail({
@@ -32,10 +33,16 @@ export class BookingService {
         currency: trip.currency || 'USD',
       });
     } catch (error) {
+      emailSent = false;
       logger.warn({ err: error, email: data.leadEmail }, 'Booking email notification failed');
     }
 
-    return booking;
+    return {
+      ...booking,
+      emailNotification: {
+        sent: emailSent
+      }
+    };
   }
 
   private async sendBookingEmail(data: {

@@ -9,14 +9,21 @@ export class ContactService {
   async createEnquiry(input: unknown, meta?: { ipAddress?: string; userAgent?: string }) {
     const data = ContactCreateSchema.parse(input);
     const enquiry = await this.unitOfWork.contactEnquiries.create({ ...data, ...meta });
+    let emailSent = true;
 
     try {
       await this.sendContactEmail(data);
     } catch (error) {
+      emailSent = false;
       logger.warn({ err: error, email: data.email }, 'Contact email notification failed');
     }
 
-    return enquiry;
+    return {
+      ...enquiry,
+      emailNotification: {
+        sent: emailSent
+      }
+    };
   }
 
   async subscribe(input: unknown) {
@@ -28,14 +35,21 @@ export class ContactService {
         { ...data, isActive: true, subscribedAt: new Date(), unsubscribedAt: undefined }
       )
       : await this.unitOfWork.newsletterSubscribers.create(data);
+    let emailSent = true;
 
     try {
       await this.sendNewsletterEmail(data);
     } catch (error) {
+      emailSent = false;
       logger.warn({ err: error, email: data.email }, 'Newsletter email notification failed');
     }
 
-    return subscriber;
+    return {
+      ...(subscriber as any),
+      emailNotification: {
+        sent: emailSent
+      }
+    };
   }
 
   private async sendContactEmail(data: { fullName: string; email: string; subject: string; message: string; phone?: string }) {

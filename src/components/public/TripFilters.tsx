@@ -86,14 +86,18 @@ export default function TripFilters({
   }), [priceRange, durationRange]);
 
   useEffect(() => {
-    setFilters({
-      ...defaultFilters,
-      ...initialFilters,
-      selectedDestinations: initialFilters?.selectedDestinations ?? [],
-      selectedTravelTypes: initialFilters?.selectedTravelTypes ?? [],
-      selectedCategories: initialFilters?.selectedCategories ?? [],
-      featuredOnly: initialFilters?.featuredOnly ?? false
-    });
+    const timerId = window.setTimeout(() => {
+      setFilters({
+        ...defaultFilters,
+        ...initialFilters,
+        selectedDestinations: initialFilters?.selectedDestinations ?? [],
+        selectedTravelTypes: initialFilters?.selectedTravelTypes ?? [],
+        selectedCategories: initialFilters?.selectedCategories ?? [],
+        featuredOnly: initialFilters?.featuredOnly ?? false
+      });
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
   }, [defaultFilters, initialFilters]);
 
   useEffect(() => {
@@ -235,6 +239,8 @@ export default function TripFilters({
                   max={priceRange.max}
                   minValue={filters.priceMin}
                   maxValue={filters.priceMax}
+                  fromLabel={ui.rangeFrom}
+                  toLabel={ui.rangeTo}
                   onChange={(minVal, maxVal) => {
                     setFilters({ ...filters, priceMin: minVal, priceMax: maxVal });
                   }}
@@ -251,6 +257,8 @@ export default function TripFilters({
                   max={durationRange.max}
                   minValue={filters.durationMin}
                   maxValue={filters.durationMax}
+                  fromLabel={ui.rangeFrom}
+                  toLabel={ui.rangeTo}
                   onChange={(minVal, maxVal) => {
                     setFilters({ ...filters, durationMin: minVal, durationMax: maxVal });
                   }}
