@@ -317,10 +317,11 @@ export const menuConfig: AdminModuleConfig = {
 export const settingsConfig: AdminModuleConfig = {
   collection: 'settings',
   title: 'Settings',
-  defaultItem: { key: 'main', logoUrl: '/images/logo.svg', faviconUrl: '/favicon.ico', primaryEmail: '', primaryPhone: '', address: '', defaultCurrency: 'USD', defaultLanguageCode: 'en-US', bookingEnabled: true, socialLinks: [] },
+  defaultItem: { key: 'main', logoUrl: '/images/logo.svg', logo2Url: '/images/logo.svg', faviconUrl: '/favicon.ico', primaryEmail: '', primaryPhone: '', address: '', defaultCurrency: 'USD', defaultLanguageCode: 'en-US', bookingEnabled: true, socialLinks: [] },
   fields: [
     { name: 'key', label: 'Key', type: 'text' },
     { name: 'logoUrl', label: 'Website Logo', type: 'image', folder: 'logos' },
+    { name: 'logo2Url', label: 'White Logo', type: 'image', folder: 'logos' },
     { name: 'faviconUrl', label: 'Favicon', type: 'image', folder: 'logos' },
     { name: 'primaryEmail', label: 'Primary Email', type: 'text' },
     { name: 'primaryPhone', label: 'Primary Phone', type: 'text' },

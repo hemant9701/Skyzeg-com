@@ -27,8 +27,8 @@ export default async function AdminShell({children}:{children:React.ReactNode}){
     <div className="min-h-screen bg-slate-950 text-slate-100 lg:grid lg:grid-cols-[270px_minmax(0,1fr)]">
       <aside className="border-b border-white/10 bg-slate-900/95 p-5 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
         <Link href="/admin" className="mb-6 flex items-center gap-3 text-lg font-bold text-white">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1C398E]">T</span>
-          Travel Admin
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1C398E]">SZ</span>
+          Skyzeg Travel Admin
         </Link>
         <nav className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-1">
           {navItems.map(({ label, href, icon: Icon }) => (

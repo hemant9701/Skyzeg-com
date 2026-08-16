@@ -40,8 +40,9 @@ const SiteSettingSchema = new Schema(
   {
     key: { type: String, default: 'main', unique: true },
     logoUrl: { type: String, default: '/images/logo.svg' },
+    logo2Url: { type: String, default: '/images/logo.svg' },
     faviconUrl: { type: String, default: '/icon.svg' },
-    primaryEmail: { type: String, default: 'hello@example.com' },
+    primaryEmail: { type: String, default: 'hello@skyzeg.com' },
     primaryPhone: { type: String, default: '+1 000 000 0000' },
     address: { type: String, default: '' },
     defaultCurrency: { type: String, default: 'USD' },

@@ -59,6 +59,7 @@ export const MenuUpsertSchema = z.object({
 export const SiteSettingUpsertSchema = z.object({
   key: z.string().default('main'),
   logoUrl: z.string().optional().or(z.literal('')),
+  logo2Url: z.string().optional().or(z.literal('')),
   faviconUrl: z.string().optional().or(z.literal('')),
   primaryEmail: z.string().email().optional().or(z.literal('')),
   primaryPhone: z.string().optional().or(z.literal('')),

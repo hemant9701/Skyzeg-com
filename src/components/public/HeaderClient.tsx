@@ -18,6 +18,7 @@ interface MenuItem {
 
 interface HeaderClientProps {
   logoUrl: string;
+  logo2Url: string;
   siteName: string;
   menuItems: MenuItem[];
   languages: { code: string; name: string }[];
@@ -31,7 +32,7 @@ const defaultMenuItems: MenuItem[] = [
   { url: '/contact', label: 'Contact' }
 ];
 
-export default function HeaderClient({ logoUrl, siteName, menuItems, languages, activeLanguage }: HeaderClientProps) {
+export default function HeaderClient({ logoUrl, logo2Url, siteName, menuItems, languages, activeLanguage }: HeaderClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const ui = getStrings(activeLanguage);
 
@@ -55,7 +56,10 @@ export default function HeaderClient({ logoUrl, siteName, menuItems, languages, 
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link className="flex items-center" href="/">
-          <Image src={logoUrl} alt={siteName || 'Skyzeg Travel'} width={100} height={46} priority />
+          <Image src={logoUrl} alt={siteName || 'Skyzeg Travel'} width={100} height={30} priority />
+          {logo2Url && (
+            <Image src={logo2Url} alt={siteName || 'Skyzeg Travel'} width={100} height={30} priority />
+          )}
         </Link>
 
         <button

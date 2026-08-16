@@ -22,6 +22,7 @@ export default async function Header() {
 
   const settingTranslation = pickTranslation(settings as any, languageCode) as any;
   const logoUrl = settings?.logoUrl || '/images/logo.svg';
+  const logo2Url = settings?.logo2Url || '/images/logo.svg';
   const menuItems = (menu?.items || [])
     .sort((a: any, b: any) => a.sortOrder - b.sortOrder)
     .map((item: any) => ({
@@ -58,7 +59,8 @@ export default async function Header() {
   return (
     <MegaMenuHeader
       logoUrl={logoUrl}
-      siteName={settingTranslation?.siteName || 'TravelNext'}
+      logo2Url={logo2Url}
+      siteName={settingTranslation?.siteName || 'Skyzeg Travel'}
       menuItems={toPlain(menuItems)}
       languages={toPlain(languages)}
       activeLanguage={languageCode}

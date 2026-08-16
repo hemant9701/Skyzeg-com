@@ -24,6 +24,7 @@ interface MegaColumn {
 
 interface MegaMenuHeaderProps {
   logoUrl: string;
+  logo2Url: string;
   siteName: string;
   menuItems: MenuItem[];
   languages: { code: string; name: string }[];
@@ -53,6 +54,7 @@ const DEFAULT_ITEMS: MenuItem[] = [
 export default function MegaMenuHeader({
   logoUrl,
   siteName,
+  logo2Url,
   menuItems,
   languages,
   activeLanguage,
@@ -261,10 +263,10 @@ export default function MegaMenuHeader({
 
   return (
     <nav
-      className={`sticky top-0 z-50 backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'border-b border-slate-200 bg-white/95 shadow-sm'
-          : 'border-b border-white/10 bg-transparent shadow-none'
+          : 'border-b border-white/10 bg-white/5 shadow-none'
       }`}
       onMouseLeave={() => setHovered(null)}
     >
@@ -274,7 +276,14 @@ export default function MegaMenuHeader({
 
           {/* Logo */}
           <Link className="flex flex-shrink-0 items-center" href="/">
-            <Image src={logoUrl} alt={siteName || 'TravelNext'} width={100} height={46} priority />
+            <Image
+              src={isScrolled ? logoUrl || logo2Url : logo2Url}
+              alt={siteName || 'Skyzeg Travel'}
+              width={100}
+              height={30}
+              className="transition-all duration-300"
+              priority
+            />
           </Link>
 
           {/* Desktop nav items */}
@@ -293,10 +302,10 @@ export default function MegaMenuHeader({
                 >
                   <Link
                     href={item.url}
-                    className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition
+                    className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-md font-bold transition
                       ${active
                         ? isScrolled
-                          ? 'bg-slate-100 text-[#0F172A]'
+                          ? 'bg-slate-100 text-white'
                           : 'bg-white/15 text-white'
                         : isScrolled
                           ? 'text-[#334155] hover:bg-slate-100 hover:text-[#0F172A]'

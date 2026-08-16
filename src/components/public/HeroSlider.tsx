@@ -20,15 +20,15 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
   if (!slidesList.length) {
     return (
-      <section className="relative min-h-[520px] overflow-hidden bg-[var(--travel-light)] text-white">
+      <section className="relative min-h-[600px] overflow-hidden bg-[var(--travel-light)] text-white">
         <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url(/images/placeholder.svg)', backgroundAttachment: 'fixed' }} aria-hidden="true" />
         <div className="absolute inset-0 bg-slate-950/55" aria-hidden="true" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-[#F1F5F9]/60 to-[#F1F5F9]" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[520px] max-w-7xl items-center px-4 py-24 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[600px] max-w-7xl items-center px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div className="max-w-2xl pb-10">
             <h1 className="text-4xl font-semibold text-white sm:text-5xl">{ui.heroTitle}</h1>
             <p className="mt-4 text-lg text-white/90">{ui.heroSubtitle}</p>
-            <Link href="/trips" className="mt-8 inline-flex rounded-full bg-[#1C398E] px-5 py-3 font-semibold text-white transition hover:bg-[#152d73]">{ui.heroCta}</Link>
+            <Link href="/trips" className="mt-8 inline-flex rounded-full bg-[#1C398E] px-5 py-1 font-semibold text-white transition hover:bg-[#152d73]">{ui.heroCta}</Link>
           </div>
         </div>
       </section>
@@ -37,7 +37,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
   return (
     <div className="relative overflow-hidden bg-[var(--travel-light)]">
-      <div className="relative h-[70vh] min-h-[520px] overflow-hidden">
+      <div className="relative h-[75vh] min-h-[600px] overflow-hidden">
         {slidesList.map((slide, index) => {
           const t = pickTranslation(slide, languageCode) as any;
           const imageSrc = slide.imageUrl || '/images/placeholder.svg';

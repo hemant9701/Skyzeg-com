@@ -104,6 +104,7 @@ async function main() {
       $set: {
         key: 'main',
         logoUrl: settings.logoUrl || '/images/logo.svg',
+        logo2Url: settings.logo2Url || settings.logoUrl || '/images/logo.svg',
         faviconUrl: settings.faviconUrl || '/icon.svg',
         primaryEmail: settings.contactEmail || '',
         primaryPhone: settings.whatsAppNumber || '',

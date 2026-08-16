@@ -66,6 +66,7 @@ export default async function HomePage() {
               src="/images/placeholder-1.webp"
               alt="Travelers exploring scenic destination"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/75 via-slate-900/30 to-transparent p-6">

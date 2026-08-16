@@ -17,7 +17,7 @@ export default async function Footer() {
               <h6 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white">{column.title}</h6>
               <ul className="grid gap-2 text-sm">
                 {(column.links || []).map((link: any) => (
-                  <li key={link.url}><Link href={link.url} className="transition hover:text-white">{link.label}</Link></li>
+                  <li key={link.label}><Link href={link.url} className="transition hover:text-white">{link.label}</Link></li>
                 ))}
               </ul>
             </div>
