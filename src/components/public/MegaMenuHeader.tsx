@@ -327,13 +327,13 @@ export default function MegaMenuHeader({
 
           {/* Right actions */}
           <div className="hidden items-center gap-2 md:flex">
-            <LanguageSwitcher languages={languages} active={activeLanguage} />
             <Link
               className="rounded-full bg-[#1C398E] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#152d73]"
               href="/tailor-made"
             >
               {ui.navBookNow}
             </Link>
+            <LanguageSwitcher languages={languages} active={activeLanguage} />
           </div>
 
           {/* Mobile toggle */}

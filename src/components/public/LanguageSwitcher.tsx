@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { languageCookieName } from '@/lib/language-cookie';
+import { Languages } from 'lucide-react';
 
 export default function LanguageSwitcher({ languages, active }: { languages: { code: string; name: string; short?: string }[]; active: string }) {
   const router = useRouter();
@@ -31,15 +32,16 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
 
   return (
     <div className="relative inline-flex" ref={containerRef}>
-      <button
-        className="rounded-full px-3 bg-slate-100 py-2 text-sm font-medium text-[#334155] transition hover:bg-slate-100"
+      <a
+        className="flex items-center gap-1 cursor-pointer rounded-full font-medium bg-white px-2 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
         type="button"
         aria-expanded={open}
         aria-haspopup="listbox"
         onClick={() => setOpen((value) => !value)}
       >
-        {current?.short || current?.name || 'Language'}
-      </button>
+        <Languages width={16} height={16} /> {current?.short || current?.name || 'Language'}
+      </a>
+
       {open && (
         <div className="absolute right-0 z-20 mt-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg" role="listbox">
           {languages.map((language) => (
@@ -49,8 +51,8 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
               className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-100"
               onClick={() => changeLanguage(language.code)}
             >
-              {language.code === active && <span className="mr-2 text-[#1C398E]">✓</span>}
               {language.short || language.name}
+              {language.code === active && <span className="ml-2 text-[#1C398E]">✓</span>}
             </button>
           ))}
         </div>
