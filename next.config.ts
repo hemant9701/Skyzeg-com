@@ -1,9 +1,11 @@
 import type { NextConfig } from 'next';
 
+const isVercel = process.env.VERCEL === '1';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  output: 'standalone',
+  ...(isVercel ? {} : { output: 'standalone' }),
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
