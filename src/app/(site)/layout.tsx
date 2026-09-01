@@ -8,7 +8,7 @@ export default function SiteLayout({ children }: Readonly<{ children: React.Reac
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="site-main">{children}</main>
       <NewsletterSection />
       <Footer />
       <script

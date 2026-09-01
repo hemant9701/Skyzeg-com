@@ -20,11 +20,11 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
   if (!slidesList.length) {
     return (
-      <section className="relative min-h-[600px] overflow-hidden bg-[var(--travel-light)] text-white">
-        <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url(/images/placeholder.svg)', backgroundAttachment: 'fixed' }} aria-hidden="true" />
+      <section className="site-hero relative min-h-[560px] overflow-hidden bg-[var(--travel-light)] text-white sm:min-h-[600px]">
+        <div className="absolute inset-0 bg-center bg-cover md:bg-fixed" style={{ backgroundImage: 'url(/images/placeholder.svg)' }} aria-hidden="true" />
         <div className="absolute inset-0 bg-slate-950/55" aria-hidden="true" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-[#F1F5F9]/60 to-[#F1F5F9]" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[600px] max-w-7xl items-center px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <div className="site-hero-slider-content relative mx-auto flex min-h-[560px] max-w-7xl items-center px-4 sm:min-h-[600px] sm:px-6 lg:px-8">
           <div className="max-w-2xl pb-10">
             <h1 className="text-4xl font-semibold text-white sm:text-5xl">{ui.heroTitle}</h1>
             <p className="mt-4 text-lg text-white/90">{ui.heroSubtitle}</p>
@@ -36,8 +36,8 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
   }
 
   return (
-    <div className="relative overflow-hidden bg-[var(--travel-light)]">
-      <div className="relative h-[75vh] min-h-[600px] overflow-hidden">
+    <div className="site-hero relative overflow-hidden bg-[var(--travel-light)]">
+      <div className="relative h-[75vh] min-h-[560px] overflow-hidden sm:min-h-[600px]">
         {slidesList.map((slide, index) => {
           const t = pickTranslation(slide, languageCode) as any;
           const imageSrc = slide.imageUrl || '/images/placeholder.svg';
@@ -45,13 +45,13 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
           return (
             <section
-              className={`absolute inset-0 h-full w-full bg-fixed bg-center bg-cover transition-opacity duration-700 ${isActive ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-              style={{ backgroundImage: `url(${imageSrc})`, backgroundAttachment: 'fixed' }}
+              className={`absolute inset-0 h-full w-full bg-center bg-cover transition-opacity duration-700 md:bg-fixed ${isActive ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+              style={{ backgroundImage: `url(${imageSrc})` }}
               key={String(slide._id)}
             >
               <div className="absolute inset-0 bg-slate-950/55" />
               <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-[#F1F5F9]/60 to-[#F1F5F9]" />
-              <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 py-24 sm:px-6 lg:px-8">
+              <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
                 <div className="max-w-2xl">
                   <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-[#0F172A]">{ui.heroBadge}</span>
                   <h1 className="text-4xl font-semibold text-white sm:text-5xl">{t?.title || ui.heroTitle}</h1>

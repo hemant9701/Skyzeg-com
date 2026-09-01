@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, X, MapPin, Plane, BookOpen, Compass, Mail, Home, Tag } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { getStrings } from '@/lib/ui-strings';
@@ -66,6 +67,7 @@ export default function MegaMenuHeader({
   const [mobileActive, setMobileActive]   = useState<string | null>(null);
   const [hovered, setHovered]             = useState<string | null>(null);
   const [isScrolled, setIsScrolled]       = useState(false);
+  const pathname = usePathname();
   const ui = getStrings(activeLanguage);
   const normalizedItems = (menuItems || [])
     .filter((item) => item.isVisible !== false)
@@ -97,6 +99,19 @@ export default function MegaMenuHeader({
 
   const topLevelMenuItems = normalizedItems.filter((item) => !item.parentId);
   const items = topLevelMenuItems.length > 0 ? topLevelMenuItems : resolvedDefaults;
+  const solidHeaderRoutes = new Set([
+    '/trips',
+    '/destinations',
+    '/travel-types',
+    '/categories',
+    '/blogs',
+    '/contact',
+    '/tailor-made'
+  ]);
+  const shouldUseTransparentHeader =
+    pathname === '/' ||
+    (!solidHeaderRoutes.has(pathname) && !pathname.startsWith('/booking'));
+  const solidHeader = isScrolled || mobileOpen || !shouldUseTransparentHeader;
 
   /** Build mega-panel columns purely from live prop data */
   function getColumns(url: string): MegaColumn[] | null {
@@ -264,7 +279,7 @@ export default function MegaMenuHeader({
   return (
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled
+        solidHeader
           ? 'border-b border-slate-200 bg-white/95 shadow-sm'
           : 'border-b border-white/10 bg-white/5 shadow-none'
       }`}
@@ -277,7 +292,7 @@ export default function MegaMenuHeader({
           {/* Logo */}
           <Link className="flex flex-shrink-0 items-center" href="/">
             <Image
-              src={isScrolled ? logoUrl || logo2Url : logo2Url}
+              src={solidHeader ? logoUrl || logo2Url : logo2Url || logoUrl}
               alt={siteName || 'Skyzeg Travel'}
               width={100}
               height={30}
@@ -304,10 +319,10 @@ export default function MegaMenuHeader({
                     href={item.url}
                     className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-md font-bold transition
                       ${active
-                        ? isScrolled
-                          ? 'bg-slate-100 text-white'
+                        ? solidHeader
+                          ? 'bg-slate-100 text-[#0F172A]'
                           : 'bg-white/15 text-white'
-                        : isScrolled
+                        : solidHeader
                           ? 'text-[#334155] hover:bg-slate-100 hover:text-[#0F172A]'
                           : 'text-white/90 hover:bg-white/10 hover:text-white'}`}
                   >
@@ -340,7 +355,7 @@ export default function MegaMenuHeader({
           <button
             type="button"
             className={`rounded-full border p-2 md:hidden transition ${
-              isScrolled
+              solidHeader
                 ? 'border-slate-300 text-[#334155] hover:bg-slate-100'
                 : 'border-white/20 text-white hover:bg-white/10'
             }`}

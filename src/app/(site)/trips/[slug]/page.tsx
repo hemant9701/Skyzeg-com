@@ -101,7 +101,7 @@ export default async function TripDetailsPage({ params }: Props) {
 
   return (
     <>
-      <HeroBanner imageSrc={trip.heroImage || '/images/placeholder.svg'} minHeightClassName="min-h-[480px]">
+      <HeroBanner imageSrc={trip.heroImage || '/images/placeholder.svg'} minHeightClassName="min-h-[520px]">
         <div className="mb-3 flex flex-wrap items-center gap-3 text-sm text-white/70">
           {trip.durationDays && (
             <span className="flex items-center gap-1.5">
@@ -114,20 +114,20 @@ export default async function TripDetailsPage({ params }: Props) {
             </span>
           )}
         </div>
-        <h1 className="text-4xl font-bold text-white sm:text-5xl">{t?.title}</h1>
+        <h1 className="text-3xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{t?.title}</h1>
         {t?.summary && (
           <p className="mt-4 max-w-xl text-lg text-white/90">{strip(t.summary).slice(0, 160)}</p>
         )}
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
             href={`/booking/${trip.slug}`}
-            className="inline-flex items-center gap-2 rounded-full bg-[#C5A880] px-6 py-3 font-semibold text-[#0F172A] transition hover:bg-[#b8956a]"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C5A880] px-6 py-3 font-semibold text-[#0F172A] transition hover:bg-[#b8956a]"
           >
             {ui.tripsBookThis}
           </Link>
           <Link
             href="#trip-content"
-            className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 font-medium text-white transition hover:bg-white/10"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3 font-medium text-white transition hover:bg-white/10"
           >
             {ui.tripsViewDetails}
           </Link>
@@ -135,8 +135,8 @@ export default async function TripDetailsPage({ params }: Props) {
       </HeroBanner>
 
       {/* ── Content + Sidebar ────────────────────────────────── */}
-      <section id="trip-content" className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,2fr)_300px]">
+      <section id="trip-content" className="scroll-mt-header px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(280px,300px)] lg:gap-10">
 
           {/* Tabbed content */}
           <div>
@@ -152,7 +152,7 @@ export default async function TripDetailsPage({ params }: Props) {
           </div>
 
           {/* Booking sidebar */}
-          <aside className="self-start lg:sticky lg:top-24">
+          <aside className="self-start lg:sticky site-sticky-under-header">
             {/* Price card */}
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-md">
               <p className="text-sm font-medium text-[#64748B]">{ui.tripsStartingFrom}</p>

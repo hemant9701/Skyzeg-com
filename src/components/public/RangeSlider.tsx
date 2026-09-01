@@ -25,6 +25,9 @@ export default function RangeSlider({
   fromLabel = 'From',
   toLabel = 'To'
 }: RangeSliderProps) {
+  const range = Math.max(max - min, 1);
+  const hasRange = max > min;
+
   return (
     <div className="w-full space-y-4">
       {label && <label className="block text-xs font-medium text-[#334155]">{label}</label>}
@@ -33,12 +36,12 @@ export default function RangeSlider({
       <div className="flex items-center justify-between rounded-lg bg-blue-50 px-4 py-3 border border-blue-100">
         <div className="text-center">
           <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{fromLabel}</p>
-          <p className="text-lg font-bold text-[#1C398E]">{format(minValue)}</p>
+          <p className="text-base font-bold text-[#1C398E] sm:text-lg">{format(minValue)}</p>
         </div>
         <div className="h-8 w-px bg-blue-200" />
         <div className="text-center">
           <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{toLabel}</p>
-          <p className="text-lg font-bold text-[#1C398E]">{format(maxValue)}</p>
+          <p className="text-base font-bold text-[#1C398E] sm:text-lg">{format(maxValue)}</p>
         </div>
       </div>
 
@@ -49,8 +52,8 @@ export default function RangeSlider({
           <div
             className="absolute h-5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 shadow-md"
             style={{
-              left: `${((minValue - min) / (max - min)) * 100}%`,
-              width: `${((maxValue - minValue) / (max - min)) * 100}%`
+              left: `${((minValue - min) / range) * 100}%`,
+              width: `${((maxValue - minValue) / range) * 100}%`
             }}
           />
         </div>
@@ -63,6 +66,7 @@ export default function RangeSlider({
             min={min}
             max={max}
             value={minValue}
+            disabled={!hasRange}
             onChange={(e) => {
               const newMin = Number(e.target.value);
               if (newMin <= maxValue) {
@@ -82,6 +86,7 @@ export default function RangeSlider({
             min={min}
             max={max}
             value={maxValue}
+            disabled={!hasRange}
             onChange={(e) => {
               const newMax = Number(e.target.value);
               if (newMax >= minValue) {

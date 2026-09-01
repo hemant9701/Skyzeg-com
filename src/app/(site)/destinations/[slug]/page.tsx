@@ -34,8 +34,8 @@ export default async function DestinationDetailsPage({ params }: Props) {
   return (
     <>
       <HeroBanner imageSrc={destination.heroImage || '/images/placeholder.svg'}>
-        <h1 className="text-4xl font-semibold sm:text-5xl">{t?.title}</h1>
-        <p className="mt-4 text-lg text-white/90">{destination.country}{destination.city ? `, ${destination.city}` : ''}</p>
+        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
+        <p className="mt-3 text-base text-white/90 sm:text-lg">{destination.country}{destination.city ? `, ${destination.city}` : ''}</p>
       </HeroBanner>
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">

@@ -34,7 +34,7 @@ export default async function TravelTypeDetailsPage({ params }: Props) {
   return (
     <>
       <HeroBanner imageSrc={travelTypes.heroImage || '/images/placeholder.svg'}>
-        <h1 className="text-4xl font-semibold sm:text-5xl">{t?.title}</h1>
+        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
       </HeroBanner>
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">

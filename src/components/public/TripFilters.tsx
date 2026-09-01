@@ -182,9 +182,9 @@ export default function TripFilters({
   const ui = getStrings(languageCode);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Mobile Filter Toggle */}
-      <div className="sticky top-0 z-20 bg-white shadow-sm lg:hidden">
+      <div className="site-sticky-flush-header sticky z-30 bg-white shadow-sm lg:hidden">
         <div className="flex items-center justify-between px-4 py-4">
           <h2 className="font-semibold text-[#0F172A]">{ui.tripsFilters}</h2>
           <button
@@ -204,23 +204,23 @@ export default function TripFilters({
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-[2.75rem] font-bold text-[#1C398E] md:text-5xl">{ui.tripsExplore}</h1>
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          <h1 className="text-3xl font-bold leading-tight text-[#1C398E] sm:text-4xl md:text-5xl">{ui.tripsExplore}</h1>
           <p className="mt-3 text-lg text-[#334155]">
             {ui.tripsDiscover}
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-4">
+        <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]">
           {/* Sidebar Filters */}
           <aside
-            className={`lg:sticky lg:top-4 ${
+            className={`lg:sticky lg:self-start site-sticky-under-header ${
               showMobileFilters ? 'block' : 'hidden lg:block'
             }`}
           >
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm max-h-[calc(100vh-5rem)] overflow-y-auto">
+            <div className="site-filter-panel overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2"><DollarSign size={20} /> {ui.tripsFilters}</h3>
                 <button
@@ -396,9 +396,9 @@ export default function TripFilters({
           </aside>
 
           {/* Main Content */}
-          <main className="lg:col-span-3">
+          <main className="min-w-0">
             {/* Results Summary */}
-            <div className="mb-8 flex items-center justify-between rounded-xl bg-white p-4 shadow-sm">
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-4 shadow-sm">
               <div className="flex items-center gap-2">
                 <TrendingUp size={20} className="text-[#1C398E]" />
                 <p className="text-sm font-medium text-[#64748B]">
@@ -410,7 +410,7 @@ export default function TripFilters({
 
             {/* Trips Grid */}
             {filteredTrips.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {filteredTrips.map((trip) => (
                   <TripCard
                     trip={trip}
