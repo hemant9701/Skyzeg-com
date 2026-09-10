@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { File, Folder } from 'lucide-react';
@@ -53,14 +53,14 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
     <div className="grid gap-2">
       {value && <img src={value} alt="Preview" className="h-32 rounded-2xl object-cover" />}
       <input
-        className="rounded-2xl w-2/3 border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]"
+        className="rounded-2xl w-2/3 border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary"
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder="/images/placeholder.svg"
       />
       <div className="flex gap-2">
         <input
-          className="flex-1 w-1/2 rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1C398E]"
+          className="flex-1 w-1/2 rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary"
           type="file"
           accept="image/*,.svg,.pdf,video/*"
           onChange={(e) => upload(e.target.files?.[0])}

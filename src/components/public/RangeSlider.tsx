@@ -30,27 +30,27 @@ export default function RangeSlider({
 
   return (
     <div className="w-full space-y-4">
-      {label && <label className="block text-xs font-medium text-[#334155]">{label}</label>}
+      {label && <label className="block text-xs font-medium text-body">{label}</label>}
       
       {/* Display values */}
-      <div className="flex items-center justify-between rounded-lg bg-blue-50 px-4 py-3 border border-blue-100">
+      <div className="flex items-center justify-between rounded-lg bg-light px-4 py-3 border border-line-strong">
         <div className="text-center">
-          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{fromLabel}</p>
-          <p className="text-base font-bold text-[#1C398E] sm:text-lg">{format(minValue)}</p>
+          <p className="text-xs text-subtle uppercase tracking-wide font-medium">{fromLabel}</p>
+          <p className="text-base font-bold text-primary sm:text-lg">{format(minValue)}</p>
         </div>
-        <div className="h-8 w-px bg-blue-200" />
+        <div className="h-8 w-px bg-line-strong" />
         <div className="text-center">
-          <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">{toLabel}</p>
-          <p className="text-base font-bold text-[#1C398E] sm:text-lg">{format(maxValue)}</p>
+          <p className="text-xs text-subtle uppercase tracking-wide font-medium">{toLabel}</p>
+          <p className="text-base font-bold text-primary sm:text-lg">{format(maxValue)}</p>
         </div>
       </div>
 
       {/* Slider container */}
       <div className="px-1">
-        <div className="relative overflow-hidden h-3 rounded-full bg-gradient-to-r from-slate-200 to-slate-300 shadow-inner">
+        <div className="relative overflow-hidden h-3 rounded-full bg-gradient-to-r from-line to-line-strong shadow-inner">
           {/* Progress bar */}
           <div
-            className="absolute h-5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 shadow-md"
+            className="absolute h-5 rounded-full bg-gradient-to-r from-primary to-primary-hover shadow-md"
             style={{
               left: `${((minValue - min) / range) * 100}%`,
               width: `${((maxValue - minValue) / range) * 100}%`
@@ -112,44 +112,44 @@ export default function RangeSlider({
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+          background: linear-gradient(135deg, #1C398E 0%, #152D73 100%);
           cursor: grab;
           border: 3px solid white;
-          box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+          box-shadow: 0 2px 8px rgba(28, 57, 142, 0.4);
           transition: all 0.2s ease;
         }
 
         input[type='range']::-webkit-slider-thumb:active {
           cursor: grabbing;
           transform: scale(1.1);
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+          box-shadow: 0 4px 12px rgba(28, 57, 142, 0.6);
         }
 
         input[type='range']::-webkit-slider-thumb:hover {
-          background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+          background: linear-gradient(135deg, #152D73 0%, #12244f 100%);
+          box-shadow: 0 4px 12px rgba(28, 57, 142, 0.6);
         }
 
         input[type='range']::-moz-range-thumb {
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+          background: linear-gradient(135deg, #1C398E 0%, #152D73 100%);
           cursor: grab;
           border: 3px solid white;
-          box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+          box-shadow: 0 2px 8px rgba(28, 57, 142, 0.4);
           transition: all 0.2s ease;
         }
 
         input[type='range']::-moz-range-thumb:active {
           cursor: grabbing;
           transform: scale(1.1);
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+          box-shadow: 0 4px 12px rgba(28, 57, 142, 0.6);
         }
 
         input[type='range']::-moz-range-thumb:hover {
-          background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+          background: linear-gradient(135deg, #152D73 0%, #12244f 100%);
+          box-shadow: 0 4px 12px rgba(28, 57, 142, 0.6);
         }
 
         input[type='range']::-moz-range-track {

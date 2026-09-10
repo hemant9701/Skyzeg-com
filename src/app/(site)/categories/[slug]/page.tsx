@@ -43,7 +43,7 @@ export default async function CategoryDetailsPage({ params }: Props) {
 
   return (
     <>
-      <HeroBanner imageSrc={(category as any).image || '/images/placeholder.svg'}>
+      <HeroBanner imageSrc={(category as any).image || '/images/heroBannerImg.webp'}>
         <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
       </HeroBanner>
 
@@ -66,11 +66,11 @@ export default async function CategoryDetailsPage({ params }: Props) {
       </section>
 
       {/* Trips in this category */}
-      <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
+      <section className="bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-[#1C398E]">{ui.categoriesTripsIn} {t?.title}</h2>
+          <h2 className="text-2xl font-semibold text-primary">{ui.categoriesTripsIn} {t?.title}</h2>
           {(trips as any[]).length === 0 ? (
-            <p className="mt-6 text-slate-500">{ui.categoriesNoTrips}</p>
+            <p className="mt-6 text-muted">{ui.categoriesNoTrips}</p>
           ) : (
             <div className="mt-6 grid gap-6 md:grid-cols-3 xl:grid-cols-4">
               {(trips as any[]).map((trip) => (
@@ -83,9 +83,9 @@ export default async function CategoryDetailsPage({ params }: Props) {
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-[#1C398E]">{ui.categoriesBlogsIn} {t?.title}</h2>
+          <h2 className="text-2xl font-semibold text-primary">{ui.categoriesBlogsIn} {t?.title}</h2>
           {(blogs as any[]).length === 0 ? (
-            <p className="mt-6 text-slate-500">{ui.categoriesNoBlogs}</p>
+            <p className="mt-6 text-muted">{ui.categoriesNoBlogs}</p>
           ) : (
             <div className="mt-6 grid gap-6 md:grid-cols-3 xl:grid-cols-4">
               {(blogs as any[]).map((blog) => (

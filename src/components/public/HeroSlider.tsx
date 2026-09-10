@@ -20,15 +20,15 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
   if (!slidesList.length) {
     return (
-      <section className="site-hero relative min-h-[560px] overflow-hidden bg-[var(--travel-light)] text-white sm:min-h-[600px]">
+      <section className="site-hero relative min-h-[560px] overflow-hidden bg-[var(--color-light)] text-white sm:min-h-[600px]">
         <div className="absolute inset-0 bg-center bg-cover md:bg-fixed" style={{ backgroundImage: 'url(/images/placeholder.svg)' }} aria-hidden="true" />
-        <div className="absolute inset-0 bg-slate-950/55" aria-hidden="true" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-[#F1F5F9]/60 to-[#F1F5F9]" aria-hidden="true" />
+        <div className="absolute inset-0 bg-dark/55" aria-hidden="true" />
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" aria-hidden="true" />
         <div className="site-hero-slider-content relative mx-auto flex min-h-[560px] max-w-7xl items-center px-4 sm:min-h-[600px] sm:px-6 lg:px-8">
           <div className="max-w-2xl pb-10">
             <h1 className="text-4xl font-semibold text-white sm:text-5xl">{ui.heroTitle}</h1>
             <p className="mt-4 text-lg text-white/90">{ui.heroSubtitle}</p>
-            <Link href="/trips" className="mt-8 inline-flex rounded-full bg-[#1C398E] px-5 py-1 font-semibold text-white transition hover:bg-[#152d73]">{ui.heroCta}</Link>
+            <Link href="/trips" className="mt-8 inline-flex rounded-full bg-primary px-5 py-1 font-semibold text-white transition hover:bg-primary-hover">{ui.heroCta}</Link>
           </div>
         </div>
       </section>
@@ -36,7 +36,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
   }
 
   return (
-    <div className="site-hero relative overflow-hidden bg-[var(--travel-light)]">
+    <div className="site-hero relative overflow-hidden bg-[var(--color-light)]">
       <div className="relative h-[75vh] min-h-[560px] overflow-hidden sm:min-h-[600px]">
         {slidesList.map((slide, index) => {
           const t = pickTranslation(slide, languageCode) as any;
@@ -49,18 +49,18 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
               style={{ backgroundImage: `url(${imageSrc})` }}
               key={String(slide._id)}
             >
-              <div className="absolute inset-0 bg-slate-950/55" />
-              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-[#F1F5F9]/60 to-[#F1F5F9]" />
+              <div className="absolute inset-0 bg-dark/55" />
+              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" />
               <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
                 <div className="max-w-2xl">
-                  <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-[#0F172A]">{ui.heroBadge}</span>
+                  <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-dark">{ui.heroBadge}</span>
                   <h1 className="text-4xl font-semibold text-white sm:text-5xl">{t?.title || ui.heroTitle}</h1>
                   <p className="mt-4 text-lg text-white/90">
                     {typeof t?.subtitle === 'string'
                       ? t.subtitle.replace(/<[^>]*>/g, '')
                       : ui.heroSubtitle}
                   </p>
-                  <Link href={slide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-[#1C398E] px-5 py-3 font-semibold text-white transition hover:bg-[#152d73]">
+                  <Link href={slide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primary-hover">
                       {t?.buttonText || ui.heroCtaDefault}
                   </Link>
                 </div>
@@ -72,12 +72,12 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
 
       {slidesList.length > 1 && (
         <>
-          <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-slate-900/60 px-3 py-2 backdrop-blur">
+          <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-dark/60 px-3 py-2 backdrop-blur">
             {slidesList.map((slide, index) => (
               <button
                 key={String(slide._id)}
                 type="button"
-                className={`h-2.5 w-2.5 rounded-full transition ${index === activeIndex ? 'bg-[#F1F5F9]' : 'bg-white/60'}`}
+                className={`h-2.5 w-2.5 rounded-full transition ${index === activeIndex ? 'bg-light' : 'bg-white/60'}`}
                 onClick={() => setActiveIndex(index)}
                 aria-label={`${ui.carouselGoToSlide} ${index + 1}`}
               />

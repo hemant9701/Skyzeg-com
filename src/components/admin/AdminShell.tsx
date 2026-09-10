@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { getCurrentUserFromCookies } from '@/lib/auth';
 import LogoutButton from './LogoutButton';
 import { LayoutDashboard, FileText, PenTool, MapPin, Compass, Plane, Tag, Calendar, Image as ImageIcon, Film, MessageSquare, HelpCircle, Menu, Settings, Users } from 'lucide-react';
@@ -27,7 +27,7 @@ export default async function AdminShell({children}:{children:React.ReactNode}){
     <div className="min-h-screen bg-slate-950 text-slate-100 lg:grid lg:grid-cols-[270px_minmax(0,1fr)]">
       <aside className="border-b border-white/10 bg-slate-900/95 p-5 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
         <Link href="/admin" className="mb-6 flex items-center gap-3 text-lg font-bold text-white">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1C398E]">SZ</span>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary">SZ</span>
           Skyzeg Travel Admin
         </Link>
         <nav className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-1">
@@ -35,9 +35,9 @@ export default async function AdminShell({children}:{children:React.ReactNode}){
             <Link 
               href={href} 
               key={href} 
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 hover:translate-x-0.5 hover:bg-[#1C398E]/10 hover:text-white transition"
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-300 hover:translate-x-0.5 hover:bg-primary/10 hover:text-white transition"
             >
-              <Icon size={18} className="text-[#C5A880] flex-shrink-0" />
+              <Icon size={18} className="text-accent flex-shrink-0" />
               {label}
             </Link>
           ))}

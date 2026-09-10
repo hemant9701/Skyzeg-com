@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, X, MapPin, Plane, BookOpen, Compass, Mail, Home, Tag } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { getStrings } from '@/lib/ui-strings';
@@ -67,7 +66,6 @@ export default function MegaMenuHeader({
   const [mobileActive, setMobileActive]   = useState<string | null>(null);
   const [hovered, setHovered]             = useState<string | null>(null);
   const [isScrolled, setIsScrolled]       = useState(false);
-  const pathname = usePathname();
   const ui = getStrings(activeLanguage);
   const normalizedItems = (menuItems || [])
     .filter((item) => item.isVisible !== false)
@@ -99,19 +97,8 @@ export default function MegaMenuHeader({
 
   const topLevelMenuItems = normalizedItems.filter((item) => !item.parentId);
   const items = topLevelMenuItems.length > 0 ? topLevelMenuItems : resolvedDefaults;
-  const solidHeaderRoutes = new Set([
-    '/trips',
-    '/destinations',
-    '/travel-types',
-    '/categories',
-    '/blogs',
-    '/contact',
-    '/tailor-made'
-  ]);
-  const shouldUseTransparentHeader =
-    pathname === '/' ||
-    (!solidHeaderRoutes.has(pathname) && !pathname.startsWith('/booking'));
-  const solidHeader = isScrolled || mobileOpen || !shouldUseTransparentHeader;
+  // Every page renders a HeroBanner/HeroSlider, so the nav stays transparent until the user scrolls.
+  const solidHeader = isScrolled || mobileOpen;
 
   /** Build mega-panel columns purely from live prop data */
   function getColumns(url: string): MegaColumn[] | null {
@@ -280,7 +267,7 @@ export default function MegaMenuHeader({
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         solidHeader
-          ? 'border-b border-slate-200 bg-white/95 shadow-sm'
+          ? 'border-b border-line bg-white/95 shadow-sm'
           : 'border-b border-white/10 bg-white/5 shadow-none'
       }`}
       onMouseLeave={() => setHovered(null)}
@@ -320,10 +307,10 @@ export default function MegaMenuHeader({
                     className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-md font-bold transition
                       ${active
                         ? solidHeader
-                          ? 'bg-slate-100 text-[#0F172A]'
+                          ? 'bg-light text-dark'
                           : 'bg-white/15 text-white'
                         : solidHeader
-                          ? 'text-[#334155] hover:bg-slate-100 hover:text-[#0F172A]'
+                          ? 'text-body hover:bg-light hover:text-dark'
                           : 'text-white/90 hover:bg-white/10 hover:text-white'}`}
                   >
                     <Icon size={16} />
@@ -343,7 +330,7 @@ export default function MegaMenuHeader({
           {/* Right actions */}
           <div className="hidden items-center gap-2 md:flex">
             <Link
-              className="rounded-full bg-[#1C398E] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#152d73]"
+              className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-primary-hover"
               href="/tailor-made"
             >
               {ui.navBookNow}
@@ -356,7 +343,7 @@ export default function MegaMenuHeader({
             type="button"
             className={`rounded-full border p-2 md:hidden transition ${
               solidHeader
-                ? 'border-slate-300 text-[#334155] hover:bg-slate-100'
+                ? 'border-line-strong text-body hover:bg-light'
                 : 'border-white/20 text-white hover:bg-white/10'
             }`}
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -370,7 +357,7 @@ export default function MegaMenuHeader({
       {/* ── Desktop mega-panel (full-width, never overflows) ── */}
       {hoveredColumns && (
         <div
-          className="absolute inset-x-0 top-full z-40 border-t border-slate-100 bg-white shadow-2xl"
+          className="absolute inset-x-0 top-full z-40 border-t border-light bg-white shadow-2xl"
           onMouseEnter={() => setHovered(hovered)}
         >
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -385,7 +372,7 @@ export default function MegaMenuHeader({
             >
               {hoveredColumns.map((col, idx) => (
                 <div key={idx}>
-                  <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#1C398E]">
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-primary">
                     {col.title}
                   </h3>
                   <ul className="space-y-2.5">
@@ -394,7 +381,7 @@ export default function MegaMenuHeader({
                         <Link
                           href={link.url}
                           onClick={() => setHovered(null)}
-                          className="inline-block text-sm font-medium text-[#64748B] transition-all hover:translate-x-1 hover:text-[#1C398E]"
+                          className="inline-block text-sm font-medium text-muted transition-all hover:translate-x-1 hover:text-primary"
                         >
                           {link.label}
                         </Link>
@@ -406,14 +393,14 @@ export default function MegaMenuHeader({
             </div>
 
             {/* Bottom CTA bar */}
-            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-              <p className="text-xs font-medium text-[#64748B]">
+            <div className="mt-6 flex items-center justify-between border-t border-light pt-4">
+              <p className="text-xs font-medium text-muted">
                 {ui.megaFindPerfectJourney}
               </p>
               <Link
                 href={hovered ?? '/trips'}
                 onClick={() => setHovered(null)}
-                className="inline-flex items-center gap-2 rounded-full bg-[#1C398E] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#152d73]"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-primary-hover"
               >
                 {ui.megaExploreAll} <ChevronDown size={14} className="rotate-[-90deg]" />
               </Link>
@@ -424,7 +411,7 @@ export default function MegaMenuHeader({
 
       {/* ── Mobile menu ───────────────────────────────────────── */}
       {mobileOpen && (
-        <div className="border-t border-slate-200 bg-white md:hidden">
+        <div className="border-t border-line bg-white md:hidden">
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
             <ul className="space-y-1">
               {items.map((item) => {
@@ -439,7 +426,7 @@ export default function MegaMenuHeader({
                     {columns ? (
                       <button
                         onClick={() => setMobileActive(isOpen ? null : item.url)}
-                        className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium text-[#334155] transition hover:bg-slate-100"
+                        className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium text-body transition hover:bg-light"
                       >
                         <span className="flex items-center gap-2"><Icon size={16} />{label}</span>
                         <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -447,7 +434,7 @@ export default function MegaMenuHeader({
                     ) : (
                       <Link
                         href={item.url}
-                        className="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-[#334155] transition hover:bg-slate-100"
+                        className="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-body transition hover:bg-light"
                         onClick={() => setMobileOpen(false)}
                       >
                         <Icon size={16} />{label}
@@ -455,10 +442,10 @@ export default function MegaMenuHeader({
                     )}
 
                     {isOpen && columns && (
-                      <div className="ml-4 mt-1 space-y-4 rounded-xl border-l-2 border-[#C5A880]/40 bg-[#F1F5F9] px-4 py-3">
+                      <div className="ml-4 mt-1 space-y-4 rounded-xl border-l-2 border-accent/40 bg-light px-4 py-3">
                         {columns.map((col, idx) => (
                           <div key={idx}>
-                            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#1C398E]">
+                            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary">
                               {col.title}
                             </p>
                             <ul className="space-y-1">
@@ -466,7 +453,7 @@ export default function MegaMenuHeader({
                                 <li key={String(link._id || link.url)}>
                                   <Link
                                     href={link.url}
-                                    className="block rounded px-2 py-1 text-sm font-medium text-[#64748B] transition hover:bg-white hover:text-[#1C398E]"
+                                    className="block rounded px-2 py-1 text-sm font-medium text-muted transition hover:bg-white hover:text-primary"
                                     onClick={() => setMobileOpen(false)}
                                   >
                                     {link.label}
@@ -483,11 +470,11 @@ export default function MegaMenuHeader({
               })}
             </ul>
 
-            <div className="mt-4 space-y-3 border-t border-slate-200 pt-4">
+            <div className="mt-4 space-y-3 border-t border-line pt-4">
               <LanguageSwitcher languages={languages} active={activeLanguage} />
               <Link
                 href="/tailor-made"
-                className="block w-full rounded-full bg-[#1C398E] px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#152d73]"
+                className="block w-full rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-primary-hover"
                 onClick={() => setMobileOpen(false)}
               >
                 {ui.navBookNow}

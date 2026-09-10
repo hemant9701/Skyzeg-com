@@ -182,14 +182,14 @@ export default function TripFilters({
   const ui = getStrings(languageCode);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-surface to-light">
       {/* Mobile Filter Toggle */}
       <div className="site-sticky-flush-header sticky z-30 bg-white shadow-sm lg:hidden">
         <div className="flex items-center justify-between px-4 py-4">
-          <h2 className="font-semibold text-[#0F172A]">{ui.tripsFilters}</h2>
+          <h2 className="font-semibold text-dark">{ui.tripsFilters}</h2>
           <button
             onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-[#334155] hover:bg-slate-50 flex items-center gap-2"
+            className="rounded-lg border border-line-strong bg-white px-3 py-2 text-sm font-medium text-body hover:bg-surface flex items-center gap-2"
           >
             {showMobileFilters ? (
               <>
@@ -205,14 +205,6 @@ export default function TripFilters({
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-        {/* Header */}
-        <div className="mb-8 sm:mb-10 lg:mb-12">
-          <h1 className="text-3xl font-bold leading-tight text-[#1C398E] sm:text-4xl md:text-5xl">{ui.tripsExplore}</h1>
-          <p className="mt-3 text-lg text-[#334155]">
-            {ui.tripsDiscover}
-          </p>
-        </div>
-
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]">
           {/* Sidebar Filters */}
           <aside
@@ -220,20 +212,20 @@ export default function TripFilters({
               showMobileFilters ? 'block' : 'hidden lg:block'
             }`}
           >
-            <div className="site-filter-panel overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+            <div className="site-filter-panel overflow-y-auto rounded-2xl border border-line bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2"><DollarSign size={20} /> {ui.tripsFilters}</h3>
+                <h3 className="text-lg font-semibold text-dark flex items-center gap-2"><DollarSign size={20} /> {ui.tripsFilters}</h3>
                 <button
                   onClick={resetFilters}
-                  className="text-xs font-medium text-[#1C398E] hover:text-blue-700 flex items-center gap-1"
+                  className="text-xs font-medium text-primary hover:text-primary-hover flex items-center gap-1"
                 >
                   <RotateCcw size={14} /> {ui.tripsReset}
                 </button>
               </div>
 
               {/* Price Filter */}
-              <div className="mb-6 pb-6 border-b border-slate-200">
-                <h4 className="mb-4 font-semibold text-[#0F172A] flex items-center gap-2"><DollarSign size={18} className="text-[#1C398E]" /> {ui.tripsPriceRange}</h4>
+              <div className="mb-6 pb-6 border-b border-line">
+                <h4 className="mb-4 font-semibold text-dark flex items-center gap-2"><DollarSign size={18} className="text-primary" /> {ui.tripsPriceRange}</h4>
                 <RangeSlider
                   min={priceRange.min}
                   max={priceRange.max}
@@ -250,8 +242,8 @@ export default function TripFilters({
               </div>
 
               {/* Duration Filter */}
-              <div className="mb-6 pb-6 border-b border-slate-200">
-                <h4 className="mb-4 font-semibold text-[#0F172A] flex items-center gap-2"><Calendar size={18} className="text-[#1C398E]" /> {ui.tripsDurationFilter}</h4>
+              <div className="mb-6 pb-6 border-b border-line">
+                <h4 className="mb-4 font-semibold text-dark flex items-center gap-2"><Calendar size={18} className="text-primary" /> {ui.tripsDurationFilter}</h4>
                 <RangeSlider
                   min={durationRange.min}
                   max={durationRange.max}
@@ -268,15 +260,15 @@ export default function TripFilters({
               </div>
 
               {/* Featured Filter */}
-              <div className="mb-6 pb-6 border-b border-slate-200">
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-[#0F172A]">
+              <div className="mb-6 pb-6 border-b border-line">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-dark">
                   <input
                     type="checkbox"
                     checked={filters.featuredOnly}
                     onChange={(e) => {
                       setFilters({ ...filters, featuredOnly: e.target.checked });
                     }}
-                    className="rounded border-slate-300"
+                    className="rounded border-line-strong"
                   />
                   <span>{ui.tripsFeaturedOnly}</span>
                 </label>
@@ -284,8 +276,8 @@ export default function TripFilters({
 
               {/* Destinations Filter */}
               {destinations.length > 0 && (
-                <div className="mb-6 pb-6 border-b border-slate-200">
-                  <h4 className="mb-3 font-semibold text-[#0F172A] flex items-center gap-2"><MapPin size={18} className="text-[#1C398E]" /> {ui.tripsDestinationsFilter}</h4>
+                <div className="mb-6 pb-6 border-b border-line">
+                  <h4 className="mb-3 font-semibold text-dark flex items-center gap-2"><MapPin size={18} className="text-primary" /> {ui.tripsDestinationsFilter}</h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {destinations.map((dest) => (
                       <label key={dest._id} className="flex items-center gap-2 cursor-pointer">
@@ -310,9 +302,9 @@ export default function TripFilters({
                               });
                             }
                           }}
-                          className="rounded border-slate-300"
+                          className="rounded border-line-strong"
                         />
-                        <span className="text-sm text-[#334155]">{(pickTranslation(dest, languageCode) as any)?.title || dest.title}</span>
+                        <span className="text-sm text-body">{(pickTranslation(dest, languageCode) as any)?.title || dest.title}</span>
                       </label>
                     ))}
                   </div>
@@ -321,8 +313,8 @@ export default function TripFilters({
 
               {/* Travel Types Filter */}
               {travelTypes.length > 0 && (
-                <div className="mb-6 pb-6 border-b border-slate-200">
-                  <h4 className="mb-3 font-semibold text-[#0F172A] flex items-center gap-2"><Plane size={18} className="text-[#1C398E]" /> {ui.tripsTravelTypesFilter}</h4>
+                <div className="mb-6 pb-6 border-b border-line">
+                  <h4 className="mb-3 font-semibold text-dark flex items-center gap-2"><Plane size={18} className="text-primary" /> {ui.tripsTravelTypesFilter}</h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {travelTypes.map((type) => (
                       <label key={type._id} className="flex items-center gap-2 cursor-pointer">
@@ -347,9 +339,9 @@ export default function TripFilters({
                               });
                             }
                           }}
-                          className="rounded border-slate-300"
+                          className="rounded border-line-strong"
                         />
-                        <span className="text-sm text-[#334155]">{(pickTranslation(type, languageCode) as any)?.title || type.title}</span>
+                        <span className="text-sm text-body">{(pickTranslation(type, languageCode) as any)?.title || type.title}</span>
                       </label>
                     ))}
                   </div>
@@ -359,7 +351,7 @@ export default function TripFilters({
               {/* Categories Filter */}
               {categories.length > 0 && (
                 <div>
-                  <h4 className="mb-3 font-semibold text-[#0F172A] flex items-center gap-2"><Tag size={18} className="text-[#1C398E]" /> {ui.tripsCategoriesFilter}</h4>
+                  <h4 className="mb-3 font-semibold text-dark flex items-center gap-2"><Tag size={18} className="text-primary" /> {ui.tripsCategoriesFilter}</h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {categories.map((cat) => (
                       <label key={cat._id} className="flex items-center gap-2 cursor-pointer">
@@ -384,9 +376,9 @@ export default function TripFilters({
                               });
                             }
                           }}
-                          className="rounded border-slate-300"
+                          className="rounded border-line-strong"
                         />
-                        <span className="text-sm text-[#334155]">{(pickTranslation(cat, languageCode) as any)?.title || cat.title}</span>
+                        <span className="text-sm text-body">{(pickTranslation(cat, languageCode) as any)?.title || cat.title}</span>
                       </label>
                     ))}
                   </div>
@@ -400,10 +392,10 @@ export default function TripFilters({
             {/* Results Summary */}
             <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-4 shadow-sm">
               <div className="flex items-center gap-2">
-                <TrendingUp size={20} className="text-[#1C398E]" />
-                <p className="text-sm font-medium text-[#64748B]">
-                                    {ui.tripsShowing} <span className="font-semibold text-[#0F172A]">{filteredTrips.length}</span> {ui.tripsOf}{' '}
-                  <span className="font-semibold text-[#0F172A]">{trips.length}</span>
+                <TrendingUp size={20} className="text-primary" />
+                <p className="text-sm font-medium text-muted">
+                                    {ui.tripsShowing} <span className="font-semibold text-dark">{filteredTrips.length}</span> {ui.tripsOf}{' '}
+                  <span className="font-semibold text-dark">{trips.length}</span>
                 </p>
               </div>
             </div>
@@ -420,13 +412,13 @@ export default function TripFilters({
                 ))}
               </div>
             ) : (
-              <div className="flex min-h-96 items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-white">
+              <div className="flex min-h-96 items-center justify-center rounded-2xl border-2 border-dashed border-line-strong bg-white">
                 <div className="text-center">
-                  <p className="text-lg font-semibold text-[#0F172A]">{ui.tripsNoTrips}</p>
-                  <p className="mt-2 text-sm font-medium text-[#64748B]">{ui.tripsAdjustFilters}</p>
+                  <p className="text-lg font-semibold text-dark">{ui.tripsNoTrips}</p>
+                  <p className="mt-2 text-sm font-medium text-muted">{ui.tripsAdjustFilters}</p>
                   <button
                     onClick={resetFilters}
-                    className="mt-4 rounded-lg bg-[#1C398E] px-4 py-2 text-sm font-medium text-white hover:bg-[#152d73] flex items-center gap-2 mx-auto"
+                    className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover flex items-center gap-2 mx-auto"
                   >
                     <RotateCcw size={16} /> {ui.tripsResetFilters}
                   </button>

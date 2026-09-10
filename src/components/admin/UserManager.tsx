@@ -264,7 +264,7 @@ export default function UserManager() {
           ))}
         </div>
         <div className="mt-4">
-          <button type="submit" disabled={busy} className="rounded-full bg-[#1C398E] px-5 py-2 text-sm font-semibold text-white hover:bg-[#152d73] disabled:opacity-60">Create user</button>
+          <button type="submit" disabled={busy} className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-60">Create user</button>
         </div>
       </form>
 
@@ -327,7 +327,7 @@ export default function UserManager() {
                     <button type="button" onClick={() => applyPasswordReset(user._id)} disabled={busy} className="mt-2 rounded-md border border-white/15 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-60">Reset password</button>
                   </td>
                   <td className="px-3 py-3">
-                    <button type="button" onClick={() => saveUser(user._id)} disabled={busy} className="rounded-md bg-[#1C398E] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#152d73] disabled:opacity-60">Save</button>
+                    <button type="button" onClick={() => saveUser(user._id)} disabled={busy} className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-60">Save</button>
                   </td>
                 </tr>
               );
@@ -343,7 +343,7 @@ export default function UserManager() {
           <input type="password" className="rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-sm" placeholder="New password" value={passwordForm.newPassword} onChange={(event) => setPasswordForm((current) => ({ ...current, newPassword: event.target.value }))} required minLength={8} />
           <input type="password" className="rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-sm" placeholder="Confirm new password" value={passwordForm.confirmPassword} onChange={(event) => setPasswordForm((current) => ({ ...current, confirmPassword: event.target.value }))} required minLength={8} />
         </div>
-        <button type="submit" disabled={busy} className="mt-4 rounded-full bg-[#1C398E] px-5 py-2 text-sm font-semibold text-white hover:bg-[#152d73] disabled:opacity-60">Update password</button>
+        <button type="submit" disabled={busy} className="mt-4 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-60">Update password</button>
       </form>
     </div>
   );

@@ -1,7 +1,9 @@
 import TripFilters from '@/components/public/TripFilters';
+import HeroBanner from '@/components/public/HeroBanner';
 import { buildTripQuery } from '@/application/services/trip-query.service';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
+import { getStrings } from '@/lib/ui-strings';
 
 interface TripsPageProps {
   searchParams?: Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
@@ -17,6 +19,7 @@ function toPlain<T>(value: T): T {
 
 export default async function TripsPage({ searchParams }: TripsPageProps = {}) {
   const languageCode = await getLanguageCode();
+  const ui = getStrings(languageCode);
   const uow = new UnitOfWork();
   const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
   const { initialFilters } = await buildTripQuery(uow, {
@@ -64,13 +67,19 @@ export default async function TripsPage({ searchParams }: TripsPageProps = {}) {
   const plainInitialFilters = toPlain(initialFilters || {});
 
   return (
-    <TripFilters
-      trips={plainTrips}
-      languageCode={languageCode}
-      destinations={plainDestinations}
-      travelTypes={plainTravelTypes}
-      categories={plainCategories}
-      initialFilters={plainInitialFilters}
-    />
+    <>
+      <HeroBanner imageSrc="/images/heroBannerImg.webp">
+        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{ui.tripsExplore}</h1>
+        <p className="mt-3 text-base text-white/90 sm:text-lg">{ui.tripsDiscover}</p>
+      </HeroBanner>
+      <TripFilters
+        trips={plainTrips}
+        languageCode={languageCode}
+        destinations={plainDestinations}
+        travelTypes={plainTravelTypes}
+        categories={plainCategories}
+        initialFilters={plainInitialFilters}
+      />
+    </>
   );
 }

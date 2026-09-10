@@ -26,7 +26,7 @@ export default async function DynamicPage({ params }: Props) {
 
   return (
     <>
-      <HeroBanner imageSrc={page.heroImage || '/images/placeholder.svg'}>
+      <HeroBanner imageSrc={page.heroImage || '/images/heroBannerImg.webp'}>
         <h1 className="text-4xl font-semibold sm:text-5xl">{t?.title}</h1>
         <p className="mt-4 text-lg text-white/90">{t?.summary}</p>
       </HeroBanner>

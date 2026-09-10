@@ -29,8 +29,8 @@ export default async function BlogDetailsPage({ params }: Props) {
 
   return (
     <article>
-      <HeroBanner imageSrc={blog.featuredImage || '/images/placeholder.svg'}>
-        <span className="mb-3 inline-flex rounded-full bg-amber-400 px-4 py-1 text-sm font-semibold text-[#0F172A]">
+      <HeroBanner imageSrc={blog.featuredImage || '/images/heroBannerImg.webp'}>
+        <span className="mb-3 inline-flex rounded-full bg-warning px-4 py-1 text-sm font-semibold text-dark">
           {blog.author} · {readingTime(t?.body || '')} {ui.blogsMinRead}
         </span>
         <h1 className="text-4xl font-semibold sm:text-5xl">{t?.title}</h1>

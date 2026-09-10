@@ -33,7 +33,7 @@ export default async function DestinationDetailsPage({ params }: Props) {
 
   return (
     <>
-      <HeroBanner imageSrc={destination.heroImage || '/images/placeholder.svg'}>
+      <HeroBanner imageSrc={destination.heroImage || '/images/heroBannerImg.webp'}>
         <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
         <p className="mt-3 text-base text-white/90 sm:text-lg">{destination.country}{destination.city ? `, ${destination.city}` : ''}</p>
       </HeroBanner>
@@ -55,10 +55,10 @@ export default async function DestinationDetailsPage({ params }: Props) {
               }}
             />
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
-            <h5 className="text-lg font-semibold text-[#0F172A]">{ui.destinationsWeather}</h5>
-            <div className="mt-3 text-sm leading-7 text-[#334155]"><RichContent html={t?.weather} /></div>
-            <p className="mt-4 text-sm font-medium text-[#64748B]">
+          <div className="rounded-3xl border border-line bg-surface p-6 shadow-sm">
+            <h5 className="text-lg font-semibold text-dark">{ui.destinationsWeather}</h5>
+            <div className="mt-3 text-sm leading-7 text-body"><RichContent html={t?.weather} /></div>
+            <p className="mt-4 text-sm font-medium text-muted">
               {ui.destinationsLatitude}: {destination.coordinates?.latitude || '-'}<br />
               {ui.destinationsLongitude}: {destination.coordinates?.longitude || '-'}
             </p>
@@ -67,12 +67,12 @@ export default async function DestinationDetailsPage({ params }: Props) {
       </section>
 
       {destination.gallery?.length > 0 && (
-        <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
+        <section className="bg-surface px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <h2 className="text-2xl font-semibold text-[#1C398E]">{ui.destinationsGallery}</h2>
+            <h2 className="text-2xl font-semibold text-primary">{ui.destinationsGallery}</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {destination.gallery.map((image: any) => (
-                <div key={image.url} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                <div key={image.url} className="overflow-hidden rounded-3xl border border-line bg-white shadow-sm">
                   <Image src={image.url} alt={image.altText || t?.title} width={600} height={420} className="h-56 w-full object-cover" />
                 </div>
               ))}
@@ -83,7 +83,7 @@ export default async function DestinationDetailsPage({ params }: Props) {
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-[#1C398E]">{ui.destinationsTripsIn} {t?.title}</h2>
+          <h2 className="text-2xl font-semibold text-primary">{ui.destinationsTripsIn} {t?.title}</h2>
           <div className="mt-6 grid gap-6 md:grid-cols-3 xl:grid-cols-4">
             {(trips as any[]).map((trip) => (
               <TripCard trip={trip} languageCode={languageCode} key={String(trip._id)} />

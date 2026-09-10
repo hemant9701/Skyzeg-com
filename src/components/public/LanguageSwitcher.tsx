@@ -33,7 +33,7 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
   return (
     <div className="relative inline-flex" ref={containerRef}>
       <a
-        className="flex items-center gap-1 cursor-pointer rounded-full font-medium bg-white px-2 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+        className="flex items-center gap-1 cursor-pointer rounded-full font-medium bg-white px-2 py-2 text-sm text-body transition hover:bg-light"
         type="button"
         aria-expanded={open}
         aria-haspopup="listbox"
@@ -43,16 +43,16 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
       </a>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg" role="listbox">
+        <div className="absolute right-0 z-20 mt-2 rounded-2xl border border-line bg-white p-2 shadow-lg" role="listbox">
           {languages.map((language) => (
             <button
               key={language.code}
               type="button"
-              className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-100"
+              className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-body transition hover:bg-light"
               onClick={() => changeLanguage(language.code)}
             >
               {language.short || language.name}
-              {language.code === active && <span className="ml-2 text-[#1C398E]">✓</span>}
+              {language.code === active && <span className="ml-2 text-primary">✓</span>}
             </button>
           ))}
         </div>

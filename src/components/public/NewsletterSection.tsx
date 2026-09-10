@@ -11,7 +11,7 @@ export default async function NewsletterSection() {
   const t = pickTranslation(settings as any, languageCode) as any;
 
   return (
-    <section className="bg-slate-50">
+    <section className="bg-surface">
         <div
           className="relative"
           style={{
