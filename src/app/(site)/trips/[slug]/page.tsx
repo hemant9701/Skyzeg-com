@@ -3,6 +3,7 @@ import Link from 'next/link';
 import HeroBanner from '@/components/public/HeroBanner';
 import RichContent from '@/components/public/RichContent';
 import TripTabs from '@/components/public/TripTabs';
+import TripGallery from '@/components/public/TripGallery';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
 import { buildMetadata } from '@/shared/seo/metadata';
@@ -30,7 +31,9 @@ export default async function TripDetailsPage({ params }: Props) {
   const schema = { '@context': 'https://schema.org', '@type': 'TouristTrip', name: t?.title, description: strip(t?.summary), image: trip.heroImage };
 
   const itinerary: any[] = trip.itinerary || [];
+  const gallery: any[] = trip.gallery || [];
   const hasItinerary = itinerary.length > 0;
+  const hasGallery = gallery.length > 0;
   const hasPolicies  = !!(t?.policies);
   const ui = getStrings(languageCode);
 
@@ -99,6 +102,10 @@ export default async function TripDetailsPage({ params }: Props) {
     </div>
   );
 
+  const galleryNode = (
+    <TripGallery images={gallery} title={t?.title} />
+  );
+
   return (
     <>
       <HeroBanner imageSrc={trip.heroImage || '/images/heroBannerImg.webp'} minHeightClassName="min-h-[520px]">
@@ -142,12 +149,14 @@ export default async function TripDetailsPage({ params }: Props) {
           <div>
             <TripTabs
               overview={overviewNode}
+              gallery={galleryNode}
               itinerary={itineraryNode}
               includesExcludes={includesExcludesNode}
               policies={policiesNode}
               hasItinerary={hasItinerary}
+              hasGallery={hasGallery}
               hasPolicies={hasPolicies}
-              labels={{ overview: ui.tripTabOverview, itinerary: ui.tripTabItinerary, includes: ui.tripTabIncludes, policies: ui.tripTabPolicies }}
+              labels={{ overview: ui.tripTabOverview, gallery: ui.destinationsGallery, itinerary: ui.tripTabItinerary, includes: ui.tripTabIncludes, policies: ui.tripTabPolicies }}
             />
           </div>
 
@@ -180,23 +189,6 @@ export default async function TripDetailsPage({ params }: Props) {
               </Link>
             </div>
 
-            {/* Highlights */}
-            {(trip.highlights || []).length > 0 && (
-              <div className="mt-5 rounded-2xl border border-line bg-light p-6">
-                <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
-                  {ui.tripsHighlights}
-                </h4>
-                <ul className="space-y-2.5">
-                  {(trip.highlights || []).map((h: string) => (
-                    <li key={h} className="flex items-start gap-2 text-sm text-body">
-                      <span className="mt-0.5 flex-shrink-0 text-success">✓</span>
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             {/* Quick info */}
             <div className="mt-5 rounded-2xl border border-line bg-white p-5">
               <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
@@ -223,6 +215,23 @@ export default async function TripDetailsPage({ params }: Props) {
                 )}
               </dl>
             </div>
+
+            {/* Highlights */}
+            {(trip.highlights || []).length > 0 && (
+              <div className="mt-5 rounded-2xl border border-line bg-light p-6">
+                <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
+                  {ui.tripsHighlights}
+                </h4>
+                <ul className="space-y-2.5">
+                  {(trip.highlights || []).map((h: string) => (
+                    <li key={h} className="flex items-start gap-2 text-sm text-body">
+                      <span className="mt-0.5 flex-shrink-0 text-success">✓</span>
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </aside>
         </div>
       </section>

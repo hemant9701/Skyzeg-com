@@ -7,12 +7,13 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default async function ContactPage() {
   const languageCode = await getLanguageCode();
+  const ui = getStrings(languageCode);
   const settings = await new UnitOfWork().siteSettings.findOne({ key: 'main' });
   return (
     <>
       <HeroBanner imageSrc="/images/heroBannerImg.webp">
-        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">Plan your next journey</h1>
-        <p className="mt-3 text-base text-white/90 sm:text-lg">Send an enquiry and the travel team will contact you.</p>
+        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{ui.contactTitle}</h1>
+        <p className="mt-3 text-base text-white/90 sm:text-lg">{ui.contactSubtitle}</p>
       </HeroBanner>
       <section className="bg-surface px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">

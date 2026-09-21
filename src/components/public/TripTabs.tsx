@@ -4,13 +4,16 @@ import { useState } from 'react';
 
 interface TripTabsProps {
   overview:         React.ReactNode;
+  gallery:          React.ReactNode;
   itinerary:        React.ReactNode;
   includesExcludes: React.ReactNode;
   policies:         React.ReactNode;
   hasItinerary:     boolean;
+  hasGallery:       boolean;
   hasPolicies:      boolean;
   labels?: {
     overview?: string;
+    gallery?: string;
     itinerary?: string;
     includes?: string;
     policies?: string;
@@ -18,17 +21,19 @@ interface TripTabsProps {
 }
 
 export default function TripTabs({
-  overview, itinerary, includesExcludes, policies,
-  hasItinerary, hasPolicies,
+  overview, gallery, itinerary, includesExcludes, policies,
+  hasItinerary, hasGallery, hasPolicies,
   labels = {},
 }: TripTabsProps) {
   const tabs = [
     { id: 'overview',  label: labels.overview  ?? 'Overview',            icon: '📋', content: overview },
+    { id: 'gallery',   label: labels.gallery   ?? 'Gallery',             icon: '🖼️', content: gallery },
     { id: 'itinerary', label: labels.itinerary ?? 'Itinerary',           icon: '🗓️', content: itinerary },
     { id: 'includes',  label: labels.includes  ?? 'Includes & Excludes', icon: '✅', content: includesExcludes },
     { id: 'policies',  label: labels.policies  ?? 'Policies',            icon: '📜', content: policies },
   ].filter((t) => {
     if (t.id === 'itinerary' && !hasItinerary) return false;
+    if (t.id === 'gallery' && !hasGallery) return false;
     if (t.id === 'policies'  && !hasPolicies)  return false;
     return true;
   });
