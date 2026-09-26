@@ -21,19 +21,36 @@ body {
 
 .material-you-slider .swiper-button-next,
 .material-you-slider .swiper-button-prev {
-  width: 2.5rem;
-  height: 2.5rem;
+  top: 90%;
+  right: 1rem;
+  left: auto;
+  display: none;
+  width: 2.75rem;
+  height: 2.75rem;
   margin-top: 0;
+  padding: 0.75rem;
   border-radius: 9999px;
-  background: var(--fy-colors-surface-container-lowest);
-  color: #1c398e;
-  box-shadow: 0 2px 8px rgb(15 23 42 / 12%);
+  transform: translateY(-50%);
+  background: rgb(255 255 255 / 20%);
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.material-you-slider .swiper-button-prev {
+  right: 4rem;
 }
 
 .material-you-slider .swiper-button-next::after,
 .material-you-slider .swiper-button-prev::after {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .material-you-slider .swiper-button-next,
+  .material-you-slider .swiper-button-prev {
+    display: inline-flex;
+  }
 }
 
 .material-you-slider .swiper-pagination-bullet {
