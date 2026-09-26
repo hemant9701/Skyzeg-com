@@ -11,6 +11,11 @@ const allowedMimeTypes = new Set([
   'image/webp',
   'image/png',
   'image/jpeg',
+  'image/avif',
+  'image/gif',
+  'image/tiff',
+  'image/heic',
+  'image/heif',
   'image/svg+xml',
   'application/pdf',
   'video/mp4',
@@ -18,7 +23,14 @@ const allowedMimeTypes = new Set([
   'video/quicktime'
 ]);
 
-const imageMimeTypes = new Set(['image/webp', 'image/png', 'image/jpeg']);
+const imageMimeTypes = new Set([
+  'image/webp',
+  'image/png',
+  'image/jpeg',
+  'image/tiff',
+  'image/heic',
+  'image/heif'
+]);
 const maxFileSize = 50 * 1024 * 1024;
 const isVercel = process.env.VERCEL === '1';
 
@@ -61,6 +73,7 @@ export class MediaService {
 
     let outputBuffer: Buffer = buffer;
     let extension = originalExtension || 'bin';
+    let outputMimeType = file.type;
     let width: number | undefined;
     let height: number | undefined;
 
@@ -86,12 +99,15 @@ export class MediaService {
       if (options.convertToWebp) {
         outputBuffer = await processor.webp({ quality: 82 }).toBuffer();
         extension = 'webp';
+        outputMimeType = 'image/webp';
       } else if (file.type === 'image/png') {
         outputBuffer = await processor.png({ compressionLevel: 8 }).toBuffer();
         extension = 'png';
+        outputMimeType = 'image/png';
       } else {
         outputBuffer = await processor.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
         extension = 'jpg';
+        outputMimeType = 'image/jpeg';
       }
 
       const outputMeta = await sharp(outputBuffer).metadata();
@@ -108,7 +124,7 @@ export class MediaService {
       const blob = await put(`uploads/${folder}/${fileName}`, outputBuffer, {
         access: 'public',
         addRandomSuffix: false,
-        contentType: file.type,
+        contentType: outputMimeType,
         token: this.getBlobToken()
       });
       storagePath = blob.url;
@@ -125,7 +141,7 @@ export class MediaService {
       originalName: file.name,
       fileName,
       extension,
-      mimeType: file.type,
+      mimeType: outputMimeType,
       size: outputBuffer.length,
       url,
       storagePath,

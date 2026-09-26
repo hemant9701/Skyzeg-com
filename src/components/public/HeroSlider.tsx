@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { pickTranslation } from '@/shared/utils/localize';
 import { getStrings } from '@/lib/ui-strings';
 
@@ -90,7 +91,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
             onClick={() => setActiveIndex((value) => (value - 1 + slidesList.length) % slidesList.length)}
             aria-label={ui.carouselPreviousSlide}
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -98,7 +99,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
             onClick={() => setActiveIndex((value) => (value + 1) % slidesList.length)}
             aria-label={ui.carouselNextSlide}
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            <ChevronRight className="h-5 w-5" aria-hidden="true" />
           </button>
         </>
       )}

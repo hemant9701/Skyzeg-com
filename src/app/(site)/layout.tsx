@@ -1,6 +1,7 @@
 import Header from '@/components/public/Header';
 import Footer from '@/components/public/Footer';
 import NewsletterSection from '@/components/public/NewsletterSection';
+import CookieConsent from '@/components/public/CookieConsent';
 import { organizationSchema } from '@/shared/seo/metadata';
 
 export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -11,6 +12,7 @@ export default function SiteLayout({ children }: Readonly<{ children: React.Reac
       <main className="site-main">{children}</main>
       <NewsletterSection />
       <Footer />
+      <CookieConsent />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(baseUrl, '/images/logo.svg')) }}

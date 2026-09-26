@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { getStrings } from '@/lib/ui-strings';
 
 export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' }: { tripId: string; tripTitle: string; languageCode?: string }) {
@@ -44,7 +45,7 @@ export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' 
         <div className="space-y-2"><label className="block text-sm font-medium text-body">{ui.bookingTravelDate}</label><input className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" type="date" name="travelDate" autoComplete="off" suppressHydrationWarning /></div>
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.bookingTravellers}</label><input className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" type="number" name="travellersCount" autoComplete="off" min={1} max={50} defaultValue={1} suppressHydrationWarning /></div>
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.bookingSpecialRequests}</label><textarea className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" name="specialRequests" autoComplete="off" rows={5} suppressHydrationWarning /></div>
-        <div className="md:col-span-2"><button className="rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy}>{busy ? ui.bookingSubmitting : ui.bookingSubmit}</button></div>
+        <div className="md:col-span-2"><button className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy}>{busy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}{busy ? ui.bookingSubmitting : ui.bookingSubmit}</button></div>
         {status && <div className="md:col-span-2"><div className="rounded-2xl bg-success-light px-4 py-3 text-sm text-success-dark">{status}</div></div>}
         {error && <div className="md:col-span-2"><div className="rounded-2xl bg-danger-light px-4 py-3 text-sm text-danger-dark">{error}</div></div>}
       </div>

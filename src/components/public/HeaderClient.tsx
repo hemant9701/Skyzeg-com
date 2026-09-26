@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Menu } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { getStrings } from '@/lib/ui-strings';
 
@@ -68,9 +69,7 @@ export default function HeaderClient({ logoUrl, logo2Url, siteName, menuItems, l
           onClick={() => setMobileMenuOpen((value) => !value)}
           aria-label={ui.navToggleNavigation}
         >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
 
         <div className="hidden items-center gap-2 md:flex">

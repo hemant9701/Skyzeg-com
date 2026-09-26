@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { pickTranslation } from '@/shared/utils/localize';
 import TripCard from './TripCard';
 import RangeSlider from './RangeSlider';
-import { DollarSign, Calendar, MapPin, Plane, Tag, Menu, X, RotateCcw, TrendingUp } from 'lucide-react';
+import { DollarSign, Calendar, MapPin, Plane, Tag, Menu, X, RotateCcw, TrendingUp, LayoutGrid, List } from 'lucide-react';
 import { getStrings } from '@/lib/ui-strings';
 
 interface FilterState {
@@ -48,6 +48,7 @@ export default function TripFilters({
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
 
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [tripView, setTripView] = useState<'grid' | 'list'>('grid');
   const pathname = usePathname();
 
   const destinationSlugById = useMemo(() => new Map(destinations.map((destination) => [String(destination._id), destination.slug || String(destination._id)])), [destinations]);
@@ -398,15 +399,38 @@ export default function TripFilters({
                   <span className="font-semibold text-dark">{trips.length}</span>
                 </p>
               </div>
+              <div role="group" aria-label={`${ui.tripsGridView} / ${ui.tripsListView}`} className="inline-flex rounded-lg border border-line bg-surface p-1">
+                <button
+                  type="button"
+                  aria-label={ui.tripsGridView}
+                  aria-pressed={tripView === 'grid'}
+                  title={ui.tripsGridView}
+                  onClick={() => setTripView('grid')}
+                  className={`grid h-9 w-9 place-items-center rounded-md transition ${tripView === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-muted hover:text-dark'}`}
+                >
+                  <LayoutGrid size={18} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  aria-label={ui.tripsListView}
+                  aria-pressed={tripView === 'list'}
+                  title={ui.tripsListView}
+                  onClick={() => setTripView('list')}
+                  className={`grid h-9 w-9 place-items-center rounded-md transition ${tripView === 'list' ? 'bg-white text-primary shadow-sm' : 'text-muted hover:text-dark'}`}
+                >
+                  <List size={18} aria-hidden="true" />
+                </button>
+              </div>
             </div>
 
-            {/* Trips Grid */}
+            {/* Trips */}
             {filteredTrips.length > 0 ? (
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className={tripView === 'grid' ? 'grid gap-5 sm:grid-cols-2 xl:grid-cols-3' : 'space-y-4'}>
                 {filteredTrips.map((trip) => (
                   <TripCard
                     trip={trip}
                     languageCode={languageCode}
+                    view={tripView}
                     key={String(trip._id)}
                   />
                 ))}

@@ -1,0 +1,9 @@
+# Repository Guidance
+
+- Start with [README.md](README.md) for setup, routes, architecture, and deployment notes. Keep this file focused on agent behavior rather than repeating that documentation.
+- Preserve the existing dependency direction: `src/app` handles Next.js pages and route handlers; `src/application` owns services, DTOs, validators, and mappers; `src/domain` owns entities and constants; `src/infrastructure` owns Mongoose models, database access, repositories, and logging. Shared helpers belong in `src/shared` or `src/lib` where the existing pattern fits.
+- Keep API handlers thin. Parse input with the relevant Zod schema, enforce access with `requireApiUser` for protected routes, use `UnitOfWork` for persistence, and return responses through `src/shared/http/api-response.ts` helpers.
+- Update Mongoose schemas and indexes in `src/infrastructure/models`; this project has no EF-style migrations. Content language data comes from `data/languages.json`; use the existing language and translation helpers (`getLanguageCode`, `pickTranslation`, and `src/lib/ui-strings.ts`) rather than adding isolated hard-coded translations.
+- Keep visual tokens centralized in `tailwind.config.ts` and use the existing semantic Tailwind colors. Use `lucide-react` for UI icons. Keep components server-rendered by default and add client boundaries only for browser-side interaction.
+- Validate changes with `npm run lint` and `npm run build` when practical. There is no `npm test` script; run the existing tests with `node --import tsx --test tests/validators.test.ts`.
+- Database-dependent commands such as seeding require a configured MongoDB connection; check the target environment before running commands that mutate data.

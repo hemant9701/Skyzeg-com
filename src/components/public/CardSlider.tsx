@@ -11,11 +11,13 @@ import "swiper/css/pagination";
 interface CardSliderProps {
   children: ReactNode;
   autoplay?: boolean;
+  materialYou?: boolean;
 }
 
 export default function CardSlider({
   children,
   autoplay = true,
+  materialYou = false,
 }: CardSliderProps) {
   const slides = Children.toArray(children);
 
@@ -56,7 +58,7 @@ export default function CardSlider({
           spaceBetween: 24,
         },
       }}
-      className="!pb-12"
+      className={`!pb-12 ${materialYou ? 'material-you-slider' : ''}`}
     >
       {slides.map((child, index) => (
         <SwiperSlide key={index} className="!flex !h-auto">

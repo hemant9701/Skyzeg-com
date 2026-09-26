@@ -66,10 +66,11 @@ export default function NewsletterForm({ languageCode, variant = 'default' }: Ne
           suppressHydrationWarning
         />
         <button
-          className={`${isImageBanner ? 'rounded-md bg-dark px-6 py-2.5 text-xs tracking-[0.15em]' : 'rounded-full bg-primary px-4 py-2.5 text-sm'} font-semibold uppercase text-white transition hover:bg-primary-hover disabled:opacity-60`}
+          className={`${isImageBanner ? 'rounded-md bg-dark px-6 py-2.5 text-xs tracking-[0.15em]' : 'rounded-full bg-primary px-4 py-2.5 text-sm'} inline-flex items-center justify-center gap-2 font-semibold uppercase text-white transition hover:bg-primary-hover disabled:opacity-60`}
           type="submit"
           disabled={busy}
         >
+          {busy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
           {busy ? ui.newsletterJoining : isImageBanner ? ui.newsletterSubmit : ui.newsletterJoin}
         </button>
       </div>

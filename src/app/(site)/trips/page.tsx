@@ -4,6 +4,7 @@ import { buildTripQuery } from '@/application/services/trip-query.service';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
 import { getStrings } from '@/lib/ui-strings';
+import { populateTripReferences } from '@/application/services/trip-query.service';
 
 interface TripsPageProps {
   searchParams?: Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>>;
@@ -38,27 +39,7 @@ export default async function TripsPage({ searchParams }: TripsPageProps = {}) {
     uow.categories.list({ isVisible: true }, { sort: { sortOrder: 1 } })
   ]);
 
-  // Populate references for better filtering
-  const populatedTrips = (trips as any[]).map(trip => ({
-    ...trip.toObject?.() || trip,
-    destination: trip.destination?._id ? trip.destination : destinations.find(d => String(d._id) === String(trip.destination)),
-    travelTypes: Array.isArray(trip.travelTypes) 
-      ? trip.travelTypes.map((tt: any) => {
-          if (typeof tt === 'string' || (tt._id && typeof tt !== 'object')) {
-            return travelTypes.find(t => String(t._id) === String(tt._id || tt));
-          }
-          return tt;
-        })
-      : [],
-    categories: Array.isArray(trip.categories)
-      ? trip.categories.map((c: any) => {
-          if (typeof c === 'string' || (c._id && typeof c !== 'object')) {
-            return categories.find(cat => String(cat._id) === String(c._id || c));
-          }
-          return c;
-        })
-      : []
-  }));
+  const populatedTrips = await populateTripReferences(uow, trips as any[]);
 
   const plainTrips = toPlain(populatedTrips);
   const plainDestinations = toPlain(destinations);

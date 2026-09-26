@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { File, Folder } from 'lucide-react';
+import { File, Folder, Loader2 } from 'lucide-react';
 
 export default function ImageUploadInput({ value, onChange, folder = 'media' }: { value?: string; onChange: (value: string) => void; folder?: string }) {
   const [busy, setBusy] = useState(false);
   const [showLibrary, setShowLibrary] = useState(false);
   const [mediaItems, setMediaItems] = useState<any[]>([]);
   const [libraryBusy, setLibraryBusy] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   async function loadMediaLibrary() {
     setLibraryBusy(true);
@@ -22,6 +23,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
 
   async function upload(file?: File) {
     if (!file) return;
+    setUploadError('');
     setBusy(true);
     try {
       const form = new FormData();
@@ -29,10 +31,12 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
       form.append('folder', folder);
       form.append('convertToWebp', 'true');
       const response = await fetch('/api/media/upload', { method: 'POST', body: form });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Upload failed');
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(result?.message || `Upload failed (${response.status})`);
+      if (!result?.data?.url) throw new Error('Upload completed without returning a file URL');
       onChange(result.data.url);
-      await loadMediaLibrary();
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       setBusy(false);
     }
@@ -63,7 +67,11 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
           className="flex-1 w-1/2 rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary"
           type="file"
           accept="image/*,.svg,.pdf,video/*"
-          onChange={(e) => upload(e.target.files?.[0])}
+          onChange={(e) => {
+            const file = e.currentTarget.files?.[0];
+            e.currentTarget.value = '';
+            void upload(file);
+          }}
           disabled={busy}
         />
         <button
@@ -78,6 +86,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
           Library
         </button>
       </div>
+      {uploadError && <p role="alert" className="text-sm text-red-600">{uploadError}</p>}
 
       {/* Media Library Modal */}
       {showLibrary && (
@@ -94,7 +103,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
               </button>
             </div>
             {libraryBusy ? (
-              <div className="py-8 text-center text-slate-500">Loading...</div>
+              <div className="flex items-center justify-center gap-2 py-8 text-slate-500"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Loading...</div>
             ) : mediaItems.length === 0 ? (
               <div className="py-8 text-center text-slate-500">No media files uploaded yet</div>
             ) : (

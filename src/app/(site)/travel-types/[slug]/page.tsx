@@ -10,6 +10,7 @@ import { buildMetadata } from '@/shared/seo/metadata';
 import { pickTranslation } from '@/shared/utils/localize';
 import { notFound } from 'next/navigation';
 import { getStrings } from '@/lib/ui-strings';
+import { populateTripReferences } from '@/application/services/trip-query.service';
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -27,7 +28,10 @@ export default async function TravelTypeDetailsPage({ params }: Props) {
   const uow = new UnitOfWork();
   const travelTypes = await uow.travelTypes.findOne({ slug, isVisible: true });
   if (!travelTypes) notFound();
-  const trips = await uow.trips.list({ travelTypes: travelTypes._id, isVisible: true }, { sort: { createdAt: -1 } });
+  const trips = await populateTripReferences(
+    uow,
+    await uow.trips.list({ travelTypes: travelTypes._id, isVisible: true }, { sort: { createdAt: -1 } }) as any[]
+  );
   const t = pickTranslation(travelTypes as any, languageCode) as any;
   const ui = getStrings(languageCode);
 

@@ -48,6 +48,8 @@ export interface UiStrings {
   destinationsTripsIn: string;
   destinationsLatitude: string;
   destinationsLongitude: string;
+  destinationCardFeatured: string;
+  destinationCardExplore: string;
   // ── Travel Types ──────────────────────────────────
   travelTypesTitle: string;
   travelTypesSubtitle: string;
@@ -97,6 +99,9 @@ export interface UiStrings {
   // ── Trip card ─────────────────────────────────────
   tripCardDays: string;
   tripCardBook: string;
+  tripCardFeatured: string;
+  tripsGridView: string;
+  tripsListView: string;
   // ── Contact page ──────────────────────────────────
   contactBadge: string;
   contactTitle: string;
@@ -294,6 +299,8 @@ const en: UiStrings = {
   destinationsTripsIn: 'Trips in',
   destinationsLatitude: 'Latitude',
   destinationsLongitude: 'Longitude',
+  destinationCardFeatured: 'Featured',
+  destinationCardExplore: 'Explore',
   travelTypesTitle: 'Travel Types',
   travelTypesSubtitle: 'Find your perfect travel style.',
   travelTypesOverview: 'Overview',
@@ -338,6 +345,9 @@ const en: UiStrings = {
   tripWhatsExcluded: "What's Excluded",
   tripCardDays: 'Days',
   tripCardBook: 'Book Trip',
+  tripCardFeatured: 'Featured',
+  tripsGridView: 'Grid view',
+  tripsListView: 'List view',
   contactBadge: 'Contact',
   contactTitle: 'Plan your next journey',
   contactSubtitle: 'Send an enquiry and the travel team will contact you.',
@@ -528,6 +538,8 @@ const fr: UiStrings = {
   destinationsTripsIn: 'Voyages à',
   destinationsLatitude: 'Latitude',
   destinationsLongitude: 'Longitude',
+  destinationCardFeatured: 'À la une',
+  destinationCardExplore: 'Explorer la',
   travelTypesTitle: 'Types de voyage',
   travelTypesSubtitle: 'Trouvez votre style de voyage idéal.',
   travelTypesOverview: 'Aperçu',
@@ -572,6 +584,9 @@ const fr: UiStrings = {
   tripWhatsExcluded: 'Ce qui est exclu',
   tripCardDays: 'jours',
   tripCardBook: 'Réserver',
+  tripCardFeatured: 'À la une',
+  tripsGridView: 'Vue en grille',
+  tripsListView: 'Vue en liste',
   contactBadge: 'Contact',
   contactTitle: 'Planifiez votre prochain voyage',
   contactSubtitle: 'Envoyez une demande et notre équipe vous contactera.',
@@ -762,6 +777,8 @@ const es: UiStrings = {
   destinationsTripsIn: 'Viajes en',
   destinationsLatitude: 'Latitud',
   destinationsLongitude: 'Longitud',
+  destinationCardFeatured: 'Destacado',
+  destinationCardExplore: 'Explorar',
   travelTypesTitle: 'Tipos de viaje',
   travelTypesSubtitle: 'Encuentre su estilo de viaje perfecto.',
   travelTypesOverview: 'Descripción general',
@@ -806,6 +823,9 @@ const es: UiStrings = {
   tripWhatsExcluded: 'Qué está excluido',
   tripCardDays: 'días',
   tripCardBook: 'Reservar',
+  tripCardFeatured: 'Destacado',
+  tripsGridView: 'Vista de cuadrícula',
+  tripsListView: 'Vista de lista',
   contactBadge: 'Contacto',
   contactTitle: 'Planifique su próximo viaje',
   contactSubtitle: 'Envíe una consulta y nuestro equipo se pondrá en contacto.',
@@ -996,6 +1016,8 @@ const nl: UiStrings = {
   destinationsTripsIn: 'Reizen naar',
   destinationsLatitude: 'Breedtegraad',
   destinationsLongitude: 'Lengtegraad',
+  destinationCardFeatured: 'Uitgelicht',
+  destinationCardExplore: 'Bestemming',
   travelTypesTitle: 'Reistypes',
   travelTypesSubtitle: 'Vind uw perfecte reistijl.',
   travelTypesOverview: 'Overzicht',
@@ -1040,6 +1062,9 @@ const nl: UiStrings = {
   tripWhatsExcluded: 'Wat is uitgesloten',
   tripCardDays: 'dagen',
   tripCardBook: 'Reis boeken',
+  tripCardFeatured: 'Uitgelicht',
+  tripsGridView: 'Rasterweergave',
+  tripsListView: 'Lijstweergave',
   contactBadge: 'Contact',
   contactTitle: 'Plan uw volgende reis',
   contactSubtitle: 'Stuur een aanvraag en ons team neemt contact met u op.',
@@ -1230,6 +1255,8 @@ const it: UiStrings = {
   destinationsTripsIn: 'Viaggi a',
   destinationsLatitude: 'Latitudine',
   destinationsLongitude: 'Longitudine',
+  destinationCardFeatured: 'In evidenza',
+  destinationCardExplore: 'Esplora la',
   travelTypesTitle: 'Tipi di viaggio',
   travelTypesSubtitle: 'Trova il tuo stile di viaggio perfetto.',
   travelTypesOverview: 'Panoramica',
@@ -1274,6 +1301,9 @@ const it: UiStrings = {
   tripWhatsExcluded: 'Cosa è escluso',
   tripCardDays: 'giorni',
   tripCardBook: 'Prenota',
+  tripCardFeatured: 'In evidenza',
+  tripsGridView: 'Vista a griglia',
+  tripsListView: 'Vista elenco',
   contactBadge: 'Contatto',
   contactTitle: 'Pianifica il tuo prossimo viaggio',
   contactSubtitle: 'Invia una richiesta e il nostro team ti contatterà.',

@@ -5,6 +5,7 @@ import HeroSlider from '@/components/public/HeroSlider';
 import CardSlider from "@/components/public/CardSlider";
 import TripCard from "@/components/public/TripCard";
 import DestinationCard from '@/components/public/DestinationCard';
+import TravelTypesCard from '@/components/public/TravelTypesCard';
 import BlogCard from '@/components/public/BlogCard';
 import { HomeService } from '@/application/services/home.service';
 import { getLanguageCode } from '@/lib/language';
@@ -98,6 +99,27 @@ export default async function HomePage() {
           </CardSlider>
         </div>
       </MotionSection>
+
+      {(data.travelTypes as any[]).length > 0 && (
+        <MotionSection className="bg-surface px-4 py-20 sm:px-6 lg:px-8" delay={0.1}>
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8 max-w-2xl">
+              <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeFeaturedBadge}</span>
+              <h2 className="text-3xl font-semibold text-primary">{ui.travelTypesTitle}</h2>
+              <p className="mt-2 text-body">{ui.travelTypesSubtitle}</p>
+            </div>
+            <CardSlider autoplay={false} materialYou>
+              {(data.travelTypes as any[]).map((travelType) => (
+                <TravelTypesCard
+                  key={String(travelType._id)}
+                  travelTypes={travelType}
+                  languageCode={languageCode}
+                />
+              ))}
+            </CardSlider>
+          </div>
+        </MotionSection>
+      )}
 
       <MotionSection className="px-4 py-20 sm:px-6 lg:px-8" delay={0.11}>
         <div className="mx-auto max-w-7xl">

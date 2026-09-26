@@ -113,7 +113,8 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.bookingSpecialRequests}</label><textarea className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" name="specialRequests" autoComplete="off" rows={5} placeholder={ui.tailorMadeNotesPlaceholder} suppressHydrationWarning /></div>
 
         <div className="md:col-span-2">
-          <button className="rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy || !hasTrips}>
+          <button className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy || !hasTrips}>
+            {busy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
             {busy ? ui.bookingSubmitting : ui.tailorMadeRequestButton}
           </button>
         </div>
