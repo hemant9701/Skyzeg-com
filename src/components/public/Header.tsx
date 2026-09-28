@@ -15,9 +15,9 @@ export default async function Header() {
     new LanguageService().getLanguages(),
     unitOfWork.siteSettings.findOne({ key: 'main' }),
     unitOfWork.menus.findOne({ location: 'header', isVisible: true }),
-    unitOfWork.destinations.list({ isVisible: true }, { sort: { sortOrder: 1 } }).catch(() => []),
-    unitOfWork.travelTypes.list({ isVisible: true }, { sort: { sortOrder: 1 } }).catch(() => []),
-    unitOfWork.categories.list({ isVisible: true }, { sort: { sortOrder: 1 } }).catch(() => [])
+    unitOfWork.destinations.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => []),
+    unitOfWork.travelTypes.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => []),
+    unitOfWork.categories.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => [])
   ]);
 
   const settingTranslation = pickTranslation(settings as any, languageCode) as any;

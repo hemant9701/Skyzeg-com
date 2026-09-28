@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { languageCookieName } from '@/lib/language-cookie';
-import { Languages } from 'lucide-react';
+import { ChevronDown, Languages } from 'lucide-react';
 
 export default function LanguageSwitcher({ languages, active }: { languages: { code: string; name: string; short?: string }[]; active: string }) {
   const router = useRouter();
@@ -32,18 +32,20 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
 
   return (
     <div className="relative inline-flex" ref={containerRef}>
-      <a
-        className="flex items-center gap-1 cursor-pointer rounded-full font-medium bg-white px-2 py-2 text-sm text-body transition hover:bg-light"
+      <button
         type="button"
+        className="flex items-center gap-1.5 rounded-full border border-line bg-white/90 px-3 py-2 text-sm font-medium text-body shadow-sm transition hover:border-line-strong hover:bg-light"
         aria-expanded={open}
         aria-haspopup="listbox"
         onClick={() => setOpen((value) => !value)}
       >
-        <Languages width={16} height={16} /> {current?.short || current?.name || 'Language'}
-      </a>
+        <Languages width={16} height={16} className="shrink-0" />
+        <span className="leading-none">{current?.short || current?.name || 'Language'}</span>
+        <ChevronDown size={14} className={`shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+      </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 rounded-2xl border border-line bg-white p-2 shadow-lg" role="listbox">
+        <div className="absolute right-0 z-20 mt-2 w-40 rounded-2xl border border-line bg-white p-2 shadow-lg" role="listbox">
           {languages.map((language) => (
             <button
               key={language.code}
