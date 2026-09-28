@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -10,14 +11,19 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
   const ui = getStrings(languageCode);
   const slidesList = Array.isArray(slides) ? slides : [];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    setIsHydrated(true);
     if (slidesList.length < 2) return;
     const id = window.setInterval(() => {
       setActiveIndex((value) => (value + 1) % slidesList.length);
     }, 6000);
     return () => window.clearInterval(id);
   }, [slidesList.length]);
+
+  const activeSlide = slidesList[activeIndex] ?? slidesList[0];
+  const canRenderCarouselControls = isHydrated && slidesList.length > 1;
 
   if (!slidesList.length) {
     return (
@@ -36,42 +42,42 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
     );
   }
 
+  const activeTranslation = pickTranslation(activeSlide, languageCode) as any;
+  const activeImageSrc = activeSlide.imageUrl || '/images/placeholder.svg';
+
   return (
     <div className="site-hero relative overflow-hidden bg-[var(--color-light)]">
       <div className="relative h-[75vh] min-h-[560px] overflow-hidden sm:min-h-[600px]">
-        {slidesList.map((slide, index) => {
-          const t = pickTranslation(slide, languageCode) as any;
-          const imageSrc = slide.imageUrl || '/images/placeholder.svg';
-          const isActive = index === activeIndex;
-
-          return (
-            <section
-              className={`absolute inset-0 h-full w-full bg-center bg-cover transition-opacity duration-700 md:bg-fixed ${isActive ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-              style={{ backgroundImage: `url(${imageSrc})` }}
-              key={String(slide._id)}
-            >
-              <div className="absolute inset-0 bg-dark/55" />
-              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" />
-              <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-                <div className="max-w-2xl">
-                  <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-dark">{ui.heroBadge}</span>
-                  <h1 className="text-4xl font-semibold text-white sm:text-5xl">{t?.title || ui.heroTitle}</h1>
-                  <p className="mt-4 text-lg text-white/90">
-                    {typeof t?.subtitle === 'string'
-                      ? t.subtitle.replace(/<[^>]*>/g, '')
-                      : ui.heroSubtitle}
-                  </p>
-                  <Link href={slide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primary-hover">
-                      {t?.buttonText || ui.heroCtaDefault}
-                  </Link>
-                </div>
-              </div>
-            </section>
-          );
-        })}
+        <div className="absolute inset-0">
+          <Image
+            src={activeImageSrc}
+            alt={activeTranslation?.title || ui.heroTitle}
+            fill
+            priority={activeIndex === 0}
+            sizes="100vw"
+            quality={72}
+            className="object-cover transition-opacity duration-300"
+          />
+          <div className="absolute inset-0 bg-dark/55" />
+          <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" />
+          <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl">
+              <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-dark">{ui.heroBadge}</span>
+              <h1 className="text-4xl font-semibold text-white sm:text-5xl">{activeTranslation?.title || ui.heroTitle}</h1>
+              <p className="mt-4 text-lg text-white/90">
+                {typeof activeTranslation?.subtitle === 'string'
+                  ? activeTranslation.subtitle.replace(/<[^>]*>/g, '')
+                  : ui.heroSubtitle}
+              </p>
+              <Link href={activeSlide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primary-hover">
+                {activeTranslation?.buttonText || ui.heroCtaDefault}
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {slidesList.length > 1 && (
+      {canRenderCarouselControls && (
         <>
           <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-dark/60 px-3 py-2 backdrop-blur">
             {slidesList.map((slide, index) => (

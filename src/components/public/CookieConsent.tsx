@@ -2,21 +2,32 @@
 
 import Link from 'next/link';
 import { Cookie } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 const CONSENT_KEY = 'cookie-consent';
 
-export default function CookieConsent() {
-  const [visible, setVisible] = useState(false);
+function getConsentSnapshot() {
+  if (typeof window === 'undefined') return false;
+  return !window.localStorage.getItem(CONSENT_KEY);
+}
 
-  useEffect(() => {
-    const stored = window.localStorage.getItem(CONSENT_KEY);
-    if (!stored) setVisible(true);
-  }, []);
+function subscribeToConsent(callback: () => void) {
+  if (typeof window === 'undefined') return () => {};
+
+  const handleStorage = () => callback();
+  window.addEventListener('storage', handleStorage);
+
+  return () => {
+    window.removeEventListener('storage', handleStorage);
+  };
+}
+
+export default function CookieConsent() {
+  const visible = useSyncExternalStore(subscribeToConsent, getConsentSnapshot, () => false);
 
   function respond(value: 'accepted' | 'declined') {
     window.localStorage.setItem(CONSENT_KEY, value);
-    setVisible(false);
+    window.dispatchEvent(new Event('storage'));
   }
 
   if (!visible) return null;

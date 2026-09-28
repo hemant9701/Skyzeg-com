@@ -38,6 +38,14 @@ npm run seed
 npm run dev
 ```
 
+Quick links:
+
+- [Home](http://localhost:3000)
+- [Admin login](http://localhost:3000/admin/login)
+- [Destinations](http://localhost:3000/destinations)
+- [Trips](http://localhost:3000/trips)
+- [Blogs](http://localhost:3000/blogs)
+
 Open:
 
 ```text

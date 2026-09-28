@@ -16,7 +16,7 @@ interface CardSliderProps {
 
 export default function CardSlider({
   children,
-  autoplay = true,
+  autoplay = false,
   materialYou = false,
 }: CardSliderProps) {
   const slides = Children.toArray(children);
@@ -28,13 +28,15 @@ export default function CardSlider({
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
-      navigation
-      pagination={{ clickable: true }}
-      speed={600}
+      navigation={slides.length > 2}
+      pagination={{ clickable: true, dynamicBullets: true }}
+      speed={350}
+      watchOverflow
+      allowTouchMove={slides.length > 1}
       autoplay={
-        autoplay
+        autoplay && slides.length > 1
           ? {
-              delay: 3500,
+              delay: 5000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }

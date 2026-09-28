@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ReactNode } from 'react';
 
 interface MotionSectionProps {
@@ -10,6 +10,12 @@ interface MotionSectionProps {
 }
 
 export default function MotionSection({ children, className = '', delay = 0 }: MotionSectionProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <section className={className}>{children}</section>;
+  }
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 28 }}

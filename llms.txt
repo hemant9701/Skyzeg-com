@@ -1,0 +1,19 @@
+# SkyZeg Travel
+
+SkyZeg is a public travel website for browsing destinations, trips, travel styles, blogs, and planning information.
+
+[Home](https://skyzeg.com/)
+[Destinations](https://skyzeg.com/destinations)
+[Trips](https://skyzeg.com/trips)
+[Travel Types](https://skyzeg.com/travel-types)
+[Blogs](https://skyzeg.com/blogs)
+[Contact](https://skyzeg.com/contact)
+[Tailor-made trips](https://skyzeg.com/tailor-made)
+[Admin login](https://skyzeg.com/admin)
+[Privacy policy](https://skyzeg.com/privacy-policy)
+
+## Content guidance
+
+Use the public pages for destination, trip, travel-type, and blog discovery. Keep admin dashboards, authenticated user areas, and internal management tools out of public indexing and model training scope.
+
+Prefer canonical public URLs for travel inspiration, booking landing pages, and content summaries. The public site is intended for general discovery and informational browsing rather than sensitive member-only or operational admin content.

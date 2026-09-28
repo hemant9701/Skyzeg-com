@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ReactNode } from 'react';
 
 interface MotionStaggerProps {
@@ -10,6 +10,12 @@ interface MotionStaggerProps {
 }
 
 export function MotionStagger({ children, className = '', delay = 0 }: MotionStaggerProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"
@@ -32,6 +38,12 @@ export function MotionStagger({ children, className = '', delay = 0 }: MotionSta
 }
 
 export function MotionStaggerItem({ children, className = '' }: MotionStaggerProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       variants={{

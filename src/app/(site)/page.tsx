@@ -39,7 +39,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSlider slides={plainSlides as any[]} languageCode={languageCode} />
+      <HeroSlider slides={plainSlides.slice(0, 3) as any[]} languageCode={languageCode} />
 
       <MotionSection className="bg-white px-4 py-20 sm:px-6 lg:px-8" delay={0.05}>
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
@@ -67,6 +67,8 @@ export default async function HomePage() {
               src="/images/placeholder-1.webp"
               alt="Travelers exploring scenic destination"
               fill
+              priority
+              quality={85}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
             />
@@ -88,7 +90,7 @@ export default async function HomePage() {
             </div>
             <Link href="/destinations" className="inline-flex rounded-full border border-line-strong px-4 py-2 text-sm font-semibold text-body transition hover:bg-line">{ui.homeFeaturedCta}</Link>
           </div>
-          <CardSlider>
+          <CardSlider materialYou>
             {(data.destinations as any[]).map((destination) => (
               <DestinationCard
                 key={String(destination._id)}
@@ -131,7 +133,7 @@ export default async function HomePage() {
             </div>
             <Link href="/trips" className="inline-flex rounded-full border border-line-strong px-4 py-2 text-sm font-semibold text-body transition hover:bg-line">{ui.homePopularCta}</Link>
           </div>
-          <CardSlider>
+          <CardSlider materialYou>
             {(data.trips as any[]).map((trip) => (
               <TripCard
                 key={String(trip._id)}
