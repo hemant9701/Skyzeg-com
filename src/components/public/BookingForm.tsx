@@ -1,20 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { getStrings } from '@/lib/ui-strings';
 
 export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' }: { tripId: string; tripTitle: string; languageCode?: string }) {
-  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
   const ui = getStrings(languageCode);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError('');
-    setStatus('');
 
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
@@ -23,11 +23,10 @@ export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' 
     const result = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      const reference = result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : '';
       const emailSent = result?.data?.emailNotification?.sent !== false;
-      const warning = emailSent ? '' : ` ${ui.emailDeliveryWarning}`;
-      setStatus(`${ui.bookingSuccess} ${reference}${warning}`.trim());
-      formElement.reset();
+      const query = new URLSearchParams({ type: 'booking', emailSent: String(emailSent) });
+      if (result?.data?.bookingNumber) query.set('reference', result.data.bookingNumber);
+      router.push(`/thank-you?${query.toString()}`);
     } else {
       setError(result?.message || ui.bookingError);
     }
@@ -46,7 +45,6 @@ export default function BookingForm({ tripId, tripTitle, languageCode = 'en-US' 
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.bookingTravellers}</label><input className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" type="number" name="travellersCount" autoComplete="off" min={1} max={50} defaultValue={1} suppressHydrationWarning /></div>
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.bookingSpecialRequests}</label><textarea className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" name="specialRequests" autoComplete="off" rows={5} suppressHydrationWarning /></div>
         <div className="md:col-span-2"><button className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy}>{busy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}{busy ? ui.bookingSubmitting : ui.bookingSubmit}</button></div>
-        {status && <div className="md:col-span-2"><div className="rounded-2xl bg-success-light px-4 py-3 text-sm text-success-dark">{status}</div></div>}
         {error && <div className="md:col-span-2"><div className="rounded-2xl bg-danger-light px-4 py-3 text-sm text-danger-dark">{error}</div></div>}
       </div>
     </form>

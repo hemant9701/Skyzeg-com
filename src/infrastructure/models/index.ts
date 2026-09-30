@@ -13,6 +13,7 @@ export { PageModel } from './page.model';
 export { RoleModel } from './role.model';
 export { SiteSettingModel } from './site-setting.model';
 export { TestimonialModel } from './testimonial.model';
+export { TailorMadeRequestModel } from './tailor-made-request.model';
 export { TripModel } from './trip.model';
 export { UserModel } from './user.model';
 export { TravelTypeModel } from './travel-type.model';

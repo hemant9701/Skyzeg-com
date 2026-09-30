@@ -168,6 +168,7 @@ Set `BLOB_READ_WRITE_TOKEN` in Vercel Project Settings before using admin media 
 /api/trips
 /api/trips/[slug]
 /api/bookings
+/api/tailor-made
 /api/media/upload
 /api/contact
 /api/newsletter

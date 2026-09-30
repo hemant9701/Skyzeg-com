@@ -64,7 +64,7 @@ export default function CardSlider({
     >
       {slides.map((child, index) => (
         <SwiperSlide key={index} className="!flex !h-auto">
-          <div className="w-full">{child}</div>
+          <div className="h-full w-full">{child}</div>
         </SwiperSlide>
       ))}
     </Swiper>

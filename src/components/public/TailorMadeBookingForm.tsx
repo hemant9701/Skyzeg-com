@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { getStrings } from '@/lib/ui-strings';
 
@@ -21,9 +22,9 @@ interface TailorMadeBookingFormProps {
 }
 
 export default function TailorMadeBookingForm({ trips, destinations, languageCode = 'en-US' }: TailorMadeBookingFormProps) {
-  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
   const ui = getStrings(languageCode);
   const hasTrips = trips.length > 0;
   const hasDestinations = destinations.length > 0;
@@ -39,7 +40,6 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
 
     setBusy(true);
     setError('');
-    setStatus('');
 
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
@@ -49,20 +49,6 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
     const budgetRange = String(form.get('budgetRange') || '').trim();
     const accommodationStyle = String(form.get('accommodationStyle') || '').trim();
     const activities = String(form.get('activities') || '').trim();
-    const baseNotes = String(form.get('specialRequests') || '').trim();
-
-    const customRequest = [
-      'Tailor-made request details:',
-      preferredDestination ? `Preferred destination: ${preferredDestination}` : '',
-      durationDays ? `Planned duration (days): ${durationDays}` : '',
-      budgetRange ? `Estimated budget: ${budgetRange}` : '',
-      accommodationStyle ? `Accommodation style: ${accommodationStyle}` : '',
-      activities ? `Preferred activities: ${activities}` : '',
-      baseNotes ? `Additional notes: ${baseNotes}` : ''
-    ]
-      .filter(Boolean)
-      .join('\n');
-
     const payload = {
       trip: baseTrip,
       leadName: String(form.get('leadName') || ''),
@@ -70,10 +56,15 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
       leadPhone: String(form.get('leadPhone') || ''),
       travelDate: String(form.get('travelDate') || ''),
       travellersCount: String(form.get('travellersCount') || '1'),
-      specialRequests: customRequest
+      preferredDestination,
+      durationDays,
+      budgetRange,
+      accommodationStyle,
+      activities: String(form.get('activities') || '').trim(),
+      specialRequests: String(form.get('specialRequests') || '').trim()
     };
 
-    const response = await fetch('/api/bookings', {
+    const response = await fetch('/api/tailor-made', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -81,11 +72,10 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
     const result = await response.json().catch(() => ({}));
 
     if (response.ok) {
-      const reference = result?.data?.bookingNumber ? `Ref: ${result.data.bookingNumber}` : '';
       const emailSent = result?.data?.emailNotification?.sent !== false;
-      const warning = emailSent ? '' : ` ${ui.emailDeliveryWarning}`;
-      setStatus(`${ui.bookingSuccess} ${reference}${warning}`.trim());
-      formElement.reset();
+      const query = new URLSearchParams({ type: 'tailor-made', emailSent: String(emailSent) });
+      if (result?.data?.requestNumber) query.set('reference', result.data.requestNumber);
+      router.push(`/thank-you?${query.toString()}`);
     } else {
       setError(result?.message || ui.bookingError);
     }
@@ -120,7 +110,6 @@ export default function TailorMadeBookingForm({ trips, destinations, languageCod
           </button>
         </div>
 
-        {status && <div className="md:col-span-2"><div className="rounded-2xl bg-success-light px-4 py-3 text-sm text-success-dark">{status}</div></div>}
         {error && <div className="md:col-span-2"><div className="rounded-2xl bg-danger-light px-4 py-3 text-sm text-danger-dark">{error}</div></div>}
       </div>
     </form>

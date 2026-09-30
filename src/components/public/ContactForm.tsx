@@ -2,20 +2,20 @@
 
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { getStrings } from '@/lib/ui-strings';
 
 export default function ContactForm({ languageCode = 'en-US' }: { languageCode?: string }) {
-  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
   const ui = getStrings(languageCode);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError('');
-    setStatus('');
 
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
@@ -25,8 +25,7 @@ export default function ContactForm({ languageCode = 'en-US' }: { languageCode?:
 
     if (response.ok) {
       const emailSent = result?.data?.emailNotification?.sent !== false;
-      setStatus(emailSent ? ui.contactSuccess : `${ui.contactSuccess} ${ui.emailDeliveryWarning}`);
-      formElement.reset();
+      router.push(`/thank-you?${new URLSearchParams({ type: 'contact', emailSent: String(emailSent) }).toString()}`);
     } else {
       setError(result?.message || ui.contactError);
     }
@@ -49,7 +48,6 @@ export default function ContactForm({ languageCode = 'en-US' }: { languageCode?:
         <div className="space-y-2"><label className="block text-sm font-medium text-body">{ui.contactSubject}</label><input className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" name="subject" autoComplete="off" required minLength={2} suppressHydrationWarning /></div>
         <div className="space-y-2 md:col-span-2"><label className="block text-sm font-medium text-body">{ui.contactMessage}</label><textarea className="w-full rounded-2xl border border-line-strong bg-white px-3 py-2.5 text-sm text-dark outline-none transition focus:border-primary" name="message" autoComplete="off" rows={6} required minLength={5} suppressHydrationWarning /></div>
         <div className="md:col-span-2"><button className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60" disabled={busy}>{busy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}{busy ? ui.contactSending : ui.contactSend}</button></div>
-        {status && <div className="md:col-span-2"><div className="rounded-2xl bg-success-light px-4 py-3 text-sm text-success-dark">{status}</div></div>}
         {error && <div className="md:col-span-2"><div className="rounded-2xl bg-danger-light px-4 py-3 text-sm text-danger-dark">{error}</div></div>}
       </div>
     </motion.form>

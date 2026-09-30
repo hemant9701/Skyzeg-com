@@ -14,6 +14,7 @@ import {
   PageModel,
   RoleModel,
   SiteSettingModel,
+  TailorMadeRequestModel,
   TestimonialModel,
   TripModel,
   UserModel,
@@ -36,6 +37,7 @@ export class UnitOfWork {
   readonly contactEnquiries = new BaseRepository<any>(ContactEnquiryModel);
   readonly newsletterSubscribers = new BaseRepository<any>(NewsletterSubscriberModel);
   readonly bookings = new BaseRepository<any>(BookingModel);
+  readonly tailorMadeRequests = new BaseRepository<any>(TailorMadeRequestModel);
   readonly users = new BaseRepository<any>(UserModel);
   readonly roles = new BaseRepository<any>(RoleModel);
   readonly auditLogs = new BaseRepository<any>(AuditLogModel);

@@ -90,7 +90,7 @@ export default function TripCard({ trip, languageCode, view = 'grid' }: TripCard
   }
 
   return (
-    <article className="group relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:shadow-xl">
       <Image
         src={trip.heroImage || '/images/placeholder.svg'}
         alt={title}
@@ -109,7 +109,7 @@ export default function TripCard({ trip, languageCode, view = 'grid' }: TripCard
           {ui.tripCardFeatured}
         </span>
       )}
-      <div className="space-y-3 p-4 text-body sm:p-5">
+      <div className="flex flex-1 flex-col gap-3 p-4 text-body sm:p-5">
         <h3 className="text-xl font-semibold leading-tight text-dark">
           <Link href={`/trips/${trip.slug}`}>
             {title}
@@ -131,7 +131,7 @@ export default function TripCard({ trip, languageCode, view = 'grid' }: TripCard
         </div>
         <Link
           href={`/booking/${trip.slug}`}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
         >
           {ui.tripCardBook}
           <ArrowUpRight size={17} aria-hidden="true" />

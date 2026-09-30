@@ -132,6 +132,21 @@ export const BookingCreateSchema = z.object({
   specialRequests: z.string().optional().or(z.literal('')).transform((value) => sanitizePlainText(value))
 });
 
+export const TailorMadeRequestCreateSchema = z.object({
+  trip: z.string().min(1),
+  leadName: z.string().min(2).transform((value) => sanitizePlainText(value)),
+  leadEmail: z.string().email().transform((value) => sanitizeEmailValue(value)),
+  leadPhone: z.string().optional().or(z.literal('')).transform((value) => sanitizePlainText(value)),
+  travelDate: z.preprocess((value) => value === '' ? undefined : value, z.coerce.date().optional()),
+  travellersCount: z.coerce.number().int().positive().max(50).default(1),
+  preferredDestination: z.string().min(1).transform((value) => sanitizePlainText(value)),
+  durationDays: z.preprocess((value) => value === '' ? undefined : value, z.coerce.number().int().positive().max(60).optional()),
+  budgetRange: z.string().optional().or(z.literal('')).transform((value) => sanitizePlainText(value)),
+  accommodationStyle: z.enum(['Budget', 'Comfort', 'Luxury', 'Mixed']).optional().or(z.literal('')),
+  activities: z.string().optional().or(z.literal('')).transform((value) => sanitizePlainText(value)),
+  specialRequests: z.string().optional().or(z.literal('')).transform((value) => sanitizePlainText(value))
+});
+
 export const ContactCreateSchema = z.object({
   fullName: z.string().min(2).transform((value) => sanitizePlainText(value)),
   email: z.string().email().transform((value) => sanitizeEmailValue(value)),

@@ -5,9 +5,45 @@ interface SendMailPayload {
   subject: string;
   text: string;
   html: string;
+  replyTo?: string;
 }
 
-export async function sendMail({ to, subject, text, html }: SendMailPayload) {
+export interface EmailDeliveryStatus {
+  sent: boolean;
+  websiteEmailSent: boolean;
+  userEmailSent: boolean;
+}
+
+export function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character] || character);
+}
+
+export async function sendMailToBoth(websiteEmail: SendMailPayload, userEmail: SendMailPayload): Promise<EmailDeliveryStatus> {
+  if (!process.env.SMTP_HOST) {
+    return { sent: false, websiteEmailSent: false, userEmailSent: false };
+  }
+
+  const [websiteResult, userResult] = await Promise.allSettled([
+    sendMail(websiteEmail),
+    sendMail(userEmail)
+  ]);
+  const websiteEmailSent = websiteResult.status === 'fulfilled';
+  const userEmailSent = userResult.status === 'fulfilled';
+
+  return {
+    sent: websiteEmailSent && userEmailSent,
+    websiteEmailSent,
+    userEmailSent
+  };
+}
+
+export async function sendMail({ to, subject, text, html, replyTo }: SendMailPayload) {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
@@ -39,7 +75,8 @@ export async function sendMail({ to, subject, text, html }: SendMailPayload) {
       : undefined,
   });
 
-  const from = process.env.FROM_EMAIL || user || 'noreply@example.com';
+  const fromAddress = process.env.FROM_EMAIL || user || 'noreply@example.com';
+  const from = `"Skyzeg Travels" <${fromAddress}>`;
 
   await transporter.sendMail({
     from,
@@ -47,5 +84,6 @@ export async function sendMail({ to, subject, text, html }: SendMailPayload) {
     subject,
     text,
     html,
+    replyTo,
   });
 }
