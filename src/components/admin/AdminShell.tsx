@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getCurrentUserFromCookies } from '@/lib/auth';
+import { canAccessAdminPath } from '@/domain/constants/admin-permissions';
 import LogoutButton from './LogoutButton';
 import { LayoutDashboard, FileText, PenTool, MapPin, Compass, Plane, Tag, Calendar, Image as ImageIcon, Film, MessageSquare, HelpCircle, Menu, Settings, Users } from 'lucide-react';
 
@@ -31,7 +32,7 @@ export default async function AdminShell({children}:{children:React.ReactNode}){
           Skyzeg Travel Admin
         </Link>
         <nav className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-1">
-          {navItems.map(({ label, href, icon: Icon }) => (
+          {navItems.filter(({ href }) => user && canAccessAdminPath(user.roles, href)).map(({ label, href, icon: Icon }) => (
             <Link 
               href={href} 
               key={href} 

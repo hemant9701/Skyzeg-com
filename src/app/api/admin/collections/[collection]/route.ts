@@ -1,16 +1,20 @@
 import type { NextRequest } from 'next/server';
 import { getRegistryItem } from '@/application/services/module-registry';
-import { AdminRoles } from '@/domain/constants/roles';
+import { AdminRoles, Roles } from '@/domain/constants/roles';
+import { canAccessAdminCollection } from '@/domain/constants/admin-permissions';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
-import { ValidationError } from '@/shared/errors/app-error';
+import { ForbiddenError, ValidationError } from '@/shared/errors/app-error';
 import { created, ok, withApiErrorHandling } from '@/shared/http/api-response';
 
 interface Context { params: Promise<{ collection: string }> }
 
 export const GET = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  await requireApiUser(request, AdminRoles);
   const { collection } = await context.params;
+  const user = await requireApiUser(request, AdminRoles);
+  if (!canAccessAdminCollection(user.roles, collection, 'GET')) {
+    throw new ForbiddenError();
+  }
   if (collection === 'users') {
     throw new ValidationError('Use /api/admin/users for user management');
   }
@@ -30,12 +34,18 @@ export const GET = withApiErrorHandling(async (request: NextRequest, context: Co
     ];
   }
   const result = await item.repo(uow).paginate(filter, { page, pageSize, sort: item.defaultSort as any });
-  return ok(result);
+  return ok({
+    ...result,
+    canDelete: user.roles.includes(Roles.Admin) || user.roles.includes(Roles.Editor)
+  });
 });
 
 export const POST = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  const user = await requireApiUser(request, AdminRoles);
   const { collection } = await context.params;
+  const user = await requireApiUser(request, AdminRoles);
+  if (!canAccessAdminCollection(user.roles, collection, 'POST')) {
+    throw new ForbiddenError();
+  }
   if (collection === 'users') {
     throw new ValidationError('Use /api/admin/users for user management');
   }

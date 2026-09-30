@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { CategoryUpsertSchema } from '@/application/validators/content.validators';
-import { AdminRoles } from '@/domain/constants/roles';
+import { AdminRoles, Roles } from '@/domain/constants/roles';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
 import { NotFoundError } from '@/shared/errors/app-error';
@@ -25,7 +25,7 @@ export const PUT = withApiErrorHandling(async (request: NextRequest, context: Co
 });
 
 export const DELETE = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  await requireApiUser(request, AdminRoles);
+  await requireApiUser(request, [Roles.Admin, Roles.Editor]);
   const { slug } = await context.params;
   const deleted = await new UnitOfWork().categories.deleteOne({ slug });
   if (!deleted) throw new NotFoundError('Category not found');

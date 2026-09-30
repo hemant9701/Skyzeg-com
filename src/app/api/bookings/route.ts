@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import { AdminRoles } from '@/domain/constants/roles';
+import { Roles } from '@/domain/constants/roles';
 import { BookingService } from '@/application/services/booking.service';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
@@ -11,7 +11,7 @@ const bookingStatuses = ['pending', 'confirmed', 'cancelled', 'completed'] as co
 const paymentStatuses = ['unpaid', 'paid', 'refunded'] as const;
 
 export const GET = withApiErrorHandling(async (request: NextRequest) => {
-  await requireApiUser(request, AdminRoles);
+  await requireApiUser(request, [Roles.Admin, Roles.Editor]);
   const page = Number(request.nextUrl.searchParams.get('page') || 1);
   const pageSize = Number(request.nextUrl.searchParams.get('pageSize') || 20);
   const status = request.nextUrl.searchParams.get('status');
@@ -26,7 +26,7 @@ export const POST = withApiErrorHandling(async (request: NextRequest) => {
 });
 
 export const PATCH = withApiErrorHandling(async (request: NextRequest) => {
-  const user = await requireApiUser(request, AdminRoles);
+  const user = await requireApiUser(request, [Roles.Admin, Roles.Editor]);
   const body = await request.json() as {
     id?: string;
     status?: string;

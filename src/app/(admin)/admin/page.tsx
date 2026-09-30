@@ -1,10 +1,16 @@
 import Link from 'next/link';
+import { Roles } from '@/domain/constants/roles';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
+import { getCurrentUserFromCookies } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function AdminDashboardPage() {
+  const user = await getCurrentUserFromCookies();
+  const isContentManager = Boolean(user?.roles.includes(Roles.ContentManager)
+    && !user.roles.includes(Roles.Admin)
+    && !user.roles.includes(Roles.Editor));
   const uow = new UnitOfWork();
   await uow.connect();
   const [pages, blogs, destinations, trips, bookings, media] = await Promise.all([
@@ -16,7 +22,7 @@ export default async function AdminDashboardPage() {
     uow.mediaFiles.rawModel.countDocuments()
   ]);
 
-  const stats = [
+  const allStats = [
     ['Pages', pages, 'bi-file-earmark-text', '/admin/pages'],
     ['Blogs', blogs, 'bi-journal-richtext', '/admin/blogs'],
     ['Destinations', destinations, 'bi-geo-alt', '/admin/destinations'],
@@ -24,6 +30,7 @@ export default async function AdminDashboardPage() {
     ['Bookings', bookings, 'bi-calendar-check', '/admin/bookings'],
     ['Media Files', media, 'bi-images', '/admin/media']
   ];
+  const stats = isContentManager ? allStats.slice(0, 4) : allStats;
 
   return (
     <>

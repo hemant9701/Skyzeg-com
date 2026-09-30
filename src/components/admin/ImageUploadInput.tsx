@@ -7,6 +7,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
   const [busy, setBusy] = useState(false);
   const [showLibrary, setShowLibrary] = useState(false);
   const [mediaItems, setMediaItems] = useState<any[]>([]);
+  const [canDeleteMedia, setCanDeleteMedia] = useState(false);
   const [libraryBusy, setLibraryBusy] = useState(false);
   const [uploadError, setUploadError] = useState('');
 
@@ -16,6 +17,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
       const response = await fetch(`/api/admin/collections/media?pageSize=200`);
       const json = await response.json();
       setMediaItems(json.data?.items || []);
+      setCanDeleteMedia(Boolean(json.data?.canDelete));
     } finally {
       setLibraryBusy(false);
     }
@@ -139,13 +141,13 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
                       >
                         Select
                       </button>
-                      <button
+                      {canDeleteMedia && <button
                         type="button"
                         onClick={() => deleteMedia(item._id)}
                         className="rounded-lg bg-red-500 px-2 py-1 text-xs font-medium text-white hover:bg-red-600"
                       >
                         Delete
-                      </button>
+                      </button>}
                     </div>
                     <div className="truncate p-2 text-xs text-slate-600">{item.originalName}</div>
                   </div>

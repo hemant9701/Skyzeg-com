@@ -24,7 +24,7 @@ function sanitizeUser(user: any) {
 }
 
 export const GET = withApiErrorHandling(async (request: NextRequest) => {
-  const currentUser = await requireApiUser(request, [Roles.Admin]);
+  const currentUser = await requireApiUser(request, [Roles.Admin, Roles.Editor]);
   const page = Number(request.nextUrl.searchParams.get('page') || 1);
   const pageSize = Number(request.nextUrl.searchParams.get('pageSize') || 100);
   const search = (request.nextUrl.searchParams.get('search') || '').trim();

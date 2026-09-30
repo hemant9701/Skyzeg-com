@@ -28,7 +28,7 @@ type NewUserState = {
 
 const roleOptions = Object.values(Roles);
 
-export default function UserManager() {
+export default function UserManager({ canManageUsers }: { canManageUsers: boolean }) {
   const [items, setItems] = useState<UserRow[]>([]);
   const [currentUserId, setCurrentUserId] = useState('');
   const [editing, setEditing] = useState<Record<string, EditableState>>({});
@@ -228,12 +228,12 @@ export default function UserManager() {
     <div className="space-y-6 rounded-3xl border border-white/10 bg-slate-900/70 p-6 text-slate-100">
       <div>
         <h1 className="text-xl font-semibold">Users</h1>
-        <p className="mt-1 text-sm text-slate-400">Manage admin users, roles, account access, and passwords.</p>
+        <p className="mt-1 text-sm text-slate-400">{canManageUsers ? 'Manage admin users, roles, account access, and passwords.' : 'View users and change your own password.'}</p>
       </div>
 
       {notice && <div className="rounded-xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-slate-200">{notice}</div>}
 
-      <form onSubmit={createUser} className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+      {canManageUsers && <form onSubmit={createUser} className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
         <h2 className="mb-4 text-lg font-semibold text-white">Create New User</h2>
         <div className="grid gap-3 md:grid-cols-2">
           <input className="rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-sm" placeholder="Full name" value={newUser.fullName} onChange={(event) => setNewUser((current) => ({ ...current, fullName: event.target.value }))} required />
@@ -266,7 +266,7 @@ export default function UserManager() {
         <div className="mt-4">
           <button type="submit" disabled={busy} className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-60">Create user</button>
         </div>
-      </form>
+      </form>}
 
       <div className="overflow-x-auto rounded-2xl border border-white/10">
         <table className="min-w-full divide-y divide-white/10 text-sm">
@@ -276,8 +276,8 @@ export default function UserManager() {
               <th className="px-3 py-2 text-left font-medium text-slate-400">Email</th>
               <th className="px-3 py-2 text-left font-medium text-slate-400">Roles</th>
               <th className="px-3 py-2 text-left font-medium text-slate-400">Access</th>
-              <th className="px-3 py-2 text-left font-medium text-slate-400">Password Reset</th>
-              <th className="px-3 py-2 text-left font-medium text-slate-400">Action</th>
+              {canManageUsers && <th className="px-3 py-2 text-left font-medium text-slate-400">Password Reset</th>}
+              {canManageUsers && <th className="px-3 py-2 text-left font-medium text-slate-400">Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -292,6 +292,7 @@ export default function UserManager() {
                     <input
                       className="w-full rounded-md border border-white/10 bg-slate-900/60 px-2 py-1"
                       value={draft.fullName}
+                      disabled={!canManageUsers}
                       onChange={(event) => setEditing((current) => ({
                         ...current,
                         [user._id]: { ...current[user._id], fullName: event.target.value }
@@ -304,7 +305,7 @@ export default function UserManager() {
                     <div className="grid gap-1">
                       {roleOptions.map((role) => (
                         <label key={role} className="inline-flex items-center gap-2 text-xs text-slate-300">
-                          <input type="checkbox" checked={draft.roles.includes(role)} onChange={() => toggleRole(user._id, role)} />
+                          <input type="checkbox" checked={draft.roles.includes(role)} onChange={() => toggleRole(user._id, role)} disabled={!canManageUsers} />
                           {role}
                         </label>
                       ))}
@@ -312,11 +313,11 @@ export default function UserManager() {
                   </td>
                   <td className="px-3 py-3">
                     <label className="inline-flex items-center gap-2 text-xs text-slate-300">
-                      <input type="checkbox" checked={draft.isActive} onChange={(event) => setEditing((current) => ({ ...current, [user._id]: { ...current[user._id], isActive: event.target.checked } }))} />
+                      <input type="checkbox" checked={draft.isActive} onChange={(event) => setEditing((current) => ({ ...current, [user._id]: { ...current[user._id], isActive: event.target.checked } }))} disabled={!canManageUsers} />
                       Active
                     </label>
                   </td>
-                  <td className="px-3 py-3">
+                  {canManageUsers && <td className="px-3 py-3">
                     <input
                       type="password"
                       className="w-full rounded-md border border-white/10 bg-slate-900/60 px-2 py-1"
@@ -325,10 +326,10 @@ export default function UserManager() {
                       onChange={(event) => setResetPassword((current) => ({ ...current, [user._id]: event.target.value }))}
                     />
                     <button type="button" onClick={() => applyPasswordReset(user._id)} disabled={busy} className="mt-2 rounded-md border border-white/15 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-60">Reset password</button>
-                  </td>
-                  <td className="px-3 py-3">
+                  </td>}
+                  {canManageUsers && <td className="px-3 py-3">
                     <button type="button" onClick={() => saveUser(user._id)} disabled={busy} className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-60">Save</button>
-                  </td>
+                  </td>}
                 </tr>
               );
             })}

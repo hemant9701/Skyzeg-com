@@ -1,16 +1,20 @@
 import type { NextRequest } from 'next/server';
 import { getRegistryItem } from '@/application/services/module-registry';
 import { AdminRoles } from '@/domain/constants/roles';
+import { canAccessAdminCollection } from '@/domain/constants/admin-permissions';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { requireApiUser } from '@/lib/auth';
-import { NotFoundError, ValidationError } from '@/shared/errors/app-error';
+import { ForbiddenError, NotFoundError, ValidationError } from '@/shared/errors/app-error';
 import { noContent, ok, withApiErrorHandling } from '@/shared/http/api-response';
 
 interface Context { params: Promise<{ collection: string; id: string }> }
 
 export const GET = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  const user = await requireApiUser(request, AdminRoles);
+  if (!canAccessAdminCollection(user.roles, collection, 'GET')) {
+    throw new ForbiddenError();
+  }
   if (collection === 'users') {
     throw new ValidationError('Use /api/admin/users for user management');
   }
@@ -21,8 +25,11 @@ export const GET = withApiErrorHandling(async (request: NextRequest, context: Co
 });
 
 export const PUT = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  const user = await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  const user = await requireApiUser(request, AdminRoles);
+  if (!canAccessAdminCollection(user.roles, collection, 'PUT')) {
+    throw new ForbiddenError();
+  }
   if (collection === 'users') {
     throw new ValidationError('Use /api/admin/users for user management');
   }
@@ -37,8 +44,11 @@ export const PUT = withApiErrorHandling(async (request: NextRequest, context: Co
 });
 
 export const DELETE = withApiErrorHandling(async (request: NextRequest, context: Context) => {
-  const user = await requireApiUser(request, AdminRoles);
   const { collection, id } = await context.params;
+  const user = await requireApiUser(request, AdminRoles);
+  if (!canAccessAdminCollection(user.roles, collection, 'DELETE')) {
+    throw new ForbiddenError();
+  }
   if (collection === 'users') {
     throw new ValidationError('Use /api/admin/users for user management');
   }
