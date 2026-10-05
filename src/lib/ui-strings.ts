@@ -4,8 +4,12 @@ export interface UiStrings {
   homeProcessSteps: { title: string; body: string }[];
   homeWhyCards: { title: string; body: string }[];
   homeAboutBadge: string;
+  homeAboutTitle: string;
   homeHowItWorksBadge: string;
   homeHowItWorksTitle: string;
+  homeWorkflowRunning: string;
+  homeWorkflowStep: string;
+  homeWorkflowOf: string;
   homeTailorMadePlanningBadge: string;
   homeFeaturedBadge: string;
   homeFeaturedTitle: string;
@@ -223,8 +227,12 @@ export interface UiStrings {
 
 const en: UiStrings = {
   homeAboutBadge: 'About Us',
+  homeAboutTitle: 'Crafting journeys that feel personal, seamless, and unforgettable.',
   homeHowItWorksBadge: 'How It Works',
   homeHowItWorksTitle: 'Your Journey, Planned in Three Clear Steps',
+  homeWorkflowRunning: 'Planning your journey',
+  homeWorkflowStep: 'Step',
+  homeWorkflowOf: 'of',
   homeTailorMadePlanningBadge: 'Tailor-Made Planning',
   homeTrustStats: [
     { label: 'Curated Routes', value: '250+' },
@@ -465,8 +473,12 @@ const en: UiStrings = {
 
 const fr: UiStrings = {
   homeAboutBadge: 'À propos',
+  homeAboutTitle: 'Des voyages personnalisés, sans effort et inoubliables.',
   homeHowItWorksBadge: 'Comment ça marche',
   homeHowItWorksTitle: 'Votre voyage, planifié en trois étapes claires',
+  homeWorkflowRunning: 'Planification de votre voyage',
+  homeWorkflowStep: 'Étape',
+  homeWorkflowOf: 'sur',
   homeTailorMadePlanningBadge: 'Planification sur mesure',
   homeTrustStats: [
     { label: 'Itinéraires sélectionnés', value: '250+' },
@@ -707,8 +719,12 @@ const fr: UiStrings = {
 
 const es: UiStrings = {
   homeAboutBadge: 'Sobre nosotros',
+  homeAboutTitle: 'Creamos viajes personales, cómodos e inolvidables.',
   homeHowItWorksBadge: 'Cómo funciona',
   homeHowItWorksTitle: 'Su viaje, planificado en tres pasos claros',
+  homeWorkflowRunning: 'Planificando su viaje',
+  homeWorkflowStep: 'Paso',
+  homeWorkflowOf: 'de',
   homeTailorMadePlanningBadge: 'Planificación a medida',
   homeTrustStats: [
     { label: 'Rutas seleccionadas', value: '250+' },
@@ -949,8 +965,12 @@ const es: UiStrings = {
 
 const nl: UiStrings = {
   homeAboutBadge: 'Over ons',
+  homeAboutTitle: 'We creëren persoonlijke, zorgeloze en onvergetelijke reizen.',
   homeHowItWorksBadge: 'Hoe het werkt',
   homeHowItWorksTitle: 'Uw reis, gepland in drie duidelijke stappen',
+  homeWorkflowRunning: 'Uw reis wordt gepland',
+  homeWorkflowStep: 'Stap',
+  homeWorkflowOf: 'van',
   homeTailorMadePlanningBadge: 'Reisplanning op maat',
   homeTrustStats: [
     { label: 'Geselecteerde routes', value: '250+' },
@@ -1191,8 +1211,12 @@ const nl: UiStrings = {
 
 const it: UiStrings = {
   homeAboutBadge: 'Chi siamo',
+  homeAboutTitle: 'Creiamo viaggi personali, senza pensieri e indimenticabili.',
   homeHowItWorksBadge: 'Come funziona',
   homeHowItWorksTitle: 'Il tuo viaggio, pianificato in tre chiari passi',
+  homeWorkflowRunning: 'Pianificazione del viaggio',
+  homeWorkflowStep: 'Passaggio',
+  homeWorkflowOf: 'di',
   homeTailorMadePlanningBadge: 'Pianificazione su misura',
   homeTrustStats: [
     { label: 'Itinerari selezionati', value: '250+' },

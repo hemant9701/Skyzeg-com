@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getStrings } from '@/lib/ui-strings';
 import HeroSlider from '@/components/public/HeroSlider';
 import CardSlider from "@/components/public/CardSlider";
+import HomeWorkflow from '@/components/public/HomeWorkflow';
 import TripCard from "@/components/public/TripCard";
 import DestinationCard from '@/components/public/DestinationCard';
 import TravelTypesCard from '@/components/public/TravelTypesCard';
@@ -25,12 +26,7 @@ export default async function HomePage() {
   const plainSlides = toPlain(data.sliders || []);
   const settingsTranslation = pickTranslation(data.settings as any, languageCode) as any;
   const ui = getStrings(languageCode);
-  const processStepIcons = [Compass, Route, ShieldCheck];
   const trustStats = ui.homeTrustStats;
-  const processSteps = ui.homeProcessSteps.map((step, index) => ({
-    ...step,
-    icon: processStepIcons[index] || Route
-  }));
   const whyCardIcons = [Users, Wallet, ShieldCheck, Sparkles];
   const whyCards = ui.homeWhyCards.map((card, index) => ({
     ...card,
@@ -46,7 +42,7 @@ export default async function HomePage() {
           <div>
             <span className="mb-3 inline-flex rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent-hover">{ui.homeAboutBadge}</span>
             <h2 className="text-4xl font-semibold leading-tight text-dark sm:text-5xl">
-              Crafting journeys that feel personal, seamless, and unforgettable.
+              {ui.homeAboutTitle}
             </h2>
             <p className="mt-4 max-w-2xl text-lg text-subtle">
               We design meaningful travel experiences across iconic and offbeat destinations. Every itinerary balances discovery, comfort,
@@ -174,21 +170,12 @@ export default async function HomePage() {
             <h2 className="text-3xl font-semibold text-dark sm:text-4xl">{ui.homeHowItWorksTitle}</h2>
           </div>
 
-          <MotionStagger className="grid gap-6 md:grid-cols-3">
-            {processSteps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <MotionStaggerItem key={step.title} className="relative rounded-3xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                  <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon size={22} />
-                  </span>
-                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-muted">Step {index + 1}</p>
-                  <h3 className="text-xl font-semibold text-dark">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-subtle">{step.body}</p>
-                </MotionStaggerItem>
-              );
-            })}
-          </MotionStagger>
+          <HomeWorkflow
+            steps={ui.homeProcessSteps}
+            runningLabel={ui.homeWorkflowRunning}
+            stepLabel={ui.homeWorkflowStep}
+            ofLabel={ui.homeWorkflowOf}
+          />
         </div>
       </MotionSection>
 

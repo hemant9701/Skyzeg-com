@@ -21,36 +21,39 @@ body {
 
 .material-you-slider .swiper-button-next,
 .material-you-slider .swiper-button-prev {
-  top: 90%;
-  right: 1rem;
-  left: auto;
-  display: none;
+  top: auto !important;
+  bottom: -0.625rem !important;
+  right: auto !important;
+  left: auto !important;
+  display: inline-flex;
   width: 2.75rem;
   height: 2.75rem;
   margin-top: 0;
   padding: 0.75rem;
   border-radius: 9999px;
-  transform: translateY(-50%);
-  background: rgb(255 255 255 / 20%);
-  color: #fff;
-  backdrop-filter: blur(8px);
+  transform: none !important;
+  color: #1c398e !important;
 }
 
 .material-you-slider .swiper-button-prev {
-  right: 4rem;
+  left: calc(50% - 6.5rem) !important;
+}
+
+.material-you-slider .swiper-button-next {
+  left: calc(50% + 3.75rem) !important;
+}
+
+.material-you-slider .swiper-pagination {
+  bottom: 0.5rem !important;
+  left: 50% !important;
+  width: auto !important;
+  transform: translateX(-50%) !important;
 }
 
 .material-you-slider .swiper-button-next::after,
 .material-you-slider .swiper-button-prev::after {
   font-size: 1.25rem;
   font-weight: 400;
-}
-
-@media (min-width: 768px) {
-  .material-you-slider .swiper-button-next,
-  .material-you-slider .swiper-button-prev {
-    display: inline-flex;
-  }
 }
 
 .material-you-slider .swiper-pagination-bullet {
