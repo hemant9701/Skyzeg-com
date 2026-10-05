@@ -30,12 +30,24 @@ export interface TripQueryResult {
 export async function populateTripReferences(uow: UnitOfWork, trips: any[]) {
   const getReferenceId = (reference: any) => String(reference?._id ?? reference ?? '');
   const getIds = (references: any[]) => Array.from(new Set(references.map(getReferenceId).filter(Boolean)));
-  const destinationIds = getIds(trips.map((trip) => trip.destination));
+  const destinationReferences = getIds(trips.map((trip) => trip.destination));
+  const destinationIds = destinationReferences.filter(isValidObjectId);
+  const destinationSlugs = destinationReferences
+    .filter((reference) => !isValidObjectId(reference))
+    .map((reference) => reference.toLowerCase());
   const travelTypeIds = getIds(trips.flatMap((trip) => trip.travelTypes || []));
   const categoryIds = getIds(trips.flatMap((trip) => trip.categories || []));
 
   const [destinations, travelTypes, categories] = await Promise.all([
-    destinationIds.length ? uow.destinations.list({ _id: { $in: destinationIds }, isVisible: true }) : [],
+    destinationIds.length || destinationSlugs.length
+      ? uow.destinations.list({
+          $or: [
+            ...(destinationIds.length ? [{ _id: { $in: destinationIds } }] : []),
+            ...(destinationSlugs.length ? [{ slug: { $in: destinationSlugs } }] : [])
+          ],
+          isVisible: true
+        })
+      : [],
     travelTypeIds.length ? uow.travelTypes.list({ _id: { $in: travelTypeIds }, isVisible: true }) : [],
     categoryIds.length ? uow.categories.list({ _id: { $in: categoryIds }, isVisible: true }) : []
   ]);
@@ -48,9 +60,19 @@ export async function populateTripReferences(uow: UnitOfWork, trips: any[]) {
     return records.find((record) => String(record._id) === id) || null;
   };
 
+  const resolveDestination = (reference: any) => {
+    if (reference && typeof reference === 'object' && (reference.translations || reference.slug || reference.name || reference.title)) {
+      return reference;
+    }
+    const value = getReferenceId(reference);
+    return destinations.find((destination) =>
+      String(destination._id) === value || String(destination.slug).toLowerCase() === value.toLowerCase()
+    ) || null;
+  };
+
   return trips.map((trip) => ({
     ...trip,
-    destination: resolveReference(trip.destination, destinations),
+    destination: resolveDestination(trip.destination),
     travelTypes: Array.isArray(trip.travelTypes)
       ? trip.travelTypes.map((reference: any) => resolveReference(reference, travelTypes)).filter(Boolean)
       : [],
