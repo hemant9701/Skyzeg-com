@@ -45,7 +45,7 @@ export default function LanguageSwitcher({ languages, active }: { languages: { c
       </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-40 rounded-2xl border border-line bg-white p-2 shadow-lg" role="listbox">
+        <div className="absolute right-0 z-20 mt-12 rounded-2xl border border-line bg-white/80 backdrop-blur-sm p-2 shadow-lg" role="listbox">
           {languages.map((language) => (
             <button
               key={language.code}

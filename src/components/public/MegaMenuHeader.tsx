@@ -359,7 +359,7 @@ export default function MegaMenuHeader({
       {/* ── Desktop mega-panel (full-width, never overflows) ── */}
       {hoveredColumns && (
         <div
-          className="absolute inset-x-0 top-full z-40 border-t border-light bg-white shadow-2xl"
+          className="absolute inset-x-0 top-full z-40 mx-8 border-t border-light rounded-xl bg-white/80 backdrop-blur-sm shadow-2xl"
           onMouseEnter={() => setHovered(hovered)}
         >
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -413,7 +413,7 @@ export default function MegaMenuHeader({
 
       {/* ── Mobile menu ───────────────────────────────────────── */}
       {mobileOpen && (
-        <div className="border-t border-line bg-white md:hidden">
+        <div className="border-t border-line bg-white/80 backdrop-blur-sm md:hidden">
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
             <ul className="space-y-1">
               {items.map((item) => {
@@ -444,7 +444,7 @@ export default function MegaMenuHeader({
                     )}
 
                     {isOpen && columns && (
-                      <div className="ml-4 mt-1 space-y-4 rounded-xl border-l-2 border-accent/40 bg-light px-4 py-3">
+                      <div className="ml-4 mt-1 space-y-4 rounded-xl border-l-2 border-accent/40 bg-light/80 backdrop-blur-sm px-4 py-3">
                         {columns.map((col, idx) => (
                           <div key={idx}>
                             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary">
@@ -472,7 +472,7 @@ export default function MegaMenuHeader({
               })}
             </ul>
 
-            <div className="mt-4 space-y-3 border-t border-line pt-4">
+            <div className="mt-4 space-y-3 border-t border-line pt-4 bg-white/80 backdrop-blur-sm px-4 py-3">
               <LanguageSwitcher languages={languages} active={activeLanguage} />
               <Link
                 href="/tailor-made"
