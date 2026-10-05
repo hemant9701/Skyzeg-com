@@ -278,14 +278,16 @@ export default function MegaMenuHeader({
 
           {/* Logo */}
           <Link className="flex flex-shrink-0 items-center" href="/">
-            <Image
-              src={solidHeader ? logoUrl || logo2Url : logo2Url || logoUrl}
-              alt={siteName || 'Skyzeg Travel'}
-              width={100}
-              height={30}
-              className="transition-all duration-300"
-              priority
-            />
+            <span className="relative block h-[60px] w-[100px]">
+              <Image
+                src={solidHeader ? logoUrl || logo2Url : logo2Url || logoUrl}
+                alt={siteName || 'Skyzeg Travel'}
+                fill
+                sizes="100px"
+                className="object-contain transition-all duration-300"
+                priority
+              />
+            </span>
           </Link>
 
           {/* Desktop nav items */}

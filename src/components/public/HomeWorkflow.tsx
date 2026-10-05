@@ -60,6 +60,7 @@ export default function HomeWorkflow({ steps, runningLabel, stepLabel, ofLabel }
                 aria-current={isActive ? 'step' : undefined}
                 aria-expanded={isActive}
                 aria-controls={`home-workflow-step-${index}-details`}
+                suppressHydrationWarning
               >
                 <span className="flex w-full items-center gap-3">
                   <span

@@ -44,10 +44,7 @@ export default async function HomePage() {
             <h2 className="text-4xl font-semibold leading-tight text-dark sm:text-5xl">
               {ui.homeAboutTitle}
             </h2>
-            <p className="mt-4 max-w-2xl text-lg text-subtle">
-              We design meaningful travel experiences across iconic and offbeat destinations. Every itinerary balances discovery, comfort,
-              and local insight so your trip feels effortless from planning to return.
-            </p>
+            <p className="mt-4 max-w-2xl text-lg text-subtle">{ui.homeAboutBody}</p>
             <MotionStagger className="mt-8 grid gap-4 sm:grid-cols-2">
               {trustStats.map((item) => (
                 <MotionStaggerItem key={item.label} className="rounded-2xl border border-line bg-surface p-5">
@@ -61,7 +58,7 @@ export default async function HomePage() {
           <div className="relative h-[520px] overflow-hidden rounded-[2rem] border border-line shadow-lg">
             <Image
               src="/images/placeholder-1.webp"
-              alt="Travelers exploring scenic destination"
+              alt={ui.homeAboutImageAlt}
               fill
               priority
               quality={85}
@@ -69,8 +66,8 @@ export default async function HomePage() {
               className="object-cover"
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark/75 via-dark/30 to-transparent p-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Travelnext Signature</p>
-              <p className="mt-2 text-xl font-semibold text-white">Handcrafted itineraries with thoughtful details.</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">{ui.homeSignatureLabel}</p>
+              <p className="mt-2 text-xl font-semibold text-white">{ui.homeSignatureText}</p>
             </div>
           </div>
         </div>
@@ -80,7 +77,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeFeaturedBadge}</span>
+              <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeTravelTypesBadge}</span>
               <h2 className="text-3xl font-semibold text-primary">{ui.homeFeaturedTitle}</h2>
               <p className="mt-2 text-body">{ui.homeFeaturedSubtitle}</p>
             </div>
@@ -145,8 +142,8 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <span className="mb-2 inline-flex rounded-full bg-primary/20 px-3 py-1 text-sm font-semibold text-accent">{ui.homeWhyBadge}</span>
-            <h2 className="text-3xl font-semibold text-white">{settingsTranslation?.whyChooseUsTitle || 'Built for modern travel brands'}</h2>
-            <div className="mt-4 max-w-xl text-lg text-line-strong" dangerouslySetInnerHTML={{ __html: settingsTranslation?.whyChooseUsBody || 'Manage content, media, bookings and SEO from one dashboard.' }} />
+            <h2 className="text-3xl font-semibold text-white">{settingsTranslation?.whyChooseUsTitle || ui.homeWhyDefaultTitle}</h2>
+            <div className="mt-4 max-w-xl text-lg text-line-strong" dangerouslySetInnerHTML={{ __html: settingsTranslation?.whyChooseUsBody || ui.homeWhyDefaultBody }} />
           </div>
           <MotionStagger className="grid gap-4 sm:grid-cols-2">
             {whyCards.map((item) => {
@@ -233,20 +230,20 @@ export default async function HomePage() {
                   {ui.homeTailorMadePlanningBadge}
                 </span>
                 <h2 className="text-3xl font-semibold leading-tight text-white sm:text-4xl">
-                  Ready to design your next unforgettable journey?
+                  {ui.homeTailorMadePlanningTitle}
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-line-strong sm:text-lg">
-                  From honeymoon escapes to multi-country adventures, our travel specialists shape a personalized itinerary around your pace, budget, and dream destinations.
+                  {ui.homeTailorMadePlanningBody}
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-sm text-light">
                     <Sparkles size={16} className="text-accent" />
-                    Personalized itineraries
+                    {ui.homeTailorMadeFeaturePersonalized}
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-sm text-light">
                     <Route size={16} className="text-accent" />
-                    Flexible route planning
+                    {ui.homeTailorMadeFeatureFlexible}
                   </div>
                 </div>
 
@@ -254,7 +251,7 @@ export default async function HomePage() {
                   href="/tailor-made"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-dark shadow-lg shadow-accent/20 transition hover:-translate-y-0.5 hover:bg-accent-light"
                 >
-                  Start Tailor-Made Plan
+                  {ui.homeTailorMadeCta}
                   <ArrowRight size={18} />
                 </Link>
               </div>
@@ -266,16 +263,16 @@ export default async function HomePage() {
                       <Compass size={20} />
                     </div>
                     <div>
-                      <p className="font-semibold text-white">Travel design in 3 simple steps</p>
-                      <p className="mt-1 text-sm text-line-strong">Tell us your style, we build the plan, and you travel with confidence.</p>
+                      <p className="font-semibold text-white">{ui.homeTailorMadeProcessTitle}</p>
+                      <p className="mt-1 text-sm text-line-strong">{ui.homeTailorMadeProcessBody}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="rounded-3xl border border-accent/20 bg-accent/10 p-5">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-light">Fast response</p>
-                  <p className="mt-2 text-3xl font-semibold text-white">Within 24 hours</p>
-                  <p className="mt-2 text-sm text-line-strong">Our team replies with ideas, recommendations, and next steps tailored to you.</p>
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-light">{ui.homeTailorMadeResponseBadge}</p>
+                  <p className="mt-2 text-3xl font-semibold text-white">{ui.homeTailorMadeResponseTime}</p>
+                  <p className="mt-2 text-sm text-line-strong">{ui.homeTailorMadeResponseBody}</p>
                 </div>
               </div>
             </div>

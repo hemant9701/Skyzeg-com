@@ -5,12 +5,27 @@ export interface UiStrings {
   homeWhyCards: { title: string; body: string }[];
   homeAboutBadge: string;
   homeAboutTitle: string;
+  homeAboutBody: string;
+  homeAboutImageAlt: string;
+  homeSignatureLabel: string;
+  homeSignatureText: string;
+  homeTravelTypesBadge: string;
   homeHowItWorksBadge: string;
   homeHowItWorksTitle: string;
   homeWorkflowRunning: string;
   homeWorkflowStep: string;
   homeWorkflowOf: string;
   homeTailorMadePlanningBadge: string;
+  homeTailorMadePlanningTitle: string;
+  homeTailorMadePlanningBody: string;
+  homeTailorMadeFeaturePersonalized: string;
+  homeTailorMadeFeatureFlexible: string;
+  homeTailorMadeCta: string;
+  homeTailorMadeProcessTitle: string;
+  homeTailorMadeProcessBody: string;
+  homeTailorMadeResponseBadge: string;
+  homeTailorMadeResponseTime: string;
+  homeTailorMadeResponseBody: string;
   homeFeaturedBadge: string;
   homeFeaturedTitle: string;
   homeFeaturedSubtitle: string;
@@ -20,6 +35,8 @@ export interface UiStrings {
   homePopularSubtitle: string;
   homePopularCta: string;
   homeWhyBadge: string;
+  homeWhyDefaultTitle: string;
+  homeWhyDefaultBody: string;
   homeWhyFeatures: string[];
   homeBlogsBadge: string;
   homeBlogsTitle: string;
@@ -228,12 +245,27 @@ export interface UiStrings {
 const en: UiStrings = {
   homeAboutBadge: 'About Us',
   homeAboutTitle: 'Crafting journeys that feel personal, seamless, and unforgettable.',
+  homeAboutBody: 'We design meaningful travel experiences across iconic and offbeat destinations. Every itinerary balances discovery, comfort, and local insight so your trip feels effortless from planning to return.',
+  homeAboutImageAlt: 'Travelers exploring a scenic destination',
+  homeSignatureLabel: 'TravelNext Signature',
+  homeSignatureText: 'Handcrafted itineraries with thoughtful details.',
+  homeTravelTypesBadge: 'Travel styles',
   homeHowItWorksBadge: 'How It Works',
   homeHowItWorksTitle: 'Your Journey, Planned in Three Clear Steps',
   homeWorkflowRunning: 'Planning your journey',
   homeWorkflowStep: 'Step',
   homeWorkflowOf: 'of',
   homeTailorMadePlanningBadge: 'Tailor-Made Planning',
+  homeTailorMadePlanningTitle: 'Ready to design your next unforgettable journey?',
+  homeTailorMadePlanningBody: 'From honeymoon escapes to multi-country adventures, our travel specialists shape a personalized itinerary around your pace, budget, and dream destinations.',
+  homeTailorMadeFeaturePersonalized: 'Personalized itineraries',
+  homeTailorMadeFeatureFlexible: 'Flexible route planning',
+  homeTailorMadeCta: 'Start your tailor-made plan',
+  homeTailorMadeProcessTitle: 'Travel design in 3 simple steps',
+  homeTailorMadeProcessBody: 'Tell us your style, we build the plan, and you travel with confidence.',
+  homeTailorMadeResponseBadge: 'Fast response',
+  homeTailorMadeResponseTime: 'Within 24 hours',
+  homeTailorMadeResponseBody: 'Our team replies with ideas, recommendations, and next steps tailored to you.',
   homeTrustStats: [
     { label: 'Curated Routes', value: '250+' },
     { label: 'Happy Travellers', value: '12K+' },
@@ -281,6 +313,8 @@ const en: UiStrings = {
   homePopularSubtitle: 'Bookable travel packages with prices, itinerary, policies and availability.',
   homePopularCta: 'View all trips',
   homeWhyBadge: 'Why Choose Us',
+  homeWhyDefaultTitle: 'Travel designed around you',
+  homeWhyDefaultBody: 'Our team brings every detail together, from planning and media to bookings, so your travel experience feels seamless.',
   homeWhyFeatures: ['Multilingual CMS', 'Media Library', 'SEO Ready', 'Booking Flow'],
   homeBlogsBadge: 'Stories',
   homeBlogsTitle: 'Latest Blogs',
@@ -474,12 +508,27 @@ const en: UiStrings = {
 const fr: UiStrings = {
   homeAboutBadge: 'À propos',
   homeAboutTitle: 'Des voyages personnalisés, sans effort et inoubliables.',
+  homeAboutBody: 'Nous imaginons des expériences de voyage riches de sens, entre destinations emblématiques et lieux hors des sentiers battus. Chaque itinéraire allie découverte, confort et expertise locale pour un voyage serein, de la préparation au retour.',
+  homeAboutImageAlt: 'Des voyageurs découvrent une destination pittoresque',
+  homeSignatureLabel: 'La signature TravelNext',
+  homeSignatureText: 'Des itinéraires conçus avec soin et le souci du détail.',
+  homeTravelTypesBadge: 'Styles de voyage',
   homeHowItWorksBadge: 'Comment ça marche',
   homeHowItWorksTitle: 'Votre voyage, planifié en trois étapes claires',
   homeWorkflowRunning: 'Planification de votre voyage',
   homeWorkflowStep: 'Étape',
   homeWorkflowOf: 'sur',
   homeTailorMadePlanningBadge: 'Planification sur mesure',
+  homeTailorMadePlanningTitle: 'Prêt à concevoir votre prochain voyage inoubliable ?',
+  homeTailorMadePlanningBody: 'Des escapades de lune de miel aux aventures dans plusieurs pays, nos spécialistes créent un itinéraire personnalisé selon votre rythme, votre budget et vos destinations de rêve.',
+  homeTailorMadeFeaturePersonalized: 'Itinéraires personnalisés',
+  homeTailorMadeFeatureFlexible: 'Planification flexible des itinéraires',
+  homeTailorMadeCta: 'Créer mon voyage sur mesure',
+  homeTailorMadeProcessTitle: 'Votre voyage en 3 étapes simples',
+  homeTailorMadeProcessBody: 'Vous nous parlez de vos envies, nous préparons votre voyage et vous partez en toute confiance.',
+  homeTailorMadeResponseBadge: 'Réponse rapide',
+  homeTailorMadeResponseTime: 'Sous 24 heures',
+  homeTailorMadeResponseBody: 'Notre équipe vous répond avec des idées, des conseils et les prochaines étapes adaptées à vos envies.',
   homeTrustStats: [
     { label: 'Itinéraires sélectionnés', value: '250+' },
     { label: 'Voyageurs satisfaits', value: '12K+' },
@@ -527,6 +576,8 @@ const fr: UiStrings = {
   homePopularSubtitle: 'Packages de voyage réservables avec prix, itinéraires et disponibilités.',
   homePopularCta: 'Voir tous les voyages',
   homeWhyBadge: 'Pourquoi nous choisir',
+  homeWhyDefaultTitle: 'Un voyage pensé pour vous',
+  homeWhyDefaultBody: 'Notre équipe coordonne chaque détail, de la planification aux réservations, pour vous offrir une expérience de voyage fluide.',
   homeWhyFeatures: ['CMS multilingue', 'Médiathèque', 'SEO optimisé', 'Réservation en ligne'],
   homeBlogsBadge: 'Histoires',
   homeBlogsTitle: 'Derniers articles',
@@ -720,12 +771,27 @@ const fr: UiStrings = {
 const es: UiStrings = {
   homeAboutBadge: 'Sobre nosotros',
   homeAboutTitle: 'Creamos viajes personales, cómodos e inolvidables.',
+  homeAboutBody: 'Diseñamos experiencias de viaje con sentido, tanto a destinos emblemáticos como a lugares menos conocidos. Cada itinerario combina descubrimiento, comodidad y conocimiento local para que disfrute de un viaje sin complicaciones desde la planificación hasta el regreso.',
+  homeAboutImageAlt: 'Viajeros explorando un destino pintoresco',
+  homeSignatureLabel: 'La esencia de TravelNext',
+  homeSignatureText: 'Itinerarios diseñados a mano con detalles bien pensados.',
+  homeTravelTypesBadge: 'Estilos de viaje',
   homeHowItWorksBadge: 'Cómo funciona',
   homeHowItWorksTitle: 'Su viaje, planificado en tres pasos claros',
   homeWorkflowRunning: 'Planificando su viaje',
   homeWorkflowStep: 'Paso',
   homeWorkflowOf: 'de',
   homeTailorMadePlanningBadge: 'Planificación a medida',
+  homeTailorMadePlanningTitle: '¿Listo para diseñar su próximo viaje inolvidable?',
+  homeTailorMadePlanningBody: 'Desde escapadas de luna de miel hasta aventuras por varios países, nuestros especialistas crean un itinerario personalizado según su ritmo, presupuesto y destinos soñados.',
+  homeTailorMadeFeaturePersonalized: 'Itinerarios personalizados',
+  homeTailorMadeFeatureFlexible: 'Planificación flexible de rutas',
+  homeTailorMadeCta: 'Empiece su viaje a medida',
+  homeTailorMadeProcessTitle: 'Diseñe su viaje en 3 sencillos pasos',
+  homeTailorMadeProcessBody: 'Cuéntenos qué le gusta, preparamos el plan y usted viaja con confianza.',
+  homeTailorMadeResponseBadge: 'Respuesta rápida',
+  homeTailorMadeResponseTime: 'En menos de 24 horas',
+  homeTailorMadeResponseBody: 'Nuestro equipo le responde con ideas, recomendaciones y próximos pasos adaptados a usted.',
   homeTrustStats: [
     { label: 'Rutas seleccionadas', value: '250+' },
     { label: 'Viajeros felices', value: '12K+' },
@@ -773,6 +839,8 @@ const es: UiStrings = {
   homePopularSubtitle: 'Paquetes de viaje reservables con precios, itinerarios y disponibilidad.',
   homePopularCta: 'Ver todos los viajes',
   homeWhyBadge: 'Por qué elegirnos',
+  homeWhyDefaultTitle: 'Viajes diseñados para usted',
+  homeWhyDefaultBody: 'Nuestro equipo coordina cada detalle, desde la planificación hasta las reservas, para que su experiencia de viaje sea cómoda y fluida.',
   homeWhyFeatures: ['CMS multilingüe', 'Biblioteca multimedia', 'SEO optimizado', 'Reserva en línea'],
   homeBlogsBadge: 'Historias',
   homeBlogsTitle: 'Últimos blogs',
@@ -966,12 +1034,27 @@ const es: UiStrings = {
 const nl: UiStrings = {
   homeAboutBadge: 'Over ons',
   homeAboutTitle: 'We creëren persoonlijke, zorgeloze en onvergetelijke reizen.',
+  homeAboutBody: 'We ontwerpen betekenisvolle reiservaringen naar bekende bestemmingen en plekken buiten de gebaande paden. Elke reis combineert ontdekking, comfort en lokale kennis, zodat uw reis van planning tot thuiskomst soepel verloopt.',
+  homeAboutImageAlt: 'Reizigers ontdekken een schilderachtige bestemming',
+  homeSignatureLabel: 'TravelNext Signature',
+  homeSignatureText: 'Met zorg samengestelde reizen vol doordachte details.',
+  homeTravelTypesBadge: 'Reisstijlen',
   homeHowItWorksBadge: 'Hoe het werkt',
   homeHowItWorksTitle: 'Uw reis, gepland in drie duidelijke stappen',
   homeWorkflowRunning: 'Uw reis wordt gepland',
   homeWorkflowStep: 'Stap',
   homeWorkflowOf: 'van',
   homeTailorMadePlanningBadge: 'Reisplanning op maat',
+  homeTailorMadePlanningTitle: 'Klaar om uw volgende onvergetelijke reis te ontwerpen?',
+  homeTailorMadePlanningBody: 'Van huwelijksreizen tot avonturen door meerdere landen: onze reisspecialisten stellen een persoonlijk reisplan samen dat past bij uw tempo, budget en droombestemmingen.',
+  homeTailorMadeFeaturePersonalized: 'Persoonlijke reisplannen',
+  homeTailorMadeFeatureFlexible: 'Flexibele routeplanning',
+  homeTailorMadeCta: 'Start uw reis op maat',
+  homeTailorMadeProcessTitle: 'Uw reis in 3 eenvoudige stappen',
+  homeTailorMadeProcessBody: 'Vertel ons wat u zoekt, wij maken het plan en u reist met vertrouwen.',
+  homeTailorMadeResponseBadge: 'Snelle reactie',
+  homeTailorMadeResponseTime: 'Binnen 24 uur',
+  homeTailorMadeResponseBody: 'Ons team reageert met ideeën, aanbevelingen en vervolgstappen die bij u passen.',
   homeTrustStats: [
     { label: 'Geselecteerde routes', value: '250+' },
     { label: 'Blije reizigers', value: '12K+' },
@@ -1019,6 +1102,8 @@ const nl: UiStrings = {
   homePopularSubtitle: 'Boekbare reispakketten met prijzen, reisschema\'s en beschikbaarheid.',
   homePopularCta: 'Alle reizen bekijken',
   homeWhyBadge: 'Waarom ons kiezen',
+  homeWhyDefaultTitle: 'Reizen op uw wensen afgestemd',
+  homeWhyDefaultBody: 'Ons team brengt alles samen, van planning tot boekingen, zodat uw reiservaring soepel verloopt.',
   homeWhyFeatures: ['Meertalig CMS', 'Mediabibliotheek', 'SEO-klaar', 'Boekingsflow'],
   homeBlogsBadge: 'Verhalen',
   homeBlogsTitle: 'Laatste blogs',
@@ -1212,12 +1297,27 @@ const nl: UiStrings = {
 const it: UiStrings = {
   homeAboutBadge: 'Chi siamo',
   homeAboutTitle: 'Creiamo viaggi personali, senza pensieri e indimenticabili.',
+  homeAboutBody: 'Progettiamo esperienze di viaggio significative, tra destinazioni iconiche e luoghi fuori dai percorsi più battuti. Ogni itinerario unisce scoperta, comfort e conoscenza locale, per un viaggio semplice dalla pianificazione al rientro.',
+  homeAboutImageAlt: 'Viaggiatori alla scoperta di una destinazione suggestiva',
+  homeSignatureLabel: 'La firma TravelNext',
+  homeSignatureText: 'Itinerari curati a mano, con attenzione a ogni dettaglio.',
+  homeTravelTypesBadge: 'Stili di viaggio',
   homeHowItWorksBadge: 'Come funziona',
   homeHowItWorksTitle: 'Il tuo viaggio, pianificato in tre chiari passi',
   homeWorkflowRunning: 'Pianificazione del viaggio',
   homeWorkflowStep: 'Passaggio',
   homeWorkflowOf: 'di',
   homeTailorMadePlanningBadge: 'Pianificazione su misura',
+  homeTailorMadePlanningTitle: 'Pronto a progettare il tuo prossimo viaggio indimenticabile?',
+  homeTailorMadePlanningBody: 'Dalle lune di miele alle avventure in più paesi, i nostri specialisti creano un itinerario personalizzato secondo i tuoi ritmi, il tuo budget e le destinazioni dei tuoi sogni.',
+  homeTailorMadeFeaturePersonalized: 'Itinerari personalizzati',
+  homeTailorMadeFeatureFlexible: 'Pianificazione flessibile degli itinerari',
+  homeTailorMadeCta: 'Inizia il tuo viaggio su misura',
+  homeTailorMadeProcessTitle: 'Progetta il viaggio in 3 semplici passi',
+  homeTailorMadeProcessBody: 'Raccontaci le tue preferenze, prepariamo il piano e viaggi in tutta sicurezza.',
+  homeTailorMadeResponseBadge: 'Risposta rapida',
+  homeTailorMadeResponseTime: 'Entro 24 ore',
+  homeTailorMadeResponseBody: 'Il nostro team ti risponde con idee, consigli e prossimi passi pensati per te.',
   homeTrustStats: [
     { label: 'Itinerari selezionati', value: '250+' },
     { label: 'Viaggiatori felici', value: '12K+' },
@@ -1265,6 +1365,8 @@ const it: UiStrings = {
   homePopularSubtitle: 'Pacchetti viaggio prenotabili con prezzi, itinerari e disponibilità.',
   homePopularCta: 'Vedi tutti i viaggi',
   homeWhyBadge: 'Perché sceglierci',
+  homeWhyDefaultTitle: 'Viaggi progettati intorno a te',
+  homeWhyDefaultBody: 'Il nostro team coordina ogni dettaglio, dalla pianificazione alle prenotazioni, per offrirti un’esperienza di viaggio senza pensieri.',
   homeWhyFeatures: ['CMS multilingue', 'Libreria media', 'SEO ottimizzato', 'Prenotazione online'],
   homeBlogsBadge: 'Storie',
   homeBlogsTitle: 'Ultimi blog',

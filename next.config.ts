@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   ...(isVercel ? {} : { output: 'standalone' }),
   images: {
+    qualities: [72, 75, 85],
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
       { protocol: 'http', hostname: '**' }

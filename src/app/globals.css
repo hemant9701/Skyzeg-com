@@ -1,20 +1,6 @@
 @config "../../tailwind.config.ts";
 @import "tailwindcss";
 
-:root {
-  --fy-colors-surface-dim: #dcdad2;
-  --fy-colors-surface: #fbf9f1;
-  --fy-colors-surface-bright: #fbf9f1;
-  --fy-colors-surface-container-lowest: #fff;
-  --fy-colors-surface-container-low: #f6f4eb;
-  --fy-colors-surface-container: #f0eee6;
-  --fy-colors-surface-container-high: #eae8e0;
-  --fy-colors-surface-container-highest: #e4e3db;
-  --fy-colors-surface-variant: #dce5dc;
-  --fy-colors-inverse-surface: #30312b;
-  --fy-colors-inverse-on-surface: #f3f1e9;
-}
-
 body {
   background-color: var(--fy-colors-surface);
 }
