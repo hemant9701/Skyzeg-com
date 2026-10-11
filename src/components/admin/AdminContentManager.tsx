@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Plus, Search, Edit2, Trash2, X, Loader2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, Loader2, ChevronDown } from 'lucide-react';
 import RichTextEditor from './RichTextEditor';
 import ImageUploadInput from './ImageUploadInput';
 
@@ -29,7 +29,7 @@ export default function AdminContentManager({config}:{config:AdminModuleConfig})
  function emptyTranslation(){return Object.fromEntries(config.translationFields.map(f=>[f.name,f.type==='array'||f.type==='itinerary'||f.type==='footerColumns'?[]:'']))}
  function availableLanguages(){return languages.length?languages:[{code:defaultLanguage,name:'English'}]}
  function newItem(){const langs=availableLanguages();setEditing({...structuredClone(config.defaultItem),translations:langs.map(l=>({languageCode:l.code,...emptyTranslation()}))});setActiveLanguage(langs[0]?.code||defaultLanguage)}
- function editItem(item:any){const langs=availableLanguages();setEditing({...structuredClone(item),translations:langs.map(l=>({languageCode:l.code,...emptyTranslation(),...(item.translations||[]).find((t:any)=>t.languageCode===l.code)}))});setActiveLanguage(langs[0]?.code||defaultLanguage)}
+ function editItem(item:any){const langs=availableLanguages();const copy=structuredClone(item);if(config.collection==='trips'&&!copy.tripName){copy.tripName=item.translations?.find((t:any)=>t.languageCode===defaultLanguage)?.title||item.translations?.[0]?.title||item.slug||''}setEditing({...copy,translations:langs.map(l=>({languageCode:l.code,...emptyTranslation(),...(item.translations||[]).find((t:any)=>t.languageCode===l.code)}))});setActiveLanguage(langs[0]?.code||defaultLanguage)}
  function setField(name:string,value:any){setEditing((c:any)=>({...c,[name]:value}))}
  function setTranslationField(code:string,name:string,value:any){setEditing((c:any)=>({...c,translations:(c.translations||[]).map((t:any)=>t.languageCode===code?{...t,[name]:value}:t)}))}
  function normalizePayload(value:any){
@@ -168,11 +168,12 @@ function moveItem<T>(items:T[],index:number,dir:number,onChange:(v:T[])=>void){c
 function objectToPairs(value:any){if(!value||typeof value!=='object'||Array.isArray(value))return [];return Object.entries(value).map(([key,pairValue])=>({key,value:String(pairValue??'')}))}
 function pairsToObject(pairs:{key:string;value:string}[]){return pairs.reduce<Record<string,string>>((result,pair)=>{const key=pair.key.trim();if(key)result[key]=pair.value;return result},{})}
 
-const wideFieldTypes=new Set<FieldType>(['richtext','textarea','gallery','availability','menuItems','socialLinks','footerColumns','pageBlocks','multiselect']);
+const wideFieldTypes=new Set<FieldType>(['richtext','textarea','gallery','availability','menuItems','socialLinks','footerColumns','pageBlocks']);
 
 function DynamicSelectField({field,value,onChange}:{field:AdminFieldConfig;value:any;onChange:(v:any)=>void}){
  const [options,setOptions]=useState<FieldOption[]>([]);
  const [loaded,setLoaded]=useState(false);
+ const [isOpen,setIsOpen]=useState(false);
  useEffect(()=>{
   if(!field.optionSource)return;
   fetch(`/api/admin/collections/${field.optionSource.collection}?pageSize=200`).then(r=>r.json()).then(j=>{
@@ -182,9 +183,25 @@ function DynamicSelectField({field,value,onChange}:{field:AdminFieldConfig;value
   }).catch(()=>setLoaded(true));
  },[field.optionSource?.collection]);
  if(field.type==='multiselect'){
-  const selected=Array.isArray(value)?value.map(String):[];
+  const selected=Array.isArray(value)?value.map(String):value?[String(value)]:[];
   const toggle=(id:string)=>onChange(selected.includes(id)?selected.filter(x=>x!==id):[...selected,id]);
-  return <div className="space-y-2 rounded-xl border border-white/10 bg-slate-950/60 p-3 max-h-52 overflow-y-auto">{!loaded&&<span className="inline-flex items-center gap-1 text-xs text-slate-400"><Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" /> Loading...</span>}{options.map(opt=><label key={opt.value} className="flex items-center gap-2 cursor-pointer"><input type="checkbox" className="h-4 w-4 accent-primary" checked={selected.includes(opt.value)} onChange={()=>toggle(opt.value)}/><span className="text-sm text-slate-300">{opt.label}</span></label>)}</div>;
+  return <div className="relative">
+   <button type="button" onClick={()=>setIsOpen((open)=>!open)} className={`${inputClass} flex items-center justify-between gap-3 text-left`}>
+    <span className="truncate text-slate-100">{selected.length ? `${selected.length} selected` : 'Select options...'}</span>
+    <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition ${isOpen ? 'rotate-180' : ''}`} />
+   </button>
+   {!loaded&&<div className="mt-2 inline-flex items-center gap-1 text-xs text-slate-400"><Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" /> Loading...</div>}
+   {isOpen && loaded && (
+    <div className="absolute z-20 mt-2 w-full rounded-xl border border-white/10 bg-slate-950/90 p-2 shadow-2xl max-h-56 overflow-y-auto">
+     {options.length===0 ? <div className="px-2 py-3 text-sm text-slate-400">No options available</div> : options.map(opt => (
+      <label key={opt.value} className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-white/5">
+       <input type="checkbox" className="h-4 w-4 accent-primary" checked={selected.includes(opt.value)} onChange={()=>toggle(opt.value)} />
+       <span className="text-sm text-slate-200">{opt.label}</span>
+      </label>
+     ))}
+    </div>
+   )}
+  </div>;
  }
  return <select className={inputClass} value={String(value||'')} onChange={e=>onChange(e.target.value)}><option value="">-- Select --</option>{options.map(opt=><option key={opt.value} value={opt.value}>{opt.label}</option>)}</select>;
 }

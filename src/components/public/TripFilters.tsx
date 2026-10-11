@@ -152,9 +152,14 @@ export default function TripFilters({
       const matchesPrice = price >= filters.priceMin && price <= filters.priceMax;
       const matchesDuration = trip.durationDays >= filters.durationMin && trip.durationDays <= filters.durationMax;
 
+      const tripDestinations = Array.isArray(trip.destination)
+        ? trip.destination
+        : trip.destination ? [trip.destination] : [];
       const matchesDestination =
         filters.selectedDestinations.length === 0 ||
-        filters.selectedDestinations.includes(String(trip.destination._id || trip.destination));
+        tripDestinations.some((destination: any) =>
+          filters.selectedDestinations.includes(String(destination?._id || destination))
+        );
 
       const matchesTravelType =
         filters.selectedTravelTypes.length === 0 ||

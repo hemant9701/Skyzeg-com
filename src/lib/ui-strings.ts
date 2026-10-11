@@ -28,6 +28,8 @@ export interface UiStrings {
   homeTailorMadeResponseBody: string;
   homeFeaturedBadge: string;
   homeFeaturedTitle: string;
+  homeDestinationsTitle: string;
+  homeDestinationsTopTen: string;
   homeFeaturedSubtitle: string;
   homeFeaturedCta: string;
   homePopularBadge: string;
@@ -306,6 +308,8 @@ const en: UiStrings = {
   ],
   homeFeaturedBadge: 'Featured',
   homeFeaturedTitle: 'Featured Destinations',
+  homeDestinationsTitle: 'Discover our most beautiful destinations',
+  homeDestinationsTopTen: 'Top 10',
   homeFeaturedSubtitle: 'Discover curated destinations with local insight, travel tips and rich galleries.',
   homeFeaturedCta: 'View all destinations',
   homePopularBadge: 'Popular',
@@ -569,6 +573,8 @@ const fr: UiStrings = {
   ],
   homeFeaturedBadge: 'À la une',
   homeFeaturedTitle: 'Destinations vedettes',
+  homeDestinationsTitle: 'D?couvrez nos plus belles destinations',
+  homeDestinationsTopTen: 'Top 10',
   homeFeaturedSubtitle: 'Découvrez des destinations sélectionnées avec des conseils locaux et des galeries enrichies.',
   homeFeaturedCta: 'Voir toutes les destinations',
   homePopularBadge: 'Populaires',
@@ -832,6 +838,8 @@ const es: UiStrings = {
   ],
   homeFeaturedBadge: 'Destacado',
   homeFeaturedTitle: 'Destinos destacados',
+  homeDestinationsTitle: 'Descubre nuestros destinos m?s hermosos',
+  homeDestinationsTopTen: 'Top 10',
   homeFeaturedSubtitle: 'Descubra destinos seleccionados con consejos locales y galerías enriquecidas.',
   homeFeaturedCta: 'Ver todos los destinos',
   homePopularBadge: 'Popular',
@@ -1095,6 +1103,8 @@ const nl: UiStrings = {
   ],
   homeFeaturedBadge: 'Uitgelicht',
   homeFeaturedTitle: 'Uitgelichte bestemmingen',
+  homeDestinationsTitle: 'Ontdek onze mooiste bestemmingen',
+  homeDestinationsTopTen: 'Top 10',
   homeFeaturedSubtitle: 'Ontdek zorgvuldig geselecteerde bestemmingen met lokale tips en rijke galerijen.',
   homeFeaturedCta: 'Alle bestemmingen bekijken',
   homePopularBadge: 'Populair',
@@ -1358,6 +1368,8 @@ const it: UiStrings = {
   ],
   homeFeaturedBadge: 'In evidenza',
   homeFeaturedTitle: 'Destinazioni in evidenza',
+  homeDestinationsTitle: 'Scopri le nostre destinazioni pi? belle',
+  homeDestinationsTopTen: 'Top 10',
   homeFeaturedSubtitle: 'Scopri destinazioni curate con consigli locali, suggerimenti di viaggio e gallerie ricche.',
   homeFeaturedCta: 'Vedi tutte le destinazioni',
   homePopularBadge: 'Popolare',

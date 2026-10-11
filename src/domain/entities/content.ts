@@ -15,6 +15,20 @@ export interface DestinationTranslation extends TranslationBase, SeoFields {
   weather?: string;
 }
 
+export interface RegionTranslation extends TranslationBase, SeoFields {
+  title: string;
+  overview?: string;
+  description?: string;
+}
+
+export interface PlaceTranslation extends TranslationBase, SeoFields {
+  title: string;
+  overview?: string;
+  highlights?: string;
+  thingsToDo?: string;
+  travelTips?: string;
+}
+
 export interface TripTranslation extends TranslationBase, SeoFields {
   title: string;
   summary?: string;

@@ -1,6 +1,7 @@
 import { LanguageService } from '@/application/services/language.service';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
+import { getStrings } from '@/lib/ui-strings';
 import { pickTranslation } from '@/shared/utils/localize';
 import MegaMenuHeader from './MegaMenuHeader';
 
@@ -11,11 +12,12 @@ function toPlain<T>(value: T): T {
 export default async function Header() {
   const languageCode = await getLanguageCode();
   const unitOfWork = new UnitOfWork();
-  const [languages, settings, menu, destinations, travelTypes, categories] = await Promise.all([
+  const [languages, settings, menu, destinations, regions, travelTypes, categories] = await Promise.all([
     new LanguageService().getLanguages(),
     unitOfWork.siteSettings.findOne({ key: 'main' }),
     unitOfWork.menus.findOne({ location: 'header', isVisible: true }),
-    unitOfWork.destinations.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => []),
+    unitOfWork.destinations.list({ isVisible: true }, { sort: { sortOrder: 1 } }).catch(() => []),
+    unitOfWork.regions.list({ isVisible: true }, { sort: { sortOrder: 1 } }).catch(() => []),
     unitOfWork.travelTypes.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => []),
     unitOfWork.categories.list({ isVisible: true }, { sort: { sortOrder: 1 }, limit: 6 }).catch(() => [])
   ]);
@@ -38,9 +40,38 @@ export default async function Header() {
   const processedDestinations = (destinations || []).map((d: any) => ({
     _id: String(d._id),
     slug: d.slug,
-    title: pickTranslation(d as any, languageCode)?.title || d.title,
-    name: pickTranslation(d as any, languageCode)?.title || d.name
+    title: pickTranslation(d as any, languageCode)?.title || d.title || d.slug,
+    name: pickTranslation(d as any, languageCode)?.title || d.name || d.slug,
+    region: d.region || '',
+    heroImage: d.heroImage || '/images/placeholder.svg'
   }));
+
+  const destinationRegions = regions.map((region: any) => ({
+    id: String(region._id),
+    label: String(pickTranslation(region, languageCode)?.title || region.regionName || region.slug),
+    matches: [String(region._id), region.slug, region.regionName],
+    destinations: processedDestinations.filter((destination) =>
+      [String(region._id), region.slug, region.regionName].includes(destination.region)
+    )
+  }));
+  for (const destination of processedDestinations) {
+    if (destination.region && !destinationRegions.some((region) => region.matches.includes(destination.region))) {
+      destinationRegions.push({
+        id: destination.region,
+        label: destination.region,
+        matches: [destination.region],
+        destinations: processedDestinations.filter((item) => item.region === destination.region)
+      });
+    }
+  }
+  if (processedDestinations.length) {
+    destinationRegions.unshift({
+      id: 'all-destinations',
+      label: getStrings(languageCode).megaAllDestinations,
+      matches: [],
+      destinations: processedDestinations
+    });
+  }
 
   const processedTravelTypes = (travelTypes || []).map((t: any) => ({
     _id: String(t._id),
@@ -65,6 +96,7 @@ export default async function Header() {
       languages={toPlain(languages)}
       activeLanguage={languageCode}
       destinations={toPlain(processedDestinations)}
+      destinationRegions={toPlain(destinationRegions.map(({ id, label, destinations }) => ({ id, label, destinations })))}
       travelTypes={toPlain(processedTravelTypes)}
       categories={toPlain(processedCategories)}
     />

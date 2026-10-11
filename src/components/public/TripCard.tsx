@@ -15,9 +15,17 @@ export default function TripCard({ trip, languageCode, view = 'grid' }: TripCard
   const ui = getStrings(languageCode);
   const title = t?.title || trip.slug;
   const price = trip.discountPrice || trip.price;
-  const destination = trip.destination && typeof trip.destination === 'object'
-    ? (pickTranslation(trip.destination, languageCode) as any)?.title || trip.destination.title || trip.destination.name
-    : null;
+  const destinationRecords = Array.isArray(trip.destination)
+    ? trip.destination
+    : trip.destination ? [trip.destination] : [];
+  const destination = destinationRecords
+    .map((item: any) => {
+      if (!item || typeof item !== 'object') return '';
+      const translation = pickTranslation(item, languageCode) as any;
+      return translation?.title || item.title || item.name || '';
+    })
+    .filter(Boolean)
+    .join(' · ');
   const location = destination === title ? '' : destination;
   const getNames = (items: any[]) => items
     .map((item) => {

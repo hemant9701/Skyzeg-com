@@ -33,7 +33,7 @@ export default async function BlogDetailsPage({ params }: Props) {
         <span className="mb-3 inline-flex rounded-full bg-warning px-4 py-1 text-sm font-semibold text-dark">
           {blog.author} · {readingTime(t?.body || '')} {ui.blogsMinRead}
         </span>
-        <h1 className="text-4xl font-semibold sm:text-5xl">{t?.title}</h1>
+        <h1 className="font-heading font-normal text-4xl sm:text-5xl">{t?.title}</h1>
         <p className="mt-4 text-lg text-white/90">{t?.summary}</p>
       </HeroBanner>
       <section className="px-4 py-16 sm:px-6 lg:px-8">

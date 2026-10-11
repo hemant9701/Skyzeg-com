@@ -42,7 +42,8 @@ export const CategoryUpsertSchema = z.object({
 export const DestinationUpsertSchema = z.object({
   slug: SlugSchema,
   country: z.string().min(1),
-  city: z.string().optional().or(z.literal('')),
+  region: z.string().min(1),
+  places: z.array(z.string()).default([]),
   heroImage: z.string().optional().or(z.literal('')),
   gallery: z.array(z.any()).optional(),
   coordinates: z.object({ latitude: z.number().optional(), longitude: z.number().optional() }).optional(),
@@ -75,6 +76,42 @@ export const TravelTypeUpsertSchema = z.object({
   })).min(1)
 });
 
+export const RegionUpsertSchema = z.object({
+  slug: SlugSchema,
+  regionName: z.string().min(1),
+  heroImage: z.string().optional().or(z.literal('')),
+  gallery: z.array(z.any()).optional(),
+  coordinates: z.object({ latitude: z.number().optional(), longitude: z.number().optional() }).optional(),
+  sortOrder: z.coerce.number().int().default(0),
+  isFeatured: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+  translations: z.array(TranslationBaseSchema.extend({
+    overview: z.string().optional().or(z.literal('')),
+    description: z.string().optional().or(z.literal(''))
+  })).min(1)
+});
+
+export const PlaceUpsertSchema = z.object({
+  slug: SlugSchema,
+  placeName: z.string().min(1),
+  country: z.array(z.string()).default([]),
+  city: z.string().optional().or(z.literal('')),
+  placeType: z.string().optional().or(z.literal('')),
+  heroImage: z.string().optional().or(z.literal('')),
+  gallery: z.array(z.any()).optional(),
+  coordinates: z.object({ latitude: z.number().optional(), longitude: z.number().optional() }).optional(),
+  mapEmbedUrl: z.string().optional().or(z.literal('')),
+  sortOrder: z.coerce.number().int().default(0),
+  isFeatured: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+  translations: z.array(TranslationBaseSchema.extend({
+    overview: z.string().optional().or(z.literal('')),
+    highlights: z.string().optional().or(z.literal('')),
+    thingsToDo: z.string().optional().or(z.literal('')),
+    travelTips: z.string().optional().or(z.literal(''))
+  })).min(1)
+});
+
 const TripItineraryItemSchema = z.object({
   dayNumber: z.number().int().positive(),
   title: z.string().min(1),
@@ -85,7 +122,10 @@ const TripItineraryItemSchema = z.object({
 
 export const TripUpsertSchema = z.object({
   slug: SlugSchema,
-  destination: z.string().optional().or(z.literal('')),
+  tripName: z.string().min(1),
+  destination: z.union([z.string().min(1), z.array(z.string())])
+    .transform((value) => Array.isArray(value) ? value : [value])
+    .pipe(z.array(z.string()).min(1)),
   travelTypes: z.array(z.string()).default([]),
   categories: z.array(z.string()).default([]),
   durationDays: z.coerce.number().int().positive(),

@@ -12,7 +12,7 @@ export default async function ContactPage() {
   return (
     <>
       <HeroBanner imageSrc="/images/heroBannerImg.webp">
-        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{ui.contactTitle}</h1>
+        <h1 className="font-heading font-normal text-3xl sm:text-4xl lg:text-5xl">{ui.contactTitle}</h1>
         <p className="mt-3 text-base text-white/90 sm:text-lg">{ui.contactSubtitle}</p>
       </HeroBanner>
       <section className="bg-surface px-4 py-20 sm:px-6 lg:px-8">

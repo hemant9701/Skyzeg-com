@@ -12,6 +12,8 @@ import {
   MenuModel,
   NewsletterSubscriberModel,
   PageModel,
+  PlaceModel,
+  RegionModel,
   RoleModel,
   SiteSettingModel,
   TailorMadeRequestModel,
@@ -25,6 +27,8 @@ import { BaseRepository } from './base.repository';
 export class UnitOfWork {
   readonly pages = new BaseRepository<any>(PageModel);
   readonly destinations = new BaseRepository<any>(DestinationModel);
+  readonly regions = new BaseRepository<any>(RegionModel);
+  readonly places = new BaseRepository<any>(PlaceModel);
   readonly trips = new BaseRepository<any>(TripModel);
   readonly categories = new BaseRepository<any>(CategoryModel);
   readonly blogs = new BaseRepository<any>(BlogModel);

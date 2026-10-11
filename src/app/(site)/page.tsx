@@ -5,7 +5,7 @@ import HeroSlider from '@/components/public/HeroSlider';
 import CardSlider from "@/components/public/CardSlider";
 import HomeWorkflow from '@/components/public/HomeWorkflow';
 import TripCard from "@/components/public/TripCard";
-import DestinationCard from '@/components/public/DestinationCard';
+import HomeDestinations from '@/components/public/HomeDestinations';
 import TravelTypesCard from '@/components/public/TravelTypesCard';
 import BlogCard from '@/components/public/BlogCard';
 import { HomeService } from '@/application/services/home.service';
@@ -41,7 +41,7 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
             <span className="mb-3 inline-flex rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent-hover">{ui.homeAboutBadge}</span>
-            <h2 className="text-4xl font-semibold leading-tight text-dark sm:text-5xl">
+            <h2 className="font-heading font-normal text-4xl leading-tight text-dark sm:text-5xl">
               {ui.homeAboutTitle}
             </h2>
             <p className="mt-4 max-w-2xl text-lg text-subtle">{ui.homeAboutBody}</p>
@@ -73,34 +73,14 @@ export default async function HomePage() {
         </div>
       </MotionSection>
 
-      <MotionSection className="bg-surface px-4 py-20 sm:px-6 lg:px-8" delay={0.08}>
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl">
-              <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeTravelTypesBadge}</span>
-              <h2 className="text-3xl font-semibold text-primary">{ui.homeFeaturedTitle}</h2>
-              <p className="mt-2 text-body">{ui.homeFeaturedSubtitle}</p>
-            </div>
-            <Link href="/destinations" className="inline-flex rounded-full border border-line-strong px-4 py-2 text-sm font-semibold text-body transition hover:bg-line">{ui.homeFeaturedCta}</Link>
-          </div>
-          <CardSlider materialYou>
-            {(data.destinations as any[]).map((destination) => (
-              <DestinationCard
-                key={String(destination._id)}
-                destination={destination}
-                languageCode={languageCode}
-              />
-            ))}
-          </CardSlider>
-        </div>
-      </MotionSection>
+      <HomeDestinations destinations={data.destinations} regions={data.regions} languageCode={languageCode} />
 
       {(data.travelTypes as any[]).length > 0 && (
         <MotionSection className="bg-surface px-4 py-20 sm:px-6 lg:px-8" delay={0.1}>
           <div className="mx-auto max-w-7xl">
             <div className="mb-8 max-w-2xl">
               <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeFeaturedBadge}</span>
-              <h2 className="text-3xl font-semibold text-primary">{ui.travelTypesTitle}</h2>
+              <h2 className="font-heading font-normal text-3xl text-primary">{ui.travelTypesTitle}</h2>
               <p className="mt-2 text-body">{ui.travelTypesSubtitle}</p>
             </div>
             <CardSlider autoplay={false} materialYou>
@@ -121,7 +101,7 @@ export default async function HomePage() {
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homePopularBadge}</span>
-              <h2 className="text-3xl font-semibold text-primary">{ui.homePopularTitle}</h2>
+              <h2 className="font-heading font-normal text-3xl text-primary">{ui.homePopularTitle}</h2>
               <p className="mt-2 text-body">{ui.homePopularSubtitle}</p>
             </div>
             <Link href="/trips" className="inline-flex rounded-full border border-line-strong px-4 py-2 text-sm font-semibold text-body transition hover:bg-line">{ui.homePopularCta}</Link>
@@ -142,7 +122,7 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <span className="mb-2 inline-flex rounded-full bg-primary/20 px-3 py-1 text-sm font-semibold text-accent">{ui.homeWhyBadge}</span>
-            <h2 className="text-3xl font-semibold text-white">{settingsTranslation?.whyChooseUsTitle || ui.homeWhyDefaultTitle}</h2>
+            <h2 className="font-heading font-normal text-3xl text-white">{settingsTranslation?.whyChooseUsTitle || ui.homeWhyDefaultTitle}</h2>
             <div className="mt-4 max-w-xl text-lg text-line-strong" dangerouslySetInnerHTML={{ __html: settingsTranslation?.whyChooseUsBody || ui.homeWhyDefaultBody }} />
           </div>
           <MotionStagger className="grid gap-4 sm:grid-cols-2">
@@ -164,7 +144,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 text-center">
             <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeHowItWorksBadge}</span>
-            <h2 className="text-3xl font-semibold text-dark sm:text-4xl">{ui.homeHowItWorksTitle}</h2>
+            <h2 className="font-heading font-normal text-3xl text-dark sm:text-4xl">{ui.homeHowItWorksTitle}</h2>
           </div>
 
           <HomeWorkflow
@@ -180,7 +160,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeBlogsBadge}</span>
-            <h2 className="text-3xl font-semibold text-primary">{ui.homeBlogsTitle}</h2>
+            <h2 className="font-heading font-normal text-3xl text-primary">{ui.homeBlogsTitle}</h2>
           </div>
           <MotionStagger className="grid gap-6 md:grid-cols-3 xl:grid-cols-4">
             {(data.blogs as any[]).map((blog) => (
@@ -196,7 +176,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{ui.homeReviewsBadge}</span>
-            <h2 className="text-3xl font-semibold text-primary">{ui.homeReviewsTitle}</h2>
+            <h2 className="font-heading font-normal text-3xl text-primary">{ui.homeReviewsTitle}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3 xl:grid-cols-4">
             {(data.testimonials as any[]).map((testimonial) => {
@@ -229,7 +209,7 @@ export default async function HomePage() {
                 <span className="mb-4 inline-flex rounded-full border border-accent/30 bg-accent/15 px-3 py-1 text-sm font-semibold text-accent-light">
                   {ui.homeTailorMadePlanningBadge}
                 </span>
-                <h2 className="text-3xl font-semibold leading-tight text-white sm:text-4xl">
+                <h2 className="font-heading font-normal text-3xl leading-tight text-white sm:text-4xl">
                   {ui.homeTailorMadePlanningTitle}
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-line-strong sm:text-lg">

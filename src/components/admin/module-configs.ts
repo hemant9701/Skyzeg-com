@@ -65,12 +65,23 @@ export const blogConfig: AdminModuleConfig = {
 export const destinationConfig: AdminModuleConfig = {
   collection: 'destinations',
   title: 'Destinations',
-  description: 'Country/city pages with gallery, highlights, tips, weather, coordinates and SEO.',
-  defaultItem: { slug: '', country: '', city: '', heroImage: '', gallery: [], coordinates: {}, mapEmbedUrl: '', sortOrder: 0, isFeatured: false, isVisible: true },
+  description: 'Destination pages linked to a region and selected places, with gallery, highlights, tips, coordinates and SEO.',
+  defaultItem: { slug: '', country: '', region: '', places: [], heroImage: '', gallery: [], coordinates: {}, mapEmbedUrl: '', sortOrder: 0, isFeatured: false, isVisible: true },
   fields: [
     { name: 'slug', label: 'Slug', type: 'text' },
     { name: 'country', label: 'Country', type: 'text' },
-    { name: 'city', label: 'City', type: 'text' },
+    {
+      name: 'region',
+      label: 'Region',
+      type: 'select',
+      optionSource: { collection: 'regions' }
+    },
+    {
+      name: 'places',
+      label: 'Places',
+      type: 'multiselect',
+      optionSource: { collection: 'places' }
+    },
     { name: 'heroImage', label: 'Hero Image', type: 'image', folder: 'destinations' },
     { name: 'gallery', label: 'Gallery', type: 'gallery', folder: 'destinations' },
     { name: 'coordinates', label: 'Coordinates', type: 'coordinates' },
@@ -86,6 +97,63 @@ export const destinationConfig: AdminModuleConfig = {
     { name: 'thingsToDo', label: 'Things To Do', type: 'richtext' },
     { name: 'travelTips', label: 'Travel Tips', type: 'richtext' },
     { name: 'weather', label: 'Weather', type: 'richtext' },
+    ...seoFields
+  ]
+};
+
+export const regionConfig: AdminModuleConfig = {
+  collection: 'regions',
+  title: 'Regions',
+  description: 'Regional destination groups with summary content, coordinates and SEO metadata.',
+  defaultItem: { slug: '', regionName: '', heroImage: '', gallery: [], coordinates: {}, sortOrder: 0, isFeatured: false, isVisible: true },
+  fields: [
+    { name: 'slug', label: 'Slug', type: 'text' },
+    { name: 'regionName', label: 'Region Name', type: 'text' },
+    { name: 'heroImage', label: 'Hero Image', type: 'image', folder: 'regions' },
+    { name: 'gallery', label: 'Gallery', type: 'gallery', folder: 'regions' },
+    { name: 'coordinates', label: 'Coordinates', type: 'coordinates' },
+    { name: 'sortOrder', label: 'Sort Order', type: 'number' },
+    { name: 'isFeatured', label: 'Featured', type: 'checkbox' },
+    { name: 'isVisible', label: 'Published', type: 'checkbox' }
+  ],
+  translationFields: [
+    { name: 'title', label: 'Title', type: 'text' },
+    { name: 'overview', label: 'Overview', type: 'richtext' },
+    { name: 'description', label: 'Description', type: 'textarea' },
+    ...seoFields
+  ]
+};
+
+export const placeConfig: AdminModuleConfig = {
+  collection: 'places',
+  title: 'Places',
+  description: 'Specific travel destinations, attractions and city highlights.',
+  defaultItem: { slug: '', placeName: '', country: [], city: '', placeType: '', heroImage: '', gallery: [], coordinates: {}, mapEmbedUrl: '', sortOrder: 0, isFeatured: false, isVisible: true },
+  fields: [
+    { name: 'slug', label: 'Slug', type: 'text' },
+    { name: 'placeName', label: 'Place Name', type: 'text' },
+    {
+      name: 'country',
+      label: 'Country',
+      type: 'multiselect',
+      optionSource: { collection: 'destinations' }
+    },
+    { name: 'city', label: 'City', type: 'text' },
+    { name: 'placeType', label: 'Place Type', type: 'text', placeholder: 'e.g. city, island, beach' },
+    { name: 'heroImage', label: 'Hero Image', type: 'image', folder: 'places' },
+    { name: 'gallery', label: 'Gallery', type: 'gallery', folder: 'places' },
+    { name: 'coordinates', label: 'Coordinates', type: 'coordinates' },
+    { name: 'mapEmbedUrl', label: 'Map Embed URL', type: 'text' },
+    { name: 'sortOrder', label: 'Sort Order', type: 'number' },
+    { name: 'isFeatured', label: 'Featured', type: 'checkbox' },
+    { name: 'isVisible', label: 'Published', type: 'checkbox' }
+  ],
+  translationFields: [
+    { name: 'title', label: 'Title', type: 'text' },
+    { name: 'overview', label: 'Overview', type: 'richtext' },
+    { name: 'highlights', label: 'Highlights', type: 'richtext' },
+    { name: 'thingsToDo', label: 'Things To Do', type: 'richtext' },
+    { name: 'travelTips', label: 'Travel Tips', type: 'richtext' },
     ...seoFields
   ]
 };
@@ -154,7 +222,8 @@ export const tripConfig: AdminModuleConfig = {
 
   defaultItem: {
     slug: '',
-    destination: '',
+    tripName: '',
+    destination: [],
     travelTypes: [],
     categories: [],
     durationDays: 1,
@@ -171,12 +240,13 @@ export const tripConfig: AdminModuleConfig = {
 
   fields: [
     { name: 'slug', label: 'Slug', type: 'text' },
+    { name: 'tripName', label: 'Trip Name', type: 'text' },
 
-    // ✅ Destination SELECT
+    // ✅ Country MULTI-SELECT
     {
       name: 'destination',
-      label: 'Destination',
-      type: 'select',
+      label: 'Country',
+      type: 'multiselect',
       optionSource: {
         collection: 'destinations'
       }

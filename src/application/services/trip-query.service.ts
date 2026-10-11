@@ -30,7 +30,9 @@ export interface TripQueryResult {
 export async function populateTripReferences(uow: UnitOfWork, trips: any[]) {
   const getReferenceId = (reference: any) => String(reference?._id ?? reference ?? '');
   const getIds = (references: any[]) => Array.from(new Set(references.map(getReferenceId).filter(Boolean)));
-  const destinationReferences = getIds(trips.map((trip) => trip.destination));
+  const destinationReferences = getIds(
+    trips.flatMap((trip) => Array.isArray(trip.destination) ? trip.destination : [trip.destination])
+  );
   const destinationIds = destinationReferences.filter(isValidObjectId);
   const destinationSlugs = destinationReferences
     .filter((reference) => !isValidObjectId(reference))
@@ -72,7 +74,9 @@ export async function populateTripReferences(uow: UnitOfWork, trips: any[]) {
 
   return trips.map((trip) => ({
     ...trip,
-    destination: resolveDestination(trip.destination),
+    destination: Array.isArray(trip.destination)
+      ? trip.destination.map(resolveDestination).filter(Boolean)
+      : resolveDestination(trip.destination),
     travelTypes: Array.isArray(trip.travelTypes)
       ? trip.travelTypes.map((reference: any) => resolveReference(reference, travelTypes)).filter(Boolean)
       : [],

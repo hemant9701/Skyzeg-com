@@ -38,7 +38,7 @@ export default async function TravelTypeDetailsPage({ params }: Props) {
   return (
     <>
       <HeroBanner imageSrc={travelTypes.heroImage || '/images/heroBannerImg.webp'}>
-        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
+        <h1 className="font-heading font-normal text-3xl sm:text-4xl lg:text-5xl">{t?.title}</h1>
       </HeroBanner>
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export default async function TravelTypeDetailsPage({ params }: Props) {
       {travelTypes.gallery?.length > 0 && (
         <section className="bg-surface px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <h2 className="text-2xl font-semibold text-primary">{ui.travelTypesGallery}</h2>
+            <h2 className="font-heading font-normal text-2xl text-primary">{ui.travelTypesGallery}</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {travelTypes.gallery.map((image: any) => (
                 <div key={image.url} className="overflow-hidden rounded-3xl border border-line bg-white shadow-sm">
@@ -78,7 +78,7 @@ export default async function TravelTypeDetailsPage({ params }: Props) {
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-primary">{ui.travelTypesTripsIn} {t?.title}</h2>
+          <h2 className="font-heading font-normal text-2xl text-primary">{ui.travelTypesTripsIn} {t?.title}</h2>
           <div className="mt-6 grid gap-6 md:grid-cols-3 xl:grid-cols-4">
             {(trips as any[]).map((trip) => (
               <TripCard trip={trip} languageCode={languageCode} key={String(trip._id)} />

@@ -121,7 +121,7 @@ export default async function TripDetailsPage({ params }: Props) {
             </span>
           )}
         </div>
-        <h1 className="text-3xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{t?.title}</h1>
+        <h1 className="font-heading font-normal text-3xl leading-tight text-white sm:text-5xl lg:text-6xl">{t?.title}</h1>
         {t?.summary && (
           <p className="mt-4 max-w-xl text-lg text-white/90">{strip(t.summary).slice(0, 160)}</p>
         )}

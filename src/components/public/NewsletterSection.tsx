@@ -25,7 +25,7 @@ export default async function NewsletterSection() {
           <div className="relative py-24 px-4 sm:px-6 lg:px-8 lg:py-32 flex justify-center items-center">
             <div className="max-w-xl">
               <h2
-                className="mb-2 text-4xl font-semibold leading-tight text-white sm:text-5xl"
+                className="font-heading font-normal mb-2 text-4xl leading-tight text-white sm:text-5xl"
                 dangerouslySetInnerHTML={{
                   __html: t?.newsletterTitle || ui.newsletterSectionTitle,
                 }}

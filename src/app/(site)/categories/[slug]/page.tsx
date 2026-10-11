@@ -48,7 +48,7 @@ export default async function CategoryDetailsPage({ params }: Props) {
   return (
     <>
       <HeroBanner imageSrc={(category as any).image || '/images/heroBannerImg.webp'}>
-        <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">{t?.title}</h1>
+        <h1 className="font-heading font-normal text-3xl sm:text-4xl lg:text-5xl">{t?.title}</h1>
       </HeroBanner>
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
@@ -72,7 +72,7 @@ export default async function CategoryDetailsPage({ params }: Props) {
       {/* Trips in this category */}
       <section className="bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-primary">{ui.categoriesTripsIn} {t?.title}</h2>
+          <h2 className="font-heading font-normal text-2xl text-primary">{ui.categoriesTripsIn} {t?.title}</h2>
           {(trips as any[]).length === 0 ? (
             <p className="mt-6 text-muted">{ui.categoriesNoTrips}</p>
           ) : (
@@ -87,7 +87,7 @@ export default async function CategoryDetailsPage({ params }: Props) {
 
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-2xl font-semibold text-primary">{ui.categoriesBlogsIn} {t?.title}</h2>
+          <h2 className="font-heading font-normal text-2xl text-primary">{ui.categoriesBlogsIn} {t?.title}</h2>
           {(blogs as any[]).length === 0 ? (
             <p className="mt-6 text-muted">{ui.categoriesNoBlogs}</p>
           ) : (

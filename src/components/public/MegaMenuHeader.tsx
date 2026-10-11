@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { ChevronDown, Menu, X, MapPin, Plane, BookOpen, Compass, Mail, Home, Tag } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
+import DestinationRegionMenu, { type DestinationMenuRegion } from './DestinationRegionMenu';
 import { getStrings } from '@/lib/ui-strings';
 
 interface MenuItem {
@@ -30,6 +31,7 @@ interface MegaMenuHeaderProps {
   languages: { code: string; name: string }[];
   activeLanguage: string;
   destinations?: any[];
+  destinationRegions?: DestinationMenuRegion[];
   travelTypes?: any[];
   categories?: any[];
 }
@@ -59,6 +61,7 @@ export default function MegaMenuHeader({
   languages,
   activeLanguage,
   destinations = [],
+  destinationRegions = [],
   travelTypes = [],
   categories = [],
 }: MegaMenuHeaderProps) {
@@ -102,6 +105,12 @@ export default function MegaMenuHeader({
 
   /** Build mega-panel columns purely from live prop data */
   function getColumns(url: string): MegaColumn[] | null {
+    if (url === '/destinations') {
+      return destinationRegions.length ? destinationRegions.map((region) => ({
+        title: region.label,
+        items: region.destinations.map((destination) => ({ _id: destination._id, url: `/destinations/${destination.slug}`, label: destination.title }))
+      })) : null;
+    }
     const activeItem = normalizedItems.find((item) => item.url === url && !item.parentId);
     if (activeItem?._id) {
       const children = normalizedItems.filter((item) => String(item.parentId || '') === String(activeItem._id));
@@ -154,31 +163,6 @@ export default function MegaMenuHeader({
     }
 
     switch (url) {
-      case '/destinations': {
-        if (!destinations.length) return null;
-        const cols: MegaColumn[] = [];
-        // Up to 2 columns of 5 destinations each
-        const chunk1 = destinations.slice(0, 5).map((d: any) => ({
-          _id: String(d._id),
-          url: `/destinations/${d.slug}`,
-          label: d.title || d.name || d.slug,
-        }));
-        const chunk2 = destinations.slice(5, 10).map((d: any) => ({
-          _id: String(d._id),
-          url: `/destinations/${d.slug}`,
-          label: d.title || d.name || d.slug,
-        }));
-        cols.push({ title: ui.megaPopularDestinations, items: chunk1 });
-        if (chunk2.length) cols.push({ title: ui.megaMoreDestinations, items: chunk2 });
-        cols.push({
-          title: ui.megaQuickLinks,
-          items: [
-            { url: '/destinations', label: ui.megaAllDestinations },
-            { url: '/trips',        label: ui.megaBrowseToursLink },
-          ],
-        });
-        return cols;
-      }
       case '/trips': {
         const destinationItems = destinations.slice(0, 6).map((d: any) => ({
           _id: String(d._id),
@@ -271,6 +255,15 @@ export default function MegaMenuHeader({
           : 'border-b border-white/10 bg-white/5 shadow-none'
       }`}
       onMouseLeave={() => setHovered(null)}
+      onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setHovered(null); }}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') {
+          const trigger = event.currentTarget.querySelector<HTMLAnchorElement>(`a[data-mega-trigger="${hovered}"]`);
+          trigger?.focus();
+          setHovered(null);
+          setMobileOpen(false);
+        }
+      }}
     >
       {/* ── Nav bar ─────────────────────────────────────────── */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -306,6 +299,16 @@ export default function MegaMenuHeader({
                 >
                   <Link
                     href={item.url}
+                    data-mega-trigger={item.url}
+                    aria-expanded={hasDrop ? active : undefined}
+                    onFocus={() => setHovered(hasDrop ? item.url : null)}
+                    onKeyDown={(event) => {
+                      if (hasDrop && event.key === 'ArrowDown') {
+                        event.preventDefault();
+                        setHovered(item.url);
+                        requestAnimationFrame(() => document.querySelector<HTMLButtonElement>('[data-mega-panel] button[role="tab"][aria-selected="true"]')?.focus());
+                      }
+                    }}
                     className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-md font-bold transition
                       ${active
                         ? solidHeader
@@ -359,10 +362,14 @@ export default function MegaMenuHeader({
       {/* ── Desktop mega-panel (full-width, never overflows) ── */}
       {hoveredColumns && (
         <div
-          className="absolute inset-x-0 top-full z-40 mx-8 border-t border-light rounded-xl bg-white/80 backdrop-blur-sm shadow-2xl"
+          data-mega-panel
+          className="absolute inset-x-0 top-full z-40 mx-8 hidden rounded-xl border-t border-light bg-white shadow-2xl md:block"
           onMouseEnter={() => setHovered(hovered)}
         >
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+            {hovered === '/destinations' ? (
+              <DestinationRegionMenu regions={destinationRegions} languageCode={activeLanguage} onNavigate={() => setHovered(null)} />
+            ) : (
             <div
               className={`grid gap-8 ${
                 hoveredColumns.length === 2
@@ -394,6 +401,8 @@ export default function MegaMenuHeader({
               ))}
             </div>
 
+            )}
+
             {/* Bottom CTA bar */}
             <div className="mt-6 flex items-center justify-between border-t border-light pt-4">
               <p className="text-xs font-medium text-muted">
@@ -404,7 +413,7 @@ export default function MegaMenuHeader({
                 onClick={() => setHovered(null)}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-primary-hover"
               >
-                {ui.megaExploreAll} <ChevronDown size={14} className="rotate-[-90deg]" />
+                {hovered === '/destinations' ? ui.megaAllDestinations : ui.megaExploreAll} <ChevronDown size={14} className="rotate-[-90deg]" />
               </Link>
             </div>
           </div>
@@ -414,7 +423,7 @@ export default function MegaMenuHeader({
       {/* ── Mobile menu ───────────────────────────────────────── */}
       {mobileOpen && (
         <div className="border-t border-line bg-white/80 backdrop-blur-sm md:hidden">
-          <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
+          <div className="mx-auto max-h-[calc(100dvh-90px)] max-w-7xl overflow-y-auto px-4 py-4 sm:px-6">
             <ul className="space-y-1">
               {items.map((item) => {
                 const cfg      = NAV_CONFIG[item.url] ?? { icon: Home };
@@ -427,6 +436,8 @@ export default function MegaMenuHeader({
                   <li key={String(item._id || item.url)}>
                     {columns ? (
                       <button
+                        type="button"
+                        aria-expanded={isOpen}
                         onClick={() => setMobileActive(isOpen ? null : item.url)}
                         className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium text-body transition hover:bg-light"
                       >
@@ -445,7 +456,9 @@ export default function MegaMenuHeader({
 
                     {isOpen && columns && (
                       <div className="ml-4 mt-1 space-y-4 rounded-xl border-l-2 border-accent/40 bg-light/80 backdrop-blur-sm px-4 py-3">
-                        {columns.map((col, idx) => (
+                        {item.url === '/destinations' ? (
+                          <DestinationRegionMenu regions={destinationRegions} languageCode={activeLanguage} onNavigate={() => { setMobileOpen(false); setMobileActive(null); }} />
+                        ) : columns.map((col, idx) => (
                           <div key={idx}>
                             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary">
                               {col.title}

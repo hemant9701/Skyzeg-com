@@ -10,6 +10,8 @@ export { MediaFileModel } from './media-file.model';
 export { MenuModel } from './menu.model';
 export { NewsletterSubscriberModel } from './newsletter-subscriber.model';
 export { PageModel } from './page.model';
+export { PlaceModel } from './place.model';
+export { RegionModel } from './region.model';
 export { RoleModel } from './role.model';
 export { SiteSettingModel } from './site-setting.model';
 export { TestimonialModel } from './testimonial.model';

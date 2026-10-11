@@ -6,6 +6,8 @@ import {
   CategoryUpsertSchema,
   DestinationUpsertSchema,
   PageUpsertSchema,
+  PlaceUpsertSchema,
+  RegionUpsertSchema,
   TripUpsertSchema,
   TravelTypeUpsertSchema
 } from '@/application/validators/content.validators';
@@ -75,6 +77,8 @@ export const registry = {
   pages: { entityName: 'Page', repo: (uow: UnitOfWork) => uow.pages, validator: PageUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },
   blogs: { entityName: 'Blog', repo: (uow: UnitOfWork) => uow.blogs, validator: BlogUpsertSchema, defaultSort: { publishDate: -1 } },
   destinations: { entityName: 'Destination', repo: (uow: UnitOfWork) => uow.destinations, validator: DestinationUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },
+  regions: { entityName: 'Region', repo: (uow: UnitOfWork) => uow.regions, validator: RegionUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },
+  places: { entityName: 'Place', repo: (uow: UnitOfWork) => uow.places, validator: PlaceUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },
   travelTypes: { entityName: 'TravelType', repo: (uow: UnitOfWork) => uow.travelTypes, validator: TravelTypeUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },
   trips: { entityName: 'Trip', repo: (uow: UnitOfWork) => uow.trips, validator: TripUpsertSchema, defaultSort: { createdAt: -1 } },
   categories: { entityName: 'Category', repo: (uow: UnitOfWork) => uow.categories, validator: CategoryUpsertSchema, defaultSort: { sortOrder: 1, createdAt: -1 } },

@@ -2,13 +2,15 @@ import Link from 'next/link';
 import { getCurrentUserFromCookies } from '@/lib/auth';
 import { canAccessAdminPath } from '@/domain/constants/admin-permissions';
 import LogoutButton from './LogoutButton';
-import { LayoutDashboard, FileText, PenTool, MapPin, Compass, Plane, Tag, Calendar, Image as ImageIcon, Film, MessageSquare, HelpCircle, Menu, Settings, Users } from 'lucide-react';
+import { LayoutDashboard, FileText, PenTool, MapPin, Map, Landmark, Compass, Plane, Tag, Calendar, Image as ImageIcon, Film, MessageSquare, HelpCircle, Menu, Settings, Users } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Pages', href: '/admin/pages', icon: FileText },
   { label: 'Blogs', href: '/admin/blogs', icon: PenTool },
   { label: 'Destinations', href: '/admin/destinations', icon: MapPin },
+  { label: 'Regions', href: '/admin/regions', icon: Map },
+  { label: 'Places', href: '/admin/places', icon: Landmark },
   { label: 'Travel Types', href: '/admin/travel-types', icon: Compass },
   { label: 'Trips', href: '/admin/trips', icon: Plane },
   { label: 'Categories', href: '/admin/categories', icon: Tag },

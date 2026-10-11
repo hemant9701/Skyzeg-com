@@ -32,7 +32,7 @@ export default async function ThankYouPage({ searchParams }: ThankYouPageProps =
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white/15 text-white">
           <CheckCircle2 size={34} aria-hidden="true" />
         </div>
-        <h1 className="mt-6 text-9xl font-semibold text-white sm:text-8xl">{ui.thankYouTitle}</h1>
+        <h1 className="font-heading font-normal mt-6 text-9xl text-white sm:text-8xl">{ui.thankYouTitle}</h1>
         <p className="mt-3 text-lg text-white/90">{successMessage}</p>
       </HeroBanner>
       <section className="bg-surface px-4 py-12 sm:px-6">

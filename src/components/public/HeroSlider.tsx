@@ -33,7 +33,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" aria-hidden="true" />
         <div className="site-hero-slider-content relative mx-auto flex min-h-[560px] max-w-7xl items-center px-4 sm:min-h-[600px] sm:px-6 lg:px-8">
           <div className="max-w-2xl pb-10">
-            <h1 className="text-4xl font-semibold text-white sm:text-5xl">{ui.heroTitle}</h1>
+            <h1 className="font-heading font-normal text-4xl text-white sm:text-5xl">{ui.heroTitle}</h1>
             <p className="mt-4 text-lg text-white/90">{ui.heroSubtitle}</p>
             <Link href="/trips" className="mt-8 inline-flex rounded-full bg-primary px-5 py-1 font-semibold text-white transition hover:bg-primary-hover">{ui.heroCta}</Link>
           </div>
@@ -63,7 +63,7 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
           <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-dark">{ui.heroBadge}</span>
-              <h1 className="text-4xl font-semibold text-white sm:text-5xl">{activeTranslation?.title || ui.heroTitle}</h1>
+              <h1 className="font-heading font-normal text-4xl text-white sm:text-5xl">{activeTranslation?.title || ui.heroTitle}</h1>
               <p className="mt-4 text-lg text-white/90">
                 {typeof activeTranslation?.subtitle === 'string'
                   ? activeTranslation.subtitle.replace(/<[^>]*>/g, '')

@@ -42,7 +42,8 @@ const TripAvailabilitySchema = new Schema(
 const TripSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    destination: { type: Schema.Types.ObjectId, ref: 'Destination', required: true },
+    tripName: { type: String, required: true, trim: true },
+    destination: { type: [{ type: Schema.Types.ObjectId, ref: 'Destination' }], required: true },
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     travelTypes: [{ type: Schema.Types.ObjectId, ref: 'TravelType' }],
     durationDays: { type: Number, required: true, min: 1 },

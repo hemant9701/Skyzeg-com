@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import { ZodError } from 'zod';
 import { AppError } from '@/shared/errors/app-error';
 import { logger } from '@/infrastructure/logging/logger';
@@ -23,6 +24,23 @@ export function apiError(error: unknown) {
     );
   }
 
+  if (error instanceof mongoose.Error.ValidationError) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: `Please check the required or invalid fields: ${Object.keys(error.errors).join(', ')}`
+      },
+      { status: 400 }
+    );
+  }
+
+  if (isDuplicateKeyError(error)) {
+    return NextResponse.json(
+      { success: false, message: 'A record with this slug already exists. Please use a unique slug.' },
+      { status: 409 }
+    );
+  }
+
   if (error instanceof AppError) {
     return NextResponse.json(
       { success: false, message: error.message, details: error.details },
@@ -32,6 +50,10 @@ export function apiError(error: unknown) {
 
   logger.error({ err: error }, 'Unhandled API error');
   return NextResponse.json({ success: false, message: 'Unexpected server error' }, { status: 500 });
+}
+
+function isDuplicateKeyError(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && 'code' in error && error.code === 11000;
 }
 
 export function withApiErrorHandling<TArgs extends unknown[]>(

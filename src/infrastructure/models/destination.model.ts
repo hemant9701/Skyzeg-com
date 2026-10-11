@@ -19,6 +19,8 @@ const DestinationSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     country: { type: String, required: true, trim: true },
+    region: { type: String, required: true, trim: true },
+    places: { type: [String], default: [] },
     city: { type: String, trim: true },
     heroImage: { type: String },
     gallery: { type: [MediaRefSchema], default: [] },
@@ -33,6 +35,8 @@ const DestinationSchema = new Schema(
 );
 
 DestinationSchema.index({ slug: 1 }, { unique: true });
+DestinationSchema.index({ region: 1, isVisible: 1 });
+DestinationSchema.index({ places: 1 });
 DestinationSchema.index({ country: 1, city: 1 });
 DestinationSchema.index({ isVisible: 1, isFeatured: 1 });
 

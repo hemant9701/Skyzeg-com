@@ -43,6 +43,8 @@ Quick links:
 - [Home](http://localhost:3000)
 - [Admin login](http://localhost:3000/admin/login)
 - [Destinations](http://localhost:3000/destinations)
+- [Regions](http://localhost:3000/regions)
+- [Places](http://localhost:3000/places)
 - [Trips](http://localhost:3000/trips)
 - [Blogs](http://localhost:3000/blogs)
 
@@ -146,6 +148,8 @@ Set `BLOB_READ_WRITE_TOKEN` in Vercel Project Settings before using admin media 
 /admin/pages
 /admin/blogs
 /admin/destinations
+/admin/regions
+/admin/places
 /admin/trips
 /admin/bookings
 /admin/media

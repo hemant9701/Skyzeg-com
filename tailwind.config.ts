@@ -4,6 +4,9 @@ const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif']
+      },
       colors: {
         primary: {
           DEFAULT: '#1C398E',
@@ -33,6 +36,9 @@ const config: Config = {
           variant: '#DCE5DC'
         },
         'inverse-surface': '#30312B',
+        'destination-ink': '#20221B',
+        'destination-line': '#C2CCC4',
+        'destination-selected': '#CFE8D6',
         'inverse-on-surface': '#F3F1E9',
         faint: '#94A3B8',
         subtle: '#475569',
