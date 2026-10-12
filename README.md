@@ -186,3 +186,19 @@ Create/update/delete calls require an authenticated Admin, Editor or Content Man
 - MongoDB does not use EF migrations. Schemas and indexes are defined in Mongoose models.
 - Run `npm run seed` after changing seed records.
 - TinyMCE is configured for images, tables, code/source view, media, YouTube embeds and HTML editing.
+
+## AI content translation
+
+Set OPENAI_API_KEY in .env.local (or your hosting environment). OPENAI_TRANSLATION_MODEL defaults to gpt-4.1-mini and can be changed to a Responses API model supporting structured outputs. Restart the app after configuration changes.
+
+In a content editor, select the destination language tab, choose the source language, and click Translate with AI. This replaces the destination draft's translated fields, including text lists and itinerary text. Review the result and click Save changes to persist it. Images, URLs, IDs, numbers, and the source language remain unchanged. Content is sent to OpenAI only when the button is clicked; the key stays on the server. Nested language blocks in menus and page blocks are edited separately.
+
+
+## Import content from Word
+
+Pages, blog posts, trips, destinations, regions, places, travel types, categories, sliders, testimonials, and FAQs include an **Import Word document** action. Choose the content language and upload a `.docx` or `.doc` file up to 4 MB. Import extracts the text into a new unpublished draft, uses its first text line as the title, generates a slug, and retains the full document in Body, Overview, or the appropriate rich content field. DOCX headings, lists, links, and tables retain basic formatting; legacy DOC imports plain text. Embedded images must be added through Media. Review required fields and relationships before saving. Extraction runs on the server without an AI API key and does not store the uploaded file or publish automatically.
+
+## Export CMS content
+
+Every shared content manager includes per-record Export (Word), Export Word for the current editor draft, and Export all (JSON) for the complete saved collection. Word exports contain all translations, nested content, and metadata as readable text; images remain URLs and rich formatting is simplified. JSON exports preserve the saved record data, including HTML, relationships, and translations. Export requires the same admin read permissions as the content type and does not change records.
+

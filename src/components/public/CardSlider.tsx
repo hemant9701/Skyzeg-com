@@ -30,7 +30,7 @@ export default function CardSlider({
       modules={[Navigation, Pagination, Autoplay]}
       navigation={slides.length > 2}
       pagination={{ clickable: true, dynamicBullets: true }}
-      speed={350}
+      speed={700}
       watchOverflow
       allowTouchMove={slides.length > 1}
       autoplay={
@@ -60,7 +60,7 @@ export default function CardSlider({
           spaceBetween: 24,
         },
       }}
-      className={`!pb-12 ${materialYou ? 'material-you-slider' : ''}`}
+      className={`!pb-12 [&_.swiper-wrapper]:ease-in-out motion-reduce:[&_.swiper-wrapper]:duration-0 ${materialYou ? 'material-you-slider' : ''}`}
     >
       {slides.map((child, index) => (
         <SwiperSlide key={index} className="!flex !h-auto">

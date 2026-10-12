@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { FileText, BookOpen, MapPin, Plane, CalendarCheck, Images, ArrowUpRight, CircleUserRound } from 'lucide-react';
+import LogoutButton from '@/components/admin/LogoutButton';
 import { Roles } from '@/domain/constants/roles';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getCurrentUserFromCookies } from '@/lib/auth';
@@ -23,24 +25,32 @@ export default async function AdminDashboardPage() {
   ]);
 
   const allStats = [
-    ['Pages', pages, 'bi-file-earmark-text', '/admin/pages'],
-    ['Blogs', blogs, 'bi-journal-richtext', '/admin/blogs'],
-    ['Destinations', destinations, 'bi-geo-alt', '/admin/destinations'],
-    ['Trips', trips, 'bi-suitcase2', '/admin/trips'],
-    ['Bookings', bookings, 'bi-calendar-check', '/admin/bookings'],
-    ['Media Files', media, 'bi-images', '/admin/media']
-  ];
+    ['Pages', pages, FileText, '/admin/pages'],
+    ['Blogs', blogs, BookOpen, '/admin/blogs'],
+    ['Destinations', destinations, MapPin, '/admin/destinations'],
+    ['Trips', trips, Plane, '/admin/trips'],
+    ['Bookings', bookings, CalendarCheck, '/admin/bookings'],
+    ['Media Files', media, Images, '/admin/media']
+  ] as const;
   const stats = isContentManager ? allStats.slice(0, 4) : allStats;
 
   return (
     <>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h1 className="text-2xl font-semibold text-white">Dashboard</h1><p className="mt-1 text-sm text-slate-400">Travel & Tour CMS overview</p></div><Link href="/" className="inline-flex rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-800" target="_blank">View Website</Link></div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {stats.map(([label, value, icon, href]) => (
-          <Link href={String(href)} className="rounded-2xl border border-white/10 bg-slate-900/70 p-5 text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800" key={String(label)}><i className={`bi ${icon} text-3xl text-accent`} /><div className="mt-4 text-3xl font-semibold">{String(value)}</div><div className="mt-1 text-sm text-slate-400">{label}</div></Link>
+      <div className="mb-6"><h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1><p className="mt-2 text-sm text-admin-muted">An overview of your travel website.</p></div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-admin-line bg-admin-panel p-6 shadow-sm">
+        <div className="flex items-center gap-4"><CircleUserRound size={40} className="text-admin-muted" /><div><p className="text-sm text-admin-muted">Welcome back</p><h2 className="mt-1 text-lg font-semibold">{user?.fullName || 'Admin'}</h2></div></div>
+        <div className="min-w-28"><LogoutButton /></div>
+      </div>
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {stats.map(([label, value, Icon, href]) => (
+          <Link href={href} className="group rounded-xl border border-admin-line bg-admin-panel p-6 shadow-sm transition hover:border-admin-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-admin-accent" key={label}>
+            <div className="flex items-center justify-between"><span className="text-sm font-medium text-admin-muted">{label}</span><Icon size={20} className="text-admin-muted" /></div>
+            <div className="mt-3 text-3xl font-semibold tracking-tight text-white">{value}</div>
+            <div className="mt-3 flex items-center gap-1 text-sm font-medium text-admin-accent">Manage {label.toLowerCase()}<ArrowUpRight size={15} /></div>
+          </Link>
         ))}
       </div>
-      <div className="mt-6 rounded-2xl border border-white/10 bg-slate-900/70 p-5"><h2 className="text-lg font-semibold text-white">Next.js + MongoDB Architecture</h2><p className="mt-2 text-sm text-slate-400">The admin panel uses protected API route handlers, Mongoose repositories, TinyMCE, media upload processing and audit logging.</p></div>
+      <section className="mt-6 rounded-xl border border-admin-line bg-admin-panel p-6"><h2 className="text-lg font-semibold text-white">Quick actions</h2><p className="mt-1 text-sm text-admin-muted">Keep your website content up to date.</p><div className="mt-4 flex flex-wrap gap-3"><Link href="/admin/trips" className="rounded-lg bg-admin-accent px-4 py-2 text-sm font-semibold text-admin-canvas hover:bg-admin-accent/90">Manage trips</Link><Link href="/admin/pages" className="rounded-lg border border-admin-line px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-white/5">Edit pages</Link><Link href="/admin/blogs" className="rounded-lg border border-admin-line px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-white/5">Manage blogs</Link></div></section>
     </>
   );
 }

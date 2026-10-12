@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { pickTranslation } from '@/shared/utils/localize';
 import { getStrings } from '@/lib/ui-strings';
@@ -11,19 +12,18 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
   const ui = getStrings(languageCode);
   const slidesList = Array.isArray(slides) ? slides : [];
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    setIsHydrated(true);
-    if (slidesList.length < 2) return;
+    if (slidesList.length < 2 || isPaused || shouldReduceMotion) return;
     const id = window.setInterval(() => {
-      setActiveIndex((value) => (value + 1) % slidesList.length);
+      if (!document.hidden) setActiveIndex((value) => (value + 1) % slidesList.length);
     }, 6000);
     return () => window.clearInterval(id);
-  }, [slidesList.length]);
+  }, [slidesList.length, activeIndex, isPaused, shouldReduceMotion]);
 
-  const activeSlide = slidesList[activeIndex] ?? slidesList[0];
-  const canRenderCarouselControls = isHydrated && slidesList.length > 1;
+  const canRenderCarouselControls = slidesList.length > 1;
 
   if (!slidesList.length) {
     return (
@@ -42,39 +42,49 @@ export default function HeroSlider({ slides, languageCode }: { slides: any[]; la
     );
   }
 
-  const activeTranslation = pickTranslation(activeSlide, languageCode) as any;
-  const activeImageSrc = activeSlide.imageUrl || '/images/placeholder.svg';
-
   return (
-    <div className="site-hero relative overflow-hidden bg-[var(--color-light)]">
+    <div className="site-hero relative overflow-hidden bg-dark"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={(event) => { if (!event.currentTarget.contains(document.activeElement)) setIsPaused(false); }}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node) && !event.currentTarget.matches(':hover')) setIsPaused(false); }}
+    >
       <div className="relative h-[75vh] min-h-[560px] overflow-hidden sm:min-h-[600px]">
-        <div className="absolute inset-0">
+        {slidesList.map((slide, index) => (
+          <div key={String(slide._id || index)} aria-hidden={index !== activeIndex} className={`absolute inset-0 transition-opacity duration-[1000ms] ease-in-out motion-reduce:transition-none ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}>
           <Image
-            src={activeImageSrc}
-            alt={activeTranslation?.title || ui.heroTitle}
+            src={slide.imageUrl || '/images/placeholder.svg'}
+            alt={String(pickTranslation(slide, languageCode)?.title || ui.heroTitle)}
             fill
-            priority={activeIndex === 0}
+            priority={index === 0}
+            loading={index === 0 ? undefined : 'eager'}
             sizes="100vw"
             quality={72}
-            className="object-cover transition-opacity duration-300"
+            className="object-cover"
           />
-          <div className="absolute inset-0 bg-dark/55" />
-          <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" />
-          <div className="site-hero-slider-content relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+          </div>
+        ))}
+        <div className="pointer-events-none absolute inset-0 bg-dark/55" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent via-light/60 to-light" aria-hidden="true" />
+        {slidesList.map((slide, index) => {
+          const translation = pickTranslation(slide, languageCode) as any;
+          return (
+          <div key={String(slide._id || index)} aria-hidden={index !== activeIndex} inert={index !== activeIndex} className={`site-hero-slider-content absolute inset-0 mx-auto flex h-full max-w-7xl items-center px-4 transition-opacity duration-[800ms] ease-in-out motion-reduce:transition-none sm:px-6 lg:px-8 ${index === activeIndex ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
             <div className="max-w-2xl">
               <span className="mb-3 inline-flex rounded-full bg-white/90 px-4 py-1 text-sm font-semibold text-dark">{ui.heroBadge}</span>
-              <h1 className="font-heading font-normal text-4xl text-white sm:text-5xl">{activeTranslation?.title || ui.heroTitle}</h1>
+              <h1 className="font-heading font-normal text-4xl text-white sm:text-5xl">{translation?.title || ui.heroTitle}</h1>
               <p className="mt-4 text-lg text-white/90">
-                {typeof activeTranslation?.subtitle === 'string'
-                  ? activeTranslation.subtitle.replace(/<[^>]*>/g, '')
+                {typeof translation?.subtitle === 'string'
+                  ? translation.subtitle.replace(/<[^>]*>/g, '')
                   : ui.heroSubtitle}
               </p>
-              <Link href={activeSlide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primary-hover">
-                {activeTranslation?.buttonText || ui.heroCtaDefault}
+              <Link href={slide.buttonUrl || '/trips'} className="mt-8 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white transition hover:bg-primary-hover">
+                {translation?.buttonText || ui.heroCtaDefault}
               </Link>
             </div>
           </div>
-        </div>
+          );
+        })}
       </div>
 
       {canRenderCarouselControls && (

@@ -8,6 +8,13 @@ const config: Config = {
         heading: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif']
       },
       colors: {
+        admin: {
+          canvas: '#09090B',
+          panel: '#18181B',
+          line: '#27272A',
+          muted: '#A1A1AA',
+          accent: '#FBBF24'
+        },
         primary: {
           DEFAULT: '#1C398E',
           hover: '#152D73'

@@ -57,16 +57,16 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
 
   return (
     <div className="grid gap-2">
-      {value && <img src={value} alt="Preview" className="h-32 rounded-2xl object-cover" />}
+      {value && <img src={value} alt="Preview" className="h-40 w-full rounded-lg border border-admin-line object-cover" />}
       <input
-        className="rounded-2xl w-2/3 border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary"
+        className="w-full rounded-lg border border-admin-line bg-admin-canvas/50 px-3 py-2.5 text-sm text-slate-100 outline-none transition focus:border-admin-accent"
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder="/images/placeholder.svg"
       />
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <input
-          className="flex-1 w-1/2 rounded-2xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary"
+          className="min-w-0 flex-1 rounded-lg border border-admin-line bg-admin-canvas/50 px-3 py-2.5 text-sm text-slate-100 outline-none transition focus:border-admin-accent"
           type="file"
           accept="image/*,.svg,.pdf,video/*"
           onChange={(e) => {
@@ -82,38 +82,38 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
             setShowLibrary(true);
             loadMediaLibrary();
           }}
-          className="rounded-2xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 transition hover:bg-slate-50 flex items-center gap-2"
+          className="rounded-lg border border-admin-line bg-admin-panel px-4 py-2.5 text-sm font-medium text-slate-100 transition hover:bg-admin-canvas/40 flex items-center gap-2"
         >
           <Folder size={18} />
           Library
         </button>
       </div>
-      {uploadError && <p role="alert" className="text-sm text-red-600">{uploadError}</p>}
+      {uploadError && <p role="alert" className="text-sm text-danger">{uploadError}</p>}
 
       {/* Media Library Modal */}
       {showLibrary && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-screen w-full max-w-4xl overflow-y-auto rounded-3xl bg-white p-6">
+          <div className="max-h-screen w-full max-w-4xl overflow-y-auto rounded-xl bg-admin-panel p-6">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-900">Media Library</h3>
+              <h3 className="text-lg font-semibold text-slate-100">Media Library</h3>
               <button
                 type="button"
                 onClick={() => setShowLibrary(false)}
-                className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+                className="rounded-lg border border-admin-line px-3 py-1.5 text-sm text-admin-muted hover:bg-admin-canvas/40"
               >
                 Close
               </button>
             </div>
             {libraryBusy ? (
-              <div className="flex items-center justify-center gap-2 py-8 text-slate-500"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Loading...</div>
+              <div className="flex items-center justify-center gap-2 py-8 text-admin-muted"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Loading...</div>
             ) : mediaItems.length === 0 ? (
-              <div className="py-8 text-center text-slate-500">No media files uploaded yet</div>
+              <div className="py-8 text-center text-admin-muted">No media files uploaded yet</div>
             ) : (
               <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {mediaItems.map((item) => (
                   <div
                     key={item._id}
-                    className="group relative overflow-hidden rounded-lg border border-slate-200 bg-slate-50"
+                    className="group relative overflow-hidden rounded-lg border border-admin-line bg-admin-canvas/40"
                   >
                     {item.type === 'image' ? (
                       <img
@@ -137,7 +137,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
                           onChange(item.url);
                           setShowLibrary(false);
                         }}
-                        className="rounded-lg bg-white px-2 py-1 text-xs font-medium text-slate-900 hover:bg-slate-100"
+                        className="rounded-lg bg-admin-panel px-2 py-1 text-xs font-medium text-slate-100 hover:bg-slate-100"
                       >
                         Select
                       </button>
@@ -149,7 +149,7 @@ export default function ImageUploadInput({ value, onChange, folder = 'media' }: 
                         Delete
                       </button>}
                     </div>
-                    <div className="truncate p-2 text-xs text-slate-600">{item.originalName}</div>
+                    <div className="truncate p-2 text-xs text-admin-muted">{item.originalName}</div>
                   </div>
                 ))}
               </div>
