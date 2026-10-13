@@ -202,3 +202,6 @@ Pages, blog posts, trips, destinations, regions, places, travel types, categorie
 
 Every shared content manager includes per-record Export (Word), Export Word for the current editor draft, and Export all (JSON) for the complete saved collection. Word exports contain all translations, nested content, and metadata as readable text; images remain URLs and rich formatting is simplified. JSON exports preserve the saved record data, including HTML, relationships, and translations. Export requires the same admin read permissions as the content type and does not change records.
 
+
+Destination maps fit locally stored country bounds in data/country-bounds.json, derived from Natural Earth via the world-atlas countries-50m dataset (https://github.com/topojson/world-atlas). Unrecognized country names fall back to a regional coordinate view. Coordinates remain editable in the dashboard and are hidden on public destination pages.
+

@@ -30,7 +30,8 @@ export default async function TripDetailsPage({ params }: Props) {
   const t = pickTranslation(trip as any, languageCode) as any;
   const schema = { '@context': 'https://schema.org', '@type': 'TouristTrip', name: t?.title, description: strip(t?.summary), image: trip.heroImage };
 
-  const itinerary: any[] = trip.itinerary || [];
+  const itinerary: any[] = Array.isArray(t?.itinerary) ? t.itinerary : trip.itinerary || [];
+  const highlights: string[] = Array.isArray(t?.highlights) ? t.highlights : trip.highlights || [];
   const gallery: any[] = trip.gallery || [];
   const hasItinerary = itinerary.length > 0;
   const hasGallery = gallery.length > 0;
@@ -47,14 +48,14 @@ export default async function TripDetailsPage({ params }: Props) {
 
   const itineraryNode = (
     <div className="space-y-4">
-      {itinerary.map((day: any) => (
+      {itinerary.map((day: any, index: number) => (
         <div
-          key={day.dayNumber}
+          key={day._id || index}
           className="rounded-2xl border border-line bg-white p-6 shadow-sm"
         >
           <div className="flex items-center gap-3">
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
-              {day.dayNumber}
+              {day.dayNumber || index + 1}
             </span>
             <h5 className="text-lg font-semibold text-dark">{day.title}</h5>
           </div>
@@ -217,13 +218,13 @@ export default async function TripDetailsPage({ params }: Props) {
             </div>
 
             {/* Highlights */}
-            {(trip.highlights || []).length > 0 && (
+            {highlights.length > 0 && (
               <div className="mt-5 rounded-2xl border border-line bg-light p-6">
                 <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
                   {ui.tripsHighlights}
                 </h4>
                 <ul className="space-y-2.5">
-                  {(trip.highlights || []).map((h: string) => (
+                  {highlights.map((h: string) => (
                     <li key={h} className="flex items-start gap-2 text-sm text-body">
                       <span className="mt-0.5 flex-shrink-0 text-success">✓</span>
                       <span>{h}</span>

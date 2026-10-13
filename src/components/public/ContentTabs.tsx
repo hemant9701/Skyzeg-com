@@ -8,11 +8,13 @@ interface ContentTabsProps {
   highlights?: string;
   thingsToDo?: string;
   travelTips?: string;
+  weather?: string;
   labels?: {
     overview?: string;
     highlights?: string;
     thingsToDo?: string;
     travelTips?: string;
+    weather?: string;
     emptyMessage?: string;
   };
 }
@@ -22,13 +24,15 @@ export default function ContentTabs({
   highlights,
   thingsToDo,
   travelTips,
+  weather,
   labels = {}
 }: ContentTabsProps) {
   const tabs = [
     { id: 'overview', label: labels.overview ?? 'Overview', content: overview },
     { id: 'highlights', label: labels.highlights ?? 'Highlights', content: highlights },
     { id: 'thingsToDo', label: labels.thingsToDo ?? 'Things To Do', content: thingsToDo },
-    { id: 'travelTips', label: labels.travelTips ?? 'Travel Tips', content: travelTips }
+    { id: 'travelTips', label: labels.travelTips ?? 'Travel Tips', content: travelTips },
+    ...(labels.weather ? [{ id: 'weather', label: labels.weather, content: weather }] : [])
   ];
 
   const [active, setActive] = useState(tabs[0].id);

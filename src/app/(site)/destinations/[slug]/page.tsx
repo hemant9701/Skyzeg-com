@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import HeroBanner from '@/components/public/HeroBanner';
 import ContentTabs from '@/components/public/ContentTabs';
-import RichContent from '@/components/public/RichContent';
 import TripCard from '@/components/public/TripCard';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
@@ -11,6 +10,9 @@ import { pickTranslation } from '@/shared/utils/localize';
 import { notFound } from 'next/navigation';
 import { getStrings } from '@/lib/ui-strings';
 import { populateTripReferences } from '@/application/services/trip-query.service';
+import { buildCoordinateMap } from '@/shared/utils/coordinate-map';
+import DestinationMap from '@/components/public/DestinationMap';
+import { getCountryBounds } from '@/shared/utils/country-bounds';
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -34,6 +36,8 @@ export default async function DestinationDetailsPage({ params }: Props) {
   );
   const t = pickTranslation(destination as any, languageCode) as any;
   const ui = getStrings(languageCode);
+  const map = buildCoordinateMap(destination.coordinates);
+  const countryBounds = getCountryBounds(destination.country);
 
   return (
     <>
@@ -50,23 +54,27 @@ export default async function DestinationDetailsPage({ params }: Props) {
               highlights={t?.highlights}
               thingsToDo={t?.thingsToDo}
               travelTips={t?.travelTips}
+              weather={t?.weather}
               labels={{
                 overview: ui.destinationsOverview,
                 highlights: ui.destinationsHighlights,
                 thingsToDo: ui.destinationsThingsToDo,
                 travelTips: ui.destinationsTravelTips,
+                weather: ui.destinationsWeather,
                 emptyMessage: ui.contentNoContent
               }}
             />
           </div>
-          <div className="rounded-3xl border border-line bg-surface p-6 shadow-sm">
-            <h5 className="text-lg font-semibold text-dark">{ui.destinationsWeather}</h5>
-            <div className="mt-3 text-sm leading-7 text-body"><RichContent html={t?.weather} /></div>
-            <p className="mt-4 text-sm font-medium text-muted">
-              {ui.destinationsLatitude}: {destination.coordinates?.latitude || '-'}<br />
-              {ui.destinationsLongitude}: {destination.coordinates?.longitude || '-'}
-            </p>
-          </div>
+          <aside className="self-start space-y-6">
+          {map && <section className="overflow-hidden rounded-3xl border border-line bg-surface shadow-sm">
+            <DestinationMap
+              latitude={destination.coordinates!.latitude!}
+              longitude={destination.coordinates!.longitude!}
+              bounds={countryBounds}
+              label={`${ui.destinationsMap}: ${t?.title || destination.country}`}
+            />
+          </section>}
+          </aside>
         </div>
       </section>
 

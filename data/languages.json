@@ -23,5 +23,10 @@
     "code": "it-IT",
     "name": "Italian",
     "short": "IT"
+  },
+  {
+    "code": "de-DE",
+    "name": "German",
+    "short": "DE"
   }
 ]
