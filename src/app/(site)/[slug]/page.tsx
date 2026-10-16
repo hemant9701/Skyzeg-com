@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import HeroBanner from '@/components/public/HeroBanner';
 import RichContent from '@/components/public/RichContent';
+import PageBlocks from '@/components/public/PageBlocks';
 import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
 import { buildMetadata } from '@/shared/seo/metadata';
@@ -33,6 +34,7 @@ export default async function DynamicPage({ params }: Props) {
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <RichContent html={t?.body} />
+          {page.blocks?.length > 0 && <div className="mt-10"><PageBlocks blocks={page.blocks} languageCode={languageCode} /></div>}
         </div>
       </section>
     </>
