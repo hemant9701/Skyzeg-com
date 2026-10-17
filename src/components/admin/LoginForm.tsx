@@ -2,9 +2,10 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { AdminRoles } from '@/domain/constants/roles';
 import { ArrowRight, Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from 'lucide-react';
 
-export default function LoginForm() {
+export default function LoginForm({ frontend = false }: { frontend?: boolean }) {
   const router = useRouter();
   const params = useSearchParams();
   const [error, setError] = useState('');
@@ -25,7 +26,9 @@ export default function LoginForm() {
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.message || 'Invalid email or password');
       const requested = params.get('returnUrl');
-      const target = requested?.startsWith('/admin') && !requested.startsWith('//') ? requested : '/admin';
+      const staff = AdminRoles.some(role => result.data?.roles?.includes(role));
+      const safeReturn = requested?.startsWith('/') && !requested.startsWith('//') && !/[\\\s]/.test(requested) && !/^\/(?:api|login)(?:[/?#]|$)/.test(requested) && !requested.startsWith('/admin/login');
+      const target = safeReturn && (staff || !requested!.startsWith('/admin')) ? requested! : frontend || !staff ? '/' : '/admin';
       router.replace(target);
       router.refresh();
     } catch (err: unknown) {
@@ -40,9 +43,9 @@ export default function LoginForm() {
   return (
     <form className="w-full" onSubmit={submit} aria-busy={busy}>
       <div className="mb-5">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-admin-accent">Admin workspace</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-admin-accent">{frontend ? 'SkyZeg account' : 'Admin workspace'}</p>
         <h1 className="font-semibold tracking-tight text-3xl text-white sm:text-4xl">Welcome back.</h1>
-        <p className="mt-2 text-sm leading-6 text-admin-muted">Sign in to manage your trips, destinations, bookings and stories.</p>
+        <p className="mt-2 text-sm leading-6 text-admin-muted">{frontend ? 'Sign in to your SkyZeg account.' : 'Sign in to manage your trips, destinations, bookings and stories.'}</p>
       </div>
       <div className="space-y-4">
         <div>
@@ -67,7 +70,7 @@ export default function LoginForm() {
           {busy ? <><LoaderCircle size={18} className="animate-spin" aria-hidden="true" />Signing in…</> : <>Sign in<ArrowRight size={18} aria-hidden="true" /></>}
         </button>
       </div>
-      <p className="mt-4 flex items-center justify-center gap-2 text-xs text-admin-muted"><LockKeyhole size={13} aria-hidden="true" />For authorized SkyZeg team members</p>
+      <p className="mt-4 flex items-center justify-center gap-2 text-xs text-admin-muted"><LockKeyhole size={13} aria-hidden="true" />{frontend ? 'All SkyZeg account holders are welcome' : 'For authorized SkyZeg team members'}</p>
     </form>
   );
 }

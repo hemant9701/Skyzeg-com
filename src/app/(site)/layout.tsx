@@ -1,10 +1,13 @@
+import { redirect } from 'next/navigation';
+import { getCurrentUserFromCookies } from '@/lib/auth';
 import Header from '@/components/public/Header';
 import Footer from '@/components/public/Footer';
 import NewsletterSection from '@/components/public/NewsletterSection';
 import CookieConsent from '@/components/public/CookieConsent';
 import { organizationSchema } from '@/shared/seo/metadata';
 
-export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  if (!(await getCurrentUserFromCookies())) redirect('/login');
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   return (
     <>

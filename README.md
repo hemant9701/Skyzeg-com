@@ -41,6 +41,7 @@ npm run dev
 Quick links:
 
 - [Home](http://localhost:3000)
+- [Website login](http://localhost:3000/login)
 - [Admin login](http://localhost:3000/admin/login)
 - [Destinations](http://localhost:3000/destinations)
 - [Regions](http://localhost:3000/regions)
@@ -140,6 +141,8 @@ Set `BLOB_READ_WRITE_TOKEN` in Vercel Project Settings before using admin media 
 /contact
 /booking/[tripSlug]
 ```
+
+The frontend website requires login. All account roles can sign in at `/login` and use the website. The login page renders without the website header or footer. Only Admin, Editor, and Content Manager roles can access `/admin`; regular User accounts return to the website. Signed-in staff can open the dashboard from the website header.
 
 ## Main admin routes
 

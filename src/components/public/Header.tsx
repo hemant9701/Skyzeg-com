@@ -3,6 +3,9 @@ import { UnitOfWork } from '@/infrastructure/repositories/unit-of-work';
 import { getLanguageCode } from '@/lib/language';
 import { getStrings } from '@/lib/ui-strings';
 import { pickTranslation } from '@/shared/utils/localize';
+import { getCurrentUserFromCookies } from '@/lib/auth';
+import { AdminRoles } from '@/domain/constants/roles';
+import AccountControls from './AccountControls';
 import MegaMenuHeader from './MegaMenuHeader';
 
 function toPlain<T>(value: T): T {
@@ -11,6 +14,7 @@ function toPlain<T>(value: T): T {
 
 export default async function Header() {
   const languageCode = await getLanguageCode();
+  const user = await getCurrentUserFromCookies();
   const unitOfWork = new UnitOfWork();
   const [languages, settings, menu, destinations, regions, travelTypes, categories] = await Promise.all([
     new LanguageService().getLanguages(),
@@ -89,6 +93,7 @@ export default async function Header() {
 
   return (
     <MegaMenuHeader
+      accountControls={<AccountControls user={user ? { fullName: user.fullName, email: user.email, roles: user.roles } : null} staff={!!user?.roles.some(role => AdminRoles.some(allowed => allowed === role))} language={languageCode} />}
       logoUrl={logoUrl}
       logo2Url={logo2Url}
       siteName={settingTranslation?.siteName || 'Skyzeg Travel'}

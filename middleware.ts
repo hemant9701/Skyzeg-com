@@ -8,7 +8,7 @@ const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET || 'replace-th
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (pathname === '/admin/login') return NextResponse.next();
+  if (pathname === '/login' || pathname === '/admin/login') return NextResponse.next();
 
   const token = request.cookies.get(cookieName)?.value;
   if (!token) return redirectToLogin(request);
@@ -16,9 +16,9 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jwtVerify(token, jwtSecret);
     const roles = Array.isArray(payload.roles) ? payload.roles.map(String) : [];
-    if (!canAccessAdminPath(roles, pathname)) {
+    if ((pathname === '/admin' || pathname.startsWith('/admin/')) && !canAccessAdminPath(roles, pathname)) {
       if (!roles.some((role) => AdminRoles.includes(role as (typeof AdminRoles)[number]))) {
-        return new NextResponse(null, { status: 404 });
+        return NextResponse.redirect(new URL('/', request.url));
       }
       const url = request.nextUrl.clone();
       url.pathname = '/admin';
@@ -33,11 +33,12 @@ export async function middleware(request: NextRequest) {
 
 function redirectToLogin(request: NextRequest) {
   const url = request.nextUrl.clone();
-  url.pathname = '/admin/login';
-  url.searchParams.set('returnUrl', request.nextUrl.pathname);
+  url.pathname = request.nextUrl.pathname === '/admin' || request.nextUrl.pathname.startsWith('/admin/') ? '/admin/login' : '/login';
+  url.search = '';
+  url.searchParams.set('returnUrl', request.nextUrl.pathname + request.nextUrl.search);
   return NextResponse.redirect(url);
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
+  matcher: ['/((?!api(?:/|$)|_next(?:/|$)|uploads(?:/|$)|images(?:/|$)|fonts(?:/|$)|favicon\\.ico$|icon\\.svg$|robots\\.txt$|sitemap\\.xml$).*)']
 };

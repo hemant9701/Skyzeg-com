@@ -1,4 +1,10 @@
 export interface UiStrings {
+  authAccount: string;
+  authSigningOut: string;
+  authSignOutError: string;
+  authSignIn: string;
+  authSignOut: string;
+  authDashboard: string;
   // ── Home ──────────────────────────────────────────
   homeTrustStats: { label: string; value: string }[];
   homeProcessSteps: { title: string; body: string }[];
@@ -247,6 +253,8 @@ export interface UiStrings {
 }
 
 const en: UiStrings = {
+  authAccount: "Account", authSigningOut: "Signing out...", authSignOutError: "Unable to sign out. Please try again.",
+  authSignIn: 'Sign in', authSignOut: 'Sign out', authDashboard: 'Dashboard',
   homeAboutBadge: 'About Us',
   homeAboutTitle: 'Crafting journeys that feel personal, seamless, and unforgettable.',
   homeAboutBody: 'We design meaningful travel experiences across iconic and offbeat destinations. Every itinerary balances discovery, comfort, and local insight so your trip feels effortless from planning to return.',
@@ -514,6 +522,8 @@ const en: UiStrings = {
 };
 
 const fr: UiStrings = {
+  authAccount: "Compte", authSigningOut: "D?connexion...", authSignOutError: "Impossible de se d?connecter. Veuillez r?essayer.",
+  authSignIn: 'Se connecter', authSignOut: 'Se d?connecter', authDashboard: 'Tableau de bord',
   homeAboutBadge: 'À propos',
   homeAboutTitle: 'Des voyages personnalisés, sans effort et inoubliables.',
   homeAboutBody: 'Nous imaginons des expériences de voyage riches de sens, entre destinations emblématiques et lieux hors des sentiers battus. Chaque itinéraire allie découverte, confort et expertise locale pour un voyage serein, de la préparation au retour.',
@@ -781,6 +791,8 @@ const fr: UiStrings = {
 };
 
 const es: UiStrings = {
+  authAccount: "Cuenta", authSigningOut: "Cerrando sesi?n...", authSignOutError: "No se pudo cerrar la sesi?n. Int?ntalo de nuevo.",
+  authSignIn: 'Iniciar sesi?n', authSignOut: 'Cerrar sesi?n', authDashboard: 'Panel',
   homeAboutBadge: 'Sobre nosotros',
   homeAboutTitle: 'Creamos viajes personales, cómodos e inolvidables.',
   homeAboutBody: 'Diseñamos experiencias de viaje con sentido, tanto a destinos emblemáticos como a lugares menos conocidos. Cada itinerario combina descubrimiento, comodidad y conocimiento local para que disfrute de un viaje sin complicaciones desde la planificación hasta el regreso.',
@@ -1048,6 +1060,8 @@ const es: UiStrings = {
 };
 
 const nl: UiStrings = {
+  authAccount: "Account", authSigningOut: "Uitloggen...", authSignOutError: "Uitloggen mislukt. Probeer het opnieuw.",
+  authSignIn: 'Inloggen', authSignOut: 'Uitloggen', authDashboard: 'Dashboard',
   homeAboutBadge: 'Over ons',
   homeAboutTitle: 'We creëren persoonlijke, zorgeloze en onvergetelijke reizen.',
   homeAboutBody: 'We ontwerpen betekenisvolle reiservaringen naar bekende bestemmingen en plekken buiten de gebaande paden. Elke reis combineert ontdekking, comfort en lokale kennis, zodat uw reis van planning tot thuiskomst soepel verloopt.',
@@ -1315,6 +1329,8 @@ const nl: UiStrings = {
 };
 
 const it: UiStrings = {
+  authAccount: "Account", authSigningOut: "Disconnessione...", authSignOutError: "Impossibile uscire. Riprova.",
+  authSignIn: 'Accedi', authSignOut: 'Esci', authDashboard: 'Pannello',
   homeAboutBadge: 'Chi siamo',
   homeAboutTitle: 'Creiamo viaggi personali, senza pensieri e indimenticabili.',
   homeAboutBody: 'Progettiamo esperienze di viaggio significative, tra destinazioni iconiche e luoghi fuori dai percorsi più battuti. Ogni itinerario unisce scoperta, comfort e conoscenza locale, per un viaggio semplice dalla pianificazione al rientro.',
@@ -1582,6 +1598,8 @@ const it: UiStrings = {
 };
 
 const de: UiStrings = {
+  authAccount: "Konto", authSigningOut: "Abmelden...", authSignOutError: "Abmelden fehlgeschlagen. Bitte erneut versuchen.",
+  authSignIn: 'Anmelden', authSignOut: 'Abmelden', authDashboard: 'Dashboard',
   homeAboutBadge: 'Über uns',
   homeAboutTitle: 'Wir gestalten persönliche, entspannte und unvergessliche Reisen.',
   homeAboutBody: 'Wir gestalten besondere Reiseerlebnisse an bekannten Orten und abseits ausgetretener Pfade. Jede Reiseroute verbindet Entdeckungen, Komfort und lokales Wissen, damit Ihre Reise von der Planung bis zur Rückkehr entspannt verläuft.',

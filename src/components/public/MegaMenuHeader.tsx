@@ -24,6 +24,7 @@ interface MegaColumn {
 }
 
 interface MegaMenuHeaderProps {
+  accountControls?: React.ReactNode;
   logoUrl: string;
   logo2Url: string;
   siteName: string;
@@ -54,6 +55,7 @@ const DEFAULT_ITEMS: MenuItem[] = [
 ];
 
 export default function MegaMenuHeader({
+  accountControls,
   logoUrl,
   siteName,
   logo2Url,
@@ -343,6 +345,7 @@ export default function MegaMenuHeader({
             <LanguageSwitcher languages={languages} active={activeLanguage} />
           </div>
 
+          <div className={`flex items-center ${solidHeader ? 'text-body' : 'text-white'}`}>{accountControls}</div>
           {/* Mobile toggle */}
           <button
             type="button"
